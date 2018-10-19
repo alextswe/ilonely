@@ -64,6 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="pages\templates\pages\base.html" />
+    <Content Include="pages\templates\pages\forgot_password.html" />
+    <Content Include="pages\templates\pages\forgot_username.html" />
     <Content Include="pages\templates\pages\home.html" />
     <Content Include="pages\templates\pages\login.html" />
     <Content Include="pages\templates\pages\register.html" />

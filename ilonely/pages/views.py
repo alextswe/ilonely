@@ -33,3 +33,21 @@ def login(request):
             'title':'Login',
         }
     )
+
+def forgot_username(request):
+    return render(
+        request,
+        'pages/forgot_username.html',
+        {
+            'title':'Forgot Username',
+        }
+    )
+
+def forgot_password(request):
+    return render(
+        request,
+        'pages/forgot_password.html',
+        {
+            'title':'Forgot Password',
+        }
+    )
