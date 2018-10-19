@@ -27,7 +27,7 @@ function global:deactivate ([switch]$NonDestructive) {
 
 deactivate -nondestructive
 
-$env:VIRTUAL_ENV="C:\Users\abaxy\source\repos\ilonelysolution\ilonely\env"
+$env:VIRTUAL_ENV="C:\Users\abaxy\Documents\Github\ilonely\ilonely\env"
 
 if (! $env:VIRTUAL_ENV_DISABLE_PROMPT) {
     # Set the prompt to include the env name

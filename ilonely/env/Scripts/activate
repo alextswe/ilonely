@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\abaxy\source\repos\ilonelysolution\ilonely\env"
+VIRTUAL_ENV="C:\Users\abaxy\Documents\Github\ilonely\ilonely\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

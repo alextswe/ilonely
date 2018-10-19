@@ -1,4 +1,4 @@
-#!C:\Users\abaxy\source\repos\ilonelysolution\ilonely\env\Scripts\python.exe
+#!C:\Users\abaxy\Documents\Github\ilonely\ilonely\env\Scripts\python.exe
 from django.core import management
 
 if __name__ == "__main__":
