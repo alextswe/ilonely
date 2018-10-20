@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 #I believe primary keys are handling automatically
 #We may need to add extra getter setter methods
@@ -6,12 +7,8 @@ from django.db import models
 #getUser(username, password) that returns a userid or 
 #null or -1 if the user does not exist
 
-class User(models.Model):
-    email = models.EmailField(max_length=75)
-    username = models.CharField(unique=True,max_length=50)
-    password = models.CharField(max_length=75)
-    firstname = models.CharField(max_length=50)
-    lastname = models.CharField(max_length=50)
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField()
     age = models.PositiveIntegerField()
     photo = models.ImageField(upload_to="profile_photo/", null=True, blank=True)
