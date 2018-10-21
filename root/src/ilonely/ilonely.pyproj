@@ -38,6 +38,9 @@
     <Compile Include="ilonely\wsgi.py" />
     <Compile Include="pages\admin.py" />
     <Compile Include="pages\apps.py" />
+    <Compile Include="pages\forms.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="pages\migrations\__init__.py" />
     <Compile Include="pages\models.py" />
     <Compile Include="pages\tests.py" />
@@ -69,6 +72,9 @@
     <Content Include="pages\templates\pages\home.html" />
     <Content Include="pages\templates\pages\login.html" />
     <Content Include="pages\templates\pages\register.html" />
+    <Content Include="pages\templates\pages\success.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="user\templates\user\index.html" />
