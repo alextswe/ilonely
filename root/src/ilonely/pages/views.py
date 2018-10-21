@@ -3,6 +3,8 @@ from django.http import HttpRequest
 from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login
 from .forms import CustomUserCreationForm
 
 # Create your views here.
@@ -39,17 +41,31 @@ def register(request):
         }
     )
 
-def login(request):
+def login_view(request):
     assert isinstance(request, HttpRequest)
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            # Log in the user
+            user = form.get_user()
+            login(request, user)
+            # Take user to their home page
+            return redirect('user_home')
+        else:
+            # Print error message
+            print("Failure")
+    else:
+        form = AuthenticationForm()
     return render(
         request,
         'pages/login.html',
         {
             'title':'Login',
+            'form':form
         }
     )
 
-def forgot_username(request):
+def forgot_username_view(request):
     return render(
         request,
         'pages/forgot_username.html',
@@ -58,7 +74,7 @@ def forgot_username(request):
         }
     )
 
-def forgot_password(request):
+def forgot_password_view(request):
     return render(
         request,
         'pages/forgot_password.html',
@@ -73,5 +89,14 @@ def success(request):
         'pages/success.html',
         {
             'title':'Sucessful Login'
+        }
+    )
+
+def user_home_view(request):
+    return render(
+        request,
+        'pages/user_home.html',
+        {
+            'title':'User Home Page'
         }
     )

@@ -3,6 +3,7 @@
 {% block content %}
     <h1>This is the login page!</h1>
     <form method="post">
+        {% csrf_token %}
         Username:<br>
         <input type="text" name="username"><br>
         Password:<br>

@@ -75,6 +75,7 @@
     <Content Include="pages\templates\pages\success.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="pages\templates\pages\user_home.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="user\templates\user\index.html" />
