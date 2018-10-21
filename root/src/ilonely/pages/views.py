@@ -4,7 +4,8 @@ from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
 
 # Create your views here.
@@ -53,7 +54,7 @@ def login_view(request):
             return redirect('user_home')
         else:
             # Print error message
-            print("Failure")
+            messages.error(request, 'Incorrect username or password')
     else:
         form = AuthenticationForm()
     return render(
@@ -64,6 +65,12 @@ def login_view(request):
             'form':form
         }
     )
+
+def logout_view(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('home')
+
 
 def forgot_username_view(request):
     return render(
@@ -92,6 +99,8 @@ def success(request):
         }
     )
 
+# Prevents anyone from accessing this page unless they are logged in to their account
+@login_required(login_url="home")
 def user_home_view(request):
     return render(
         request,
@@ -99,4 +108,4 @@ def user_home_view(request):
         {
             'title':'User Home Page'
         }
-    )
+)
