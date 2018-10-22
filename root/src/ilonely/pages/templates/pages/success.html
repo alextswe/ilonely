@@ -5,8 +5,6 @@
     {% if user.is_authenticated %}
         <h2>Hello {{ request.user.username }}!</h2>
         <p>You've been sent a confirmation email at {{ request.user.email }}.</p>
-        <p><strong>TODO: Email user upon successful registration</strong></p>
-    
     {% else %}
         <h2>You are not authenticated.</h2>
     {% endif %}
