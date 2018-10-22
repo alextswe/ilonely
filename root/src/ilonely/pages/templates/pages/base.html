@@ -1,10 +1,32 @@
+{% load static %}
 <!DOCTYPE html>
+
 <head>
-	<title>{{ title }} - iLonely </title>
+    
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstap-reboot.min.css'%}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstap.min.css'%}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/sidebar.css' %}"/>
+
+    <!--Javascript-->
+    <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'js/sidebar.js'%}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js'%}"></script>
+    <title>{{ title }} - iLonely </title>
+
 </head>
 
 <body>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href={% url 'home'%}>Home</a>
+        <a href="#"Yikes></a>
+    </div>
+    <span onclick="openNav()">Sidebar</span>
+
 	<div class="container body-content">
+    </div>
 		{% block content %}{% endblock %}
 	<footer>
 		<p>iLonely by 6:10 Squad</p>
