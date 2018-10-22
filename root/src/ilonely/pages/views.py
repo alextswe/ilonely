@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.template import RequestContext
+from pages.models import Follow
+from pages.models import Profile
 
 # Create your views here.
 
@@ -51,3 +53,12 @@ def forgot_password(request):
             'title':'Forgot Password',
         }
     )
+
+def view_following(request):
+    myid = request.user.id
+    followset = Follow.objects.filter(userFollowing=myid)
+    usersIFollow = Profile.objects.Filter(user = followset.user)
+    return render(request, 'pages/view_following.html', 
+                  { 'title':'Following', 
+                   'following' : usersIFollow,} 
+                  )

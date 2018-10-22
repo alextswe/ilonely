@@ -21,7 +21,7 @@ class Post(models.Model):
 class Follow(models.Model):
     userFollowing = models.ForeignKey(User, on_delete=models.CASCADE, related_name="userFollowing")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
-    isRequest = models.BooleanField()
+    isRequest = models.BooleanField(default=False)
 
 class Thread(models.Model):
     userOne = models.ForeignKey(User, on_delete=models.CASCADE, related_name="userOne")
@@ -32,4 +32,4 @@ class Message(models.Model):
     messageContent = models.TextField()
     author = models.ForeignKey(User, on_delete=models.PROTECT)
     datePosted = models.DateTimeField(auto_now_add=True)
-    isRequest = models.BooleanField()
+    isRequest = models.BooleanField(default=False)
