@@ -3,8 +3,8 @@ A webapp to connect lonely with other lonely people.
 
 ## Current Sprint Goals:
  + Registration
-   + Users must input a unique **username** and **email** to register
-   + TODO: Email user upon successful registration
+   + Users must input a unique **username** and **email** to register.
+   + Emails user upon successful registration from the **610.squad.ucr@gmail.com**.
  + Secure Login
  + Change/Update Profile
 
