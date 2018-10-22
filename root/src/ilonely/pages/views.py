@@ -6,6 +6,7 @@ from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+# from django.core.mail import send_mail
 from .forms import CustomUserCreationForm
 
 # Create your views here.
@@ -27,6 +28,10 @@ def register(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
+            user.email_user(
+                subject='Welcome to iLonely!',
+                message = 'Hi %s! We hope you\'ll enjoy iLonely!' % user.get_username()
+            )
             return redirect('success')
         else:
             messages.error(request, 'Account not created successfully.')
