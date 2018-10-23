@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^forgot_password$', pages.views.forgot_password_view, name='forgot_password'),
     url(r'^success$', pages.views.success, name='success'),
     url(r'^user_home$', pages.views.user_home_view, name='user_home'),
+    url(r'^view_following$', pages.views.view_following, name='view_following'),
 ]

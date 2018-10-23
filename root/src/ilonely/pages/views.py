@@ -8,6 +8,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 # from django.core.mail import send_mail
 from .forms import CustomUserCreationForm
+from pages.models import Profile, Follow
 
 # Create your views here.
 
@@ -116,3 +117,11 @@ def user_home_view(request):
             'title':'User Home Page'
         }
 )
+
+def view_following(request):
+    myid = request.user.id
+    followset = Follow.objects.filter(userFollowing=myid)
+    usersIFollow = Profile.objects.filter(user = followset.user)
+    return render(request, 'pages/view_following.html', 
+                  { 'title':'Following', 
+                   'following' : usersIFollow,} 
