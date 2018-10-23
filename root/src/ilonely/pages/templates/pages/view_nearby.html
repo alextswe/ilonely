@@ -1,12 +1,13 @@
 ﻿{% extends "pages/base.html" %}
 
 {% block content %}
-    <h1>See who you are following!</h1>
-    {% for person in following %}
+    <h1>See who is near you!</h1>
+    {% for person in people %}
         <button style="float:left;padding-top:5px;padding-bottom:5px;" type="button" name="viewUser" value="{{person.user}}">
             {{person.first_name}}&nbsp;{{person.last_name}}
         </button>
         <br />
     {% endfor %}
+
     <p><a href={% url 'user_home' %}>Go Back</a></p>
 {% endblock %}

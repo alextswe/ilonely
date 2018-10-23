@@ -8,7 +8,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 # from django.core.mail import send_mail
 from .forms import CustomUserCreationForm
-from pages.models import Profile, Follow
+from pages.models import Profile, Follow, Block
 
 # Create your views here.
 
@@ -119,9 +119,49 @@ def user_home_view(request):
 )
 
 def view_following(request):
-    myid = request.user.id
-    followset = Follow.objects.filter(userFollowing=myid)
-    usersIFollow = Profile.objects.filter(user = followset.user)
-    return render(request, 'pages/view_following.html', 
-                  { 'title':'Following', 
-                   'following' : usersIFollow,} 
+    if request.method == 'POST':
+        viewUser = request.POST['viewUser']
+        return redirect(public_profile, userid = viewUser)
+    else:
+        me = request.user.id
+        followset = Follow.objects.filter(userFollowing=me)
+        usersIFollow = Profile.objects.filter(user = followset.user)
+        return render(request, 'pages/view_following.html', 
+                    { 'title':'Following', 
+                    'following' : usersIFollow,} )
+
+def view_nearby(request):
+    if request.method == 'POST':
+        viewUser = request.POST['viewUser']
+        return redirect(public_profile, userid = viewUser)
+    else:
+        me = request.user.id
+        myProfile = Profile.objects.filter(user = me)
+        peopleNearMe = Profile.objects.filter(location = myProfile.location) #need to convert locations to lowercase
+        return render(request, 'pages/view_nearby.html', {'title':'Nearby', 'people' : peopleNearMe,})
+
+def public_profile(request, userid):
+    if request.method == 'POST':
+        if request.POST.get('followUser'):
+            followUser = request.POST['followUser']
+            f = Follow.objects.filter(userFollowing=request.user.id, user=followUser)
+            if f is None: 
+                f = Follow(userFollowing=request.user.id, user=followUser, isRequest=True)
+                f.save()
+            else:
+                f.delete() #already following so unfollow
+        elif request.POST.get('messageUser'):
+            return redirect('Not implemented')
+        elif request.POST.get('blockUser'):
+            blockUser = request.POST['blockUser']
+            b = Block.objects.filter(userBlocking=request.user.id, user=blockUser)
+            if b is None:
+                b = Block(userBlocking=request.user.id, user_home_view=blockUser)
+                b.save()
+            else: #already blocking user so unblock
+                b.delete()       
+    else:
+        profile = Profile.objects.filter(user = userid)
+        return render(request, 'pages/public_profile.html', 
+                    {'title': (profile.first_name + ' ' + profile.last_name), 
+                    'profile' : profile,})

@@ -12,6 +12,7 @@ class Profile(models.Model):
     bio = models.TextField()
     age = models.PositiveIntegerField()
     photo = models.ImageField(upload_to="profile_photo/", null=True, blank=True)
+    location = models.CharField(max_length=150, blank=True, default='') #of the form: Riverside, CA
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) #apparently cascade delete happens automatically?
@@ -19,9 +20,13 @@ class Post(models.Model):
     datePosted = models.DateTimeField(auto_now_add=True)
 
 class Follow(models.Model):
-    userFollowing = models.ForeignKey(User, on_delete=models.CASCADE, related_name="userFollowing")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
+    userFollowing = models.ForeignKey(User, on_delete=models.PROTECT, related_name="userFollowing")
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="userFollowed")
     isRequest = models.BooleanField(default=False)
+
+class Block(models.Model):
+    userBlocking = models.ForeignKey(User, on_delete=models.PROTECT, related_name="userBlocking")
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="userBlocked")
 
 class Thread(models.Model):
     userOne = models.ForeignKey(User, on_delete=models.CASCADE, related_name="userOne")

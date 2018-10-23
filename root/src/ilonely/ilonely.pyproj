@@ -102,12 +102,14 @@
     <Content Include="pages\templates\pages\forgot_username.html" />
     <Content Include="pages\templates\pages\home.html" />
     <Content Include="pages\templates\pages\login.html" />
+    <Content Include="pages\templates\pages\public_profile.html" />
     <Content Include="pages\templates\pages\register.html" />
     <Content Include="pages\templates\pages\success.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="pages\templates\pages\user_home.html" />
     <Content Include="pages\templates\pages\view_following.html" />
+    <Content Include="pages\templates\pages\view_nearby.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="user\templates\user\index.html" />
