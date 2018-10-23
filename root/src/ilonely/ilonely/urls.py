@@ -6,7 +6,6 @@ from datetime import datetime
 from django.conf.urls import url
 from django.urls import path
 import django.contrib.auth.views
-
 import pages.views
 
 urlpatterns = [

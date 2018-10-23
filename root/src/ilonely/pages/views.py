@@ -3,9 +3,11 @@ from django.http import HttpRequest
 from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, authenticate
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from .forms import CustomUserCreationForm
 
 # Create your views here.
@@ -70,9 +72,19 @@ def logout_view(request):
     if request.method == 'POST':
         logout(request)
         return redirect('home')
-
+    return
 
 def forgot_username_view(request):
+    assert isinstance(request, HttpRequest)
+    if request.method == 'POST':
+        email = request.POST.get("email", None)
+        try:
+            user = User.objects.filter(email=email).first()
+        except User.DoesNotExist:
+            user = None
+        if user is not None:
+            print(user.get_username())
+                
     return render(
         request,
         'pages/forgot_username.html',
@@ -82,6 +94,19 @@ def forgot_username_view(request):
     )
 
 def forgot_password_view(request):
+    assert isinstance(request, HttpRequest)
+    if request.method == 'POST':
+        username = request.POST.get("username", None)
+        try:
+            user = User.objects.filter(username=username).first()
+        except User.DoesNotExist:
+            user = None
+        if user is not None:
+            if user.get_username() == username:
+                password = "password"
+                user.set_password(password)
+                user.save()
+                
     return render(
         request,
         'pages/forgot_password.html',
