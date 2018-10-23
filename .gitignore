@@ -2,6 +2,9 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs
-/ilonely
 /root/src/ilonely/env
+/ilonely/env
+/ilonely/pages/migrations/__pycache__
+/ilonely/pages/__pycache__
+/ilonely/ilonely/__pycache__
+/.vs

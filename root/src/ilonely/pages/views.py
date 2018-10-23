@@ -57,7 +57,7 @@ def forgot_password(request):
 def view_following(request):
     myid = request.user.id
     followset = Follow.objects.filter(userFollowing=myid)
-    usersIFollow = Profile.objects.Filter(user = followset.user)
+    usersIFollow = Profile.objects.filter(user = followset.user)
     return render(request, 'pages/view_following.html', 
                   { 'title':'Following', 
                    'following' : usersIFollow,} 
