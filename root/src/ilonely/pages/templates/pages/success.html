@@ -1,0 +1,13 @@
+{% extends "pages/base.html" %}
+
+{% block content %}
+    <h1>Welcome to iLonely!</h1>
+    {% if user.is_authenticated %}
+        <h2>Hello {{ request.user.username }}!</h2>
+        <p>You've been sent a confirmation email at {{ request.user.email }}.</p>
+    {% else %}
+        <h2>You are not authenticated.</h2>
+    {% endif %}
+    <p><a href={% url 'home' %}>Home</a></p>
+    <p><a href={% url 'login' %}>Login</a></p>
+{% endblock %}

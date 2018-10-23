@@ -2,5 +2,34 @@
 
 {% block content %}
     <h1>This is the registration page!</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            {{ message }}<br/>
+        {% endfor %}
+    {% endif %}
+    
+    <form method="POST">
+        {% csrf_token %}
+        Username:<br />
+        {{ form.username }}<br />
+        Email:<br />
+        {{ form.email }}<br />
+        Password:<br />
+        {{ form.password1 }}<br />
+        Password Confirmation:<br />
+        {{ form.password2 }}<br />
+        <input type="submit" value="Submit" />
+
+        {% if form.errors %}
+            {% for field in form %}
+                <ul>
+                {% for error in field.errors %}
+                    <li> {{ error }} </li>
+                {% endfor %}
+                </ul>
+            {% endfor %}
+        {% endif %}
+    </form>
     <p><a href={% url 'home' %}>Go Back</a></p>
 {% endblock %}
