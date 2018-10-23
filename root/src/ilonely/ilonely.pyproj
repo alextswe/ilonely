@@ -69,6 +69,7 @@
     <Folder Include="user\templates\user\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="gitignore.txt" />
     <Content Include="pages\static\css\.DS_Store" />
     <Content Include="pages\static\css\bootstrap-grid.css" />
     <Content Include="pages\static\css\bootstrap-grid.css.map" />

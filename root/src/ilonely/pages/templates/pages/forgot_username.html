@@ -5,6 +5,7 @@
     <i>Please enter your email address</i>
     <!-- Creates a field for email submission -->
     <form method="post">
+        {% csrf_token %}
         Email:<br>
         <input type="text" name="email"><br>
         <input type="submit" value="Submit">
