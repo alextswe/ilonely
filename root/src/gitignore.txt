@@ -1,6 +1,6 @@
-
 **/env/
 .vs/
+.vs/ilonelysolution/v15/.suo
 
 # User-specific files
 *.rsuser

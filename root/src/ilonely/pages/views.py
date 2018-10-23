@@ -26,9 +26,15 @@ def register(request):
     assert isinstance(request, HttpRequest)
     if request.method == 'POST':
         form = CustomUserCreationForm(data=request.POST)
+
+        # Automatically signs the user in
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
+            user.email_user(
+                subject='Welcome to iLonely!',
+                message = 'Hi %s! We hope you\'ll enjoy iLonely!' % user.get_username()
+            )
             return redirect('success')
         else:
             messages.error(request, 'Account not created successfully.')
