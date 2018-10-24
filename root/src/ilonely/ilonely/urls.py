@@ -7,6 +7,9 @@ from django.conf.urls import url
 from django.urls import path
 import django.contrib.auth.views
 import pages.views
+# enables admin site
+from django.contrib import admin
+admin.autodiscover()
 
 urlpatterns = [
     url(r'^$', pages.views.home, name='home'),
@@ -21,4 +24,5 @@ urlpatterns = [
     url(r'^view_nearby$', pages.views.view_nearby, name='view_nearby'),
     url(r'^public_profile/(?P<userid>\d+)/$', pages.views.public_profile, name='public_profile'),
     url(r'^dataviewer$', pages.views.dataviewer, name='dataviewer'),
+    url(r'^admin/', admin.site.urls), # admin site url
 ]
