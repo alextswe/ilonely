@@ -5,7 +5,7 @@
     <form action="{% url 'view_following' %}" method="post"> {% csrf_token %}
     {% for person in following %}
         <div style="padding-top:5px;padding-bottom:5px;">
-            <button style="padding-top:5px;padding-bottom:5px;" type="button" name="viewUser" value="{{person.user.id}}">
+            <button style="padding-top:5px;padding-bottom:5px;" type="submit" name="viewUser" value="{{person.user.id}}">
                 {{person.user.first_name}}&nbsp;{{person.user.last_name}}
             </button>
         </div>

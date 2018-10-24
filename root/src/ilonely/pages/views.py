@@ -144,8 +144,11 @@ def view_following(request):
     else:
         me = User.objects.get(pk=request.user.id)
         #need to exclude blocked users
-        followset = Follow.objects.filter(userFollowing=me).all()
-        profilesIFollow = Profile.objects.filter(user = followset.user).all()
+        if Follow.objects.filter(userFollowing=me):
+            followSet = Follow.objects.get(userFollowing = me)
+            profilesIFollow = Profile.objects.filter(user = followSet.user).all()
+        else:
+            profilesIFollow = None
         return render(request, 'pages/view_following.html', 
                     { 'title':'Following', 'following' : profilesIFollow,} )
 
