@@ -134,36 +134,34 @@ def success(request):
 # Prevents anyone from accessing this page unless they are logged in to their account
 @login_required(login_url="home")
 def user_home_view(request):
-    return render(
-        request,
-        'pages/user_home.html',
-        {
-            'title':'User Home Page'
-        }
-)
+    return render(request,'pages/user_home.html', {'title':'User Home Page'})
 
+@login_required(login_url="home")
 def view_following(request):
     if request.method == 'POST':
         viewUser = request.POST['viewUser']
         return redirect(public_profile, userid = viewUser)
     else:
-        me = request.user.id
-        followset = Follow.objects.filter(userFollowing=me)
-        usersIFollow = Profile.objects.filter(user = followset.user)
+        me = User.objects.get(pk=request.user.id)
+        #need to exclude blocked users
+        followset = Follow.objects.filter(userFollowing=me).all()
+        profilesIFollow = Profile.objects.filter(user = followset.user).all()
         return render(request, 'pages/view_following.html', 
-                    { 'title':'Following', 
-                    'following' : usersIFollow,} )
+                    { 'title':'Following', 'following' : profilesIFollow,} )
 
+@login_required(login_url="home")
 def view_nearby(request):
     if request.method == 'POST':
         viewUser = request.POST['viewUser']
         return redirect(public_profile, userid = viewUser)
     else:
-        me = request.user.id
-        myProfile = Profile.objects.filter(user = me)
-        peopleNearMe = Profile.objects.filter(location = myProfile.location) #need to convert locations to lowercase
+        me = User.objects.get(pk=request.user.id)
+        myProfile = Profile.objects.filter(user = me).first()
+        #need to exclude blocked users
+        peopleNearMe = Profile.objects.filter(location = myProfile.location).exclude(user = me).all() #need to convert locations to lowercase
         return render(request, 'pages/view_nearby.html', {'title':'Nearby', 'people' : peopleNearMe,})
 
+@login_required(login_url="home")
 def public_profile(request, userid):
     if request.method == 'POST':
         if request.POST.get('followUser'):
@@ -185,7 +183,19 @@ def public_profile(request, userid):
             else: #already blocking user so unblock
                 b.delete()       
     else:
-        profile = Profile.objects.filter(user = userid)
+        profile = Profile.objects.filter(user = userid).first()
         return render(request, 'pages/public_profile.html', 
-                    {'title': (profile.first_name + ' ' + profile.last_name), 
+                    {'title': (profile.user.first_name + ' ' + profile.user.last_name), 
                     'profile' : profile,})
+
+def dataviewer(request):
+    users = User.objects.all()
+    profiles = Profile.objects.all()
+    follows = Follow.objects.all()
+    blocks = Block.objects.all()
+    return render(request, 'pages/dataviewer.html', 
+                  {'title': 'View the data', 
+                   'users': users, 
+                   'profiles' : profiles, 
+                   'follows' : follows, 
+                   'blocks' : blocks,})

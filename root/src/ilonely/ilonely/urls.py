@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^success$', pages.views.success, name='success'),
     url(r'^user_home$', pages.views.user_home_view, name='user_home'),
     url(r'^view_following$', pages.views.view_following, name='view_following'),
-    url(r'^view_nearby$', pages.views.view_following, name='view_nearby'),
-    url(r'^public_profile$', pages.views.public_profile, name='public_profile'),
+    url(r'^view_nearby$', pages.views.view_nearby, name='view_nearby'),
+    url(r'^public_profile/(?P<userid>\d+)/$', pages.views.public_profile, name='public_profile'),
+    url(r'^dataviewer$', pages.views.dataviewer, name='dataviewer'),
 ]

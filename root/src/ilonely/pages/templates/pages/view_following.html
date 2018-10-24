@@ -2,11 +2,14 @@
 
 {% block content %}
     <h1>See who you are following!</h1>
+    <form action="{% url 'view_following' %}" method="post"> {% csrf_token %}
     {% for person in following %}
-        <button style="float:left;padding-top:5px;padding-bottom:5px;" type="button" name="viewUser" value="{{person.user}}">
-            {{person.first_name}}&nbsp;{{person.last_name}}
-        </button>
-        <br />
+        <div style="padding-top:5px;padding-bottom:5px;">
+            <button style="padding-top:5px;padding-bottom:5px;" type="button" name="viewUser" value="{{person.user.id}}">
+                {{person.user.first_name}}&nbsp;{{person.user.last_name}}
+            </button>
+        </div>
     {% endfor %}
+    </form>
     <p><a href={% url 'user_home' %}>Go Back</a></p>
 {% endblock %}

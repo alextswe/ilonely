@@ -1,11 +1,17 @@
 ﻿{% extends "pages/base.html" %}
 
 {% block content %}
-    <img src="{{profile.photo.url}}" />
-    <span>{{profile.first_name}}&nbsp;{{profile.last_name}}</span>
-    <button style="float:left;" type="button" name="messageUser" value="{{profile.user}}">Message</button>
-    <button style="float:left;" type="button" name="followUser" value="{{profile.user}}">Follow / Unfollow</button>
-    <button style="float:left;" type="button" name="blockUser" value="{{profile.user}}">Block / Unblock</button>
-    <span>{{profile.bio}}</span>
+    {% if profile.image %}
+        <img src="{{profile.photo.url}}" />
+    {% endif %}
+    <div style="text-align:center;padding-bottom:10px;">{{profile.user.first_name}}&nbsp;{{profile.user.last_name}}</div>
+    <div style="text-align:center;padding-bottom:10px;">
+        <form action="" method="post"> {% csrf_token %}
+            <button type="button" name="messageUser" value="{{profile.user.id}}">Message</button>
+            <button type="button" name="followUser" value="{{profile.user.id}}">Follow / Unfollow</button>
+            <button type="button" name="blockUser" value="{{profile.user.id}}">Block / Unblock</button>
+        </form>
+    </div>
+    <div style="text-align:center;">{{profile.bio}}</div>
     <p><a href={% url 'user_home' %}>Go Back</a></p>
 {% endblock %}
