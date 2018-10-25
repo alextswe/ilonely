@@ -14,23 +14,38 @@ class Profile(models.Model):
     photo = models.ImageField(upload_to="profile_photo/", null=True, blank=True)
     location = models.CharField(max_length=150, blank=True, default='') #of the form: Riverside, CA
 
+    def __str__(self):
+        return '%s\'s Profile' % self.user.get_username()
+
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) #apparently cascade delete happens automatically?
     postContent = models.TextField()
     datePosted = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '%s\'s post - %s' % (self.user.get_username(), self.datePosted.strftime("%x %X"))
 
 class Follow(models.Model):
     userFollowing = models.ForeignKey(User, on_delete=models.PROTECT, related_name="userFollowing")
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="userFollowed")
     isRequest = models.BooleanField(default=False)
 
+    def __str__(self):
+        return '%s follows %s' % (self.user.get_username(), self.userFollowing.get_username())
+
 class Block(models.Model):
     userBlocking = models.ForeignKey(User, on_delete=models.PROTECT, related_name="userBlocking")
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="userBlocked")
 
+    def __str__(self):
+        return '%s blocked %s' % (self.user.get_username(), self.userBlocking.get_username())   
+
 class Thread(models.Model):
     userOne = models.ForeignKey(User, on_delete=models.CASCADE, related_name="userOne")
     userTwo = models.ForeignKey(User, on_delete=models.CASCADE, related_name="userTwo")
+
+    def __str__(self):
+        return '%s - %s' % (self.userOne.get_username(), self.userTwo.get_username())
 
 class Message(models.Model):
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
@@ -38,3 +53,6 @@ class Message(models.Model):
     author = models.ForeignKey(User, on_delete=models.PROTECT)
     datePosted = models.DateTimeField(auto_now_add=True)
     isRequest = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '%s message %s' % (self.author.get_username(), self.datePosted.strftime("%x %X"))
