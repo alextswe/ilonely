@@ -89,8 +89,11 @@ def forgot_username_view(request):
         except User.DoesNotExist:
             user = None
         if user is not None:
-            print(user.get_username())
-                
+            user.email_user(
+                subject='iLonely: Account Username',
+                message = 'Did you forget your username? Don\'t worry, we didn\'t. Your username is: %s!' % user.get_username()
+            )
+        messages.success(request, "We sent an email to your account.");      
     return render(
         request,
         'pages/forgot_username.html',
@@ -112,7 +115,12 @@ def forgot_password_view(request):
                 password = "password"
                 user.set_password(password)
                 user.save()
-                
+                user.email_user(
+                subject='iLonely: Reset Account Password',
+                message = 'Hi {0}! Your password has been reset to: {1} \nCopy and paste this into the login page to finish resetting your password'.format(user.get_username(),password) 
+            )
+        messages.success(request, "An email has been sent to your account with further instructions.")  
+       
     return render(
         request,
         'pages/forgot_password.html',
