@@ -19,10 +19,11 @@ def setLocation(sender, request, user, **kwargs):
     if not user.is_superuser and not user.is_staff:
         userLocDict = getLocation(request)
         city = userLocDict["city"]
+        state = userLocDict["region"]
 
         # Search for user's profile
         profile = Profile.objects.filter(user=user).first()
-        profile.location = city
+        profile.location = ("%s, %s") % (city, state)
         profile.save()
 
 # Helper functions
