@@ -11,6 +11,13 @@
         <input type="submit" value="Submit">
     </form>
     <!-- Fixme: Output confirmation message -->
+    {% if messages %}
+        <font color="blue">
+        {% for message in messages %}
+            {{ message }}<br/>
+        {% endfor %}
+        </font>
+    {% endif %}
 
     <!-- Fixme: Send user email containing their username -->
 
