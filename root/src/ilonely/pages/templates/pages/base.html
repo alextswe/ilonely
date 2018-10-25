@@ -10,10 +10,10 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}"/>
 
     <!--Javascript-->
+    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js'%}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js'%}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap.min.js'%}"></script>
     <script type="text/javascript" src="{% static 'js/sidebar.js'%}"></script>
-    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js'%}"></script>
     <title>{{ title }} - iLonely </title>
 
 </head>
@@ -22,7 +22,13 @@
     {% if request.user.is_authenticated %}
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href={% url 'user_home'%}>Home</a>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Home</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href={% url 'view_nearby'%}>Nearby</a>
+                    <a class="dropdown-item" href={% url 'view_following'%}>Following</a>
+                </div>
+            </div>
         </div>
     {% else %}
         <div id="mySidenav" class="sidenav">

@@ -16,8 +16,18 @@
     text-decoration: none;
     font-size: 24px;
     color: #000000;
+    left: 50px;
     display: block;
     transition: 0.5s;
+}
+
+.dropdown{
+    left: 10px;
+}
+
+.dropdown-menu{
+    text-align: left;
+    padding: 0;
 }
 
 .sidenav a:hover {
