@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import CustomUserCreationForm
 from pages.models import Profile, Follow, Block
+import random,string
 
 # Create your views here.
 
@@ -113,7 +114,7 @@ def forgot_password_view(request):
             user = None
         if user is not None:
             if user.get_username() == username:
-                password = "password"
+                password = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(7))
                 user.set_password(password)
                 user.save()
                 user.email_user(
