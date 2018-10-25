@@ -5811,3 +5811,6 @@
 /root/src/ilonely/env/Lib/site-packages/django/apps/config.py
 /root/src/.vs/ilonelysolution/v15/.suo
 /root/src/.vs/config/applicationhost.config
+*.suo
+/.vs
+/root/src/ilonely/env/.ptvs/AnalysisLog.txt

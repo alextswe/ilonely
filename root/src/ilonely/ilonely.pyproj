@@ -4,7 +4,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>ilonely</Name>
     <RootNamespace>ilonely</RootNamespace>
-    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env1|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -43,6 +43,7 @@
     </Compile>
     <Compile Include="pages\migrations\__init__.py" />
     <Compile Include="pages\models.py" />
+    <Compile Include="pages\signals.py" />
     <Compile Include="pages\tests.py" />
     <Compile Include="pages\views.py" />
     <Compile Include="pages\__init__.py" />
@@ -123,6 +124,15 @@
     <Content Include="user\templates\user\index.html" />
   </ItemGroup>
   <ItemGroup>
+    <Interpreter Include="..\..\..\..\..\..\Documents\Github\ilonely\root\src\ilonely\env\">
+      <Id>env1</Id>
+      <Version>3.7</Version>
+      <Description>env (Python 3.7 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
     <Interpreter Include="env\">
       <Id>env</Id>
       <Version>3.6</Version>
