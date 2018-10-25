@@ -19,17 +19,22 @@
 </head>
 
 <body>
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href={% url 'home'%}>Home</a>
-        <a href="#"Yikes></a>
-    </div>
+    {% if request.user.is_authenticated %}
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href={% url 'user_home'%}>Home</a>
+        </div>
+    {% else %}
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href={% url 'home'%}>Home</a>
+        </div>
+    {% endif %}
+
     <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
         <form class="form-inline">
-            <button class="btn btn-outline-success" style="background-color: antiquewhite;" type="button">
-                <div class="sidebarclick" onclick="openNav()">
-                    <span class="navbar-toggler-icon"></span>
-                </div>
+            <button class="btn btn-outline-success" style="background-color: antiquewhite;" type="button" onclick="openNav()">
+                <span class="navbar-toggler-icon"></span>
             </button>
         </form>
         <div class="mx-auto order-0">
