@@ -7,10 +7,11 @@
     <form method="post">
         {% csrf_token %}
         Email:<br>
-        <input type="text" name="email"><br>
+        <input type="email" name="email" placeholder="example@email.com"><br>
         <input type="submit" value="Submit">
     </form>
-    <!-- Fixme: Output confirmation message -->
+    <br>
+    <!-- Output confirmation message -->
     {% if messages %}
         <font color="blue">
         {% for message in messages %}
@@ -18,8 +19,6 @@
         {% endfor %}
         </font>
     {% endif %}
-
-    <!-- Fixme: Send user email containing their username -->
 
     <!-- Links -->
     <p><a href={% url 'login' %}>Go Back</a></p>
