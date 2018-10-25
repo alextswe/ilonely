@@ -1,8 +1,15 @@
 {% extends "pages/base.html"%}
-
 {% block content %}
-    <h1>iLonely</h1>
-    <h2>A lonely website for lonely people</h2>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}"/>
+    </head>
+
+    <div class="bg">
+        <div class="bgtxt">
+            A lonely website for lonely people
+        </div>
+    </div>
     <ul>
         <li><a href={% url 'register' %}>Register</a></li>
         <li><a href={% url 'login' %}>Login</a></li>
