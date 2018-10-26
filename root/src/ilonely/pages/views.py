@@ -212,10 +212,10 @@ def my_profile(request):
     profile = Profile.objects.filter(user = userid).first()
     if request.method == 'POST':
         if request.POST.get('editFields'):
-            newfname = request.POST.get("fnamespace", profile.user.first_name)
-            newlname = request.POST.get("lnamespace", profile.user.last_name)
-            newage = request.POST.get("agespace", profile.age)
-            newbio = request.POST.get("biospace", profile.bio)
+            newfname = request.POST.get("fnamespace")
+            newlname = request.POST.get("lnamespace")
+            newage = request.POST.get("agespace")
+            newbio = request.POST.get("biospace")
             #Handle age and bio errors here
             profile.age = newage
             profile.bio = newbio
