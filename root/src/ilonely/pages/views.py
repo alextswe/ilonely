@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -204,6 +204,33 @@ def public_profile(request, userid):
         profile = Profile.objects.filter(user = userid).first()
         return render(request, 'pages/public_profile.html', 
                     {'title': (profile.user.first_name + ' ' + profile.user.last_name), 
+                    'profile' : profile,})
+
+@login_required(login_url="home")
+def my_profile(request):
+    userid = request.user
+    profile = Profile.objects.filter(user = userid).first()
+    if request.method == 'POST':
+        if request.POST.get('editFields'):
+            newfname = request.POST.get("fnamespace", profile.user.first_name)
+            newlname = request.POST.get("lnamespace", profile.user.last_name)
+            newage = request.POST.get("agespace", profile.age)
+            newbio = request.POST.get("biospace", profile.bio)
+            #Handle age and bio errors here
+            profile.age = newage
+            profile.bio = newbio
+            userid.first_name = newfname
+            userid.last_name = newlname
+        elif request.POST.get('uploadButton'):
+            profile.photo = request.FILES['myfile']
+        userid.save()
+        profile.save()
+        return render(request, 'pages/my_profile.html', 
+                        {'title': (profile.user.first_name + ' Profile Page'),
+                        'profile' : profile,})
+    else:
+        return render(request, 'pages/my_profile.html',
+                    {'title': (profile.user.first_name + ' Profile Page'),
                     'profile' : profile,})
 
 def dataviewer(request):
