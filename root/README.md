@@ -16,6 +16,6 @@ A webapp to connect lonely with other lonely people.
  3. Select **Add Virtual Environment**. Make sure the location is `env/`.
  4. Click **Create** and that should be all.
 
-A virtual environment should be generated according to the `requirement.txt` file. Make sure to update the `requirements.txt` by right clicking on `env` and selecting **Generate requirements.txt**
+A virtual environment should be generated according to the `requirements.txt` file. Make sure to update the `requirements.txt` by right clicking on env and selecting **Generate requirements.txt**.
 
-For those not using Visual Studio use the command `pip install -r requirements.txt`. Use `pip freeze > requirements.txt` to generate the `requirements.txt`
+For those not using Visual Studio use the command `pip install -r requirements.txt` to set up your virtual environment and `pip freeze > requirements.txt` to generate the requirements file.
