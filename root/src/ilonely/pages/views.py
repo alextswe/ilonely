@@ -217,12 +217,13 @@ def my_profile(request):
             newage = request.POST.get("agespace")
             newbio = request.POST.get("biospace")
             #Handle age and bio errors here
-            profile.age = newage
+            if newage.isdigit() :
+                profile.age = newage
             profile.bio = newbio
             userid.first_name = newfname
             userid.last_name = newlname
         elif request.POST.get('uploadButton'):
-            profile.photo = request.FILES['myfile']
+            profile.photo = request.FILES['myfile'] 
         userid.save()
         profile.save()
         return render(request, 'pages/my_profile.html', 
