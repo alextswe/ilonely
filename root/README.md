@@ -4,7 +4,7 @@ A webapp to connect lonely people with other lonely people.
 ## Current Sprint Goals:
  + Registration
    + Users must input a unique **username** and **email** to register.
-   + User must also input first name, last name, and age
+   + User must also input **first name**, **last name**, and **age**
    + Password must be at least 8 characters and cannot be entirely numeric
    + Emails users upon successful registration
  + Secure Login
