@@ -9,6 +9,8 @@ import django.contrib.auth.views
 import pages.views
 # enables admin site
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 admin.autodiscover()
 
 urlpatterns = [
@@ -26,4 +28,4 @@ urlpatterns = [
     url(r'^my_profile/$', pages.views.my_profile, name='my_profile'),
     url(r'^dataviewer$', pages.views.dataviewer, name='dataviewer'),
     url(r'^admin/', admin.site.urls), # admin site url
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

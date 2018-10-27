@@ -11,7 +11,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField()
     age = models.PositiveIntegerField()
-    photo = models.ImageField(upload_to="profile_photo/", null=True, blank=True)
+    photo = models.ImageField(upload_to="profile_photos/", null=True)
     location = models.CharField(max_length=150, blank=True, default='') #of the form: Riverside, CA
 
     def __str__(self):

@@ -58,7 +58,9 @@
   <ItemGroup>
     <Folder Include="ilonely\" />
     <Folder Include="pages\" />
+    <Folder Include="pages\media\profile_photos\" />
     <Folder Include="pages\migrations\" />
+    <Folder Include="pages\media\" />
     <Folder Include="pages\static\" />
     <Folder Include="pages\static\css\" />
     <Folder Include="pages\static\css\img\" />
@@ -72,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="gitignore.txt" />
+    <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\static\css\.DS_Store" />
     <Content Include="pages\static\css\base.css" />
     <Content Include="pages\static\css\bootstrap-grid.css" />

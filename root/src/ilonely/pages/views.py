@@ -182,29 +182,31 @@ def view_nearby(request):
 @login_required(login_url="home")
 def public_profile(request, userid):
     if request.method == 'POST':
+        me = User.objects.get(pk = request.user.id)
         if request.POST.get('followUser'):
-            followUser = request.POST['followUser']
-            f = Follow.objects.filter(userFollowing=request.user.id, user=followUser)
-            if f is None: 
-                f = Follow(userFollowing=request.user.id, user=followUser, isRequest=True)
+            followUser = User.objects.get(pk = request.POST['followUser'])           
+            try:
+                f = Follow.objects.get(userFollowing=me, user=followUser)
+                f.delete()
+            except Follow.DoesNotExist:
+                f = Follow(userFollowing=me, user=followUser, isRequest=True)
                 f.save()
-            else:
-                f.delete() #already following so unfollow
         elif request.POST.get('messageUser'):
             return redirect('Not implemented')
         elif request.POST.get('blockUser'):
-            blockUser = request.POST['blockUser']
-            b = Block.objects.filter(userBlocking=request.user.id, user=blockUser)
-            if b is None:
-                b = Block(userBlocking=request.user.id, user_home_view=blockUser)
-                b.save()
-            else: #already blocking user so unblock
-                b.delete()       
-    else:
-        profile = Profile.objects.filter(user = userid).first()
-        return render(request, 'pages/public_profile.html', 
-                    {'title': (profile.user.first_name + ' ' + profile.user.last_name), 
-                    'profile' : profile,})
+            blockUser = User.objects.get(pk = request.POST['blockUser'])
+            try:
+                b = Block.objects.get(userBlocking=me, user=blockUser)
+                b.delete()
+            except Block.DoesNotExist:
+                b = Block(userBlocking=me, user=blockUser)
+                b.save()     
+    profile = Profile.objects.filter(user = userid).first()
+    following = Follow.objects.filter(userFollowing=User.objects.get(pk = request.user.id), user=User.objects.get(pk = userid)).exists()
+    blocking = Block.objects.filter(userBlocking=User.objects.get(pk = request.user.id), user=User.objects.get(pk = userid)).exists()
+    return render(request, 'pages/public_profile.html', 
+                {'title': (profile.user.first_name + ' ' + profile.user.last_name), 
+                'profile' : profile,'following' : following, 'blocking' : blocking})
 
 @login_required(login_url="home")
 def my_profile(request):
