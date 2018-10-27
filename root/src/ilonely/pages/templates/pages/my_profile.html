@@ -1,0 +1,28 @@
+{% extends "pages/base.html" %}
+  
+{% block content %}
+    {% if profile.image %}
+        <img src="{{profile.photo.url}}" />
+    {% endif %}
+    
+    <div style="text-align:center;padding-bottom:10px;">
+        <form method="post"> 
+            {% csrf_token %}
+            <div style="text-align:center;padding-bottom:10px;">{{profile.user.first_name}}&nbsp;{{profile.user.last_name}}</div>
+            <div style="text-align:center;padding-bottom:10px;">
+                First name: <input type="text" name="fnamespace" value= {{profile.user.first_name}}
+            </div>
+            <div style="text-align:center;padding-bottom:10px;">
+                Last name: <input type="text" name="lnamespace" value= {{profile.user.last_name}}
+            </div>
+            <div style="text-align:center;">Age: <input type="text" name="agespace" value= {{profile.age}} ></div> <br>
+            <div style="text-align:center;">
+                Bio: <textarea name="biospace" maxlength="500" rows="4" cols="50">{{profile.bio}}</textarea>
+            </div>
+            <input type="submit" name ="editFields" value="Submit">
+        </form>
+    </div>
+    <p><a href={% url 'user_home' %}>Go Back</a></p>
+{% endblock %}
+
+

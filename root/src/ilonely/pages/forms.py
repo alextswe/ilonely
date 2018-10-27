@@ -1,4 +1,5 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from pages.models import Document
 from django.contrib.auth.models import User
 from django import forms
 from pages.models import Profile
@@ -68,3 +69,8 @@ class ProfileForm(forms.ModelForm):
             raise ValidationError(_(""), code='ageError')
 
         return age
+
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ('description', 'document', )

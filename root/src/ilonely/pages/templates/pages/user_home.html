@@ -11,6 +11,7 @@
         <h2>You do not have access to this page.</h2>
     {% endif %}
     <!-- Links -->
+    <p><a href={% url 'my_profile' %}>My Profile</a></p>
     <p><a href={% url 'view_following' %}>View Following</a></p>
     <p><a href={% url 'view_nearby' %}>View Nearby</a></p>
     <!-- Creates a logout button that takes current user to home page -->
