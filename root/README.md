@@ -4,6 +4,8 @@ A webapp to connect lonely with other lonely people.
 ## Current Sprint Goals:
  + Registration
    + Users must input a unique **username** and **email** to register.
+   + User must also input first name, last name, and age
+   + Password must be at least 8 characters and cannot be entirely numeric
    + Emails users upon successful registration
  + Secure Login
  + Change/Update Profile
@@ -14,4 +16,6 @@ A webapp to connect lonely with other lonely people.
  3. Select **Add Virtual Environment**. Make sure the location is `env/`.
  4. Click **Create** and that should be all.
 
-A virtual environment should be generated according to the `requirement.txt` file
+A virtual environment should be generated according to the `requirement.txt` file. Make sure to update the `requirements.txt` by right clicking on `env` and selecting **Generate requirements.txt**
+
+For those not using Visual Studio use the command `pip install -r requirements.txt`. Use `pip freeze > requirements.txt` to generate the `requirements.txt`
