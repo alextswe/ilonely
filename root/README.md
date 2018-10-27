@@ -1,5 +1,5 @@
 # iLonely
-A webapp to connect lonely with other lonely people.
+A webapp to connect lonely people with other lonely people.
 
 ## Current Sprint Goals:
  + Registration
