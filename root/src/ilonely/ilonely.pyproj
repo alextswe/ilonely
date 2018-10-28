@@ -104,6 +104,7 @@
     <Content Include="pages\static\js\bootstrap.js.map" />
     <Content Include="pages\static\js\bootstrap.min.js" />
     <Content Include="pages\static\js\bootstrap.min.js.map" />
+    <Content Include="pages\static\js\geo.js" />
     <Content Include="pages\static\js\jquery-3.3.1.min.js" />
     <Content Include="pages\static\js\sidebar.js">
       <SubType>Code</SubType>

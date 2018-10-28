@@ -1,6 +1,16 @@
 ﻿{% extends "pages/base.html" %}
 
 {% block content %}
+    <head>
+        {% load static %}
+        <script type="text/javascript" src="{% static 'js/geo.js'%}"></script>
+    </head>
+
+    <p style="padding-left:20px;padding-top:20px">
+        <button onclick="getLocation()" name="setLocation">Find who's nearby!</button>
+    </p>
+    <div id="location" style="padding-left:20px;"></div>
+
     <h2 style="padding-left:10px;">See who is near you!</h2>
     <form action="{% url 'view_nearby' %}" method="post"> {% csrf_token %}
     <ul class="list-group list-group-flush">
