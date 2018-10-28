@@ -151,6 +151,23 @@ def success(request):
 def user_home_view(request):
     return render(request,'pages/user_home.html', {'title':'User Home Page'})
 
+# Prevents anyone from accessing this page unless they are logged in to their account
+@login_required(login_url="home")
+def notifications_view(request):
+    me = User.objects.get(pk=request.user.id)
+    # Message Notifications:
+    # ---Search for all pending message requests 
+    # ---   and load profiles associated with them
+
+    # Follow Notifications:
+    # ---Search for all pending follow requests 
+    # ---   and load profiles associated with them
+    return render(request, 'pages/notifications.html', 
+                    {   'title':'Notifications',
+                        
+                     }
+                  )
+
 @login_required(login_url="home")
 def view_following(request):
     if request.method == 'POST':
