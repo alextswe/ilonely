@@ -1,0 +1,17 @@
+﻿{% extends "pages/base.html" %}
+
+{% block content %}
+    <h2 style="padding-left:10px;">Follow Requests</h2>
+    <form method="post"> 
+        {% csrf_token %}
+    
+    </form>
+    <b>
+    <b>
+    <h2 style="padding-left:10px;">Message Requests</h2>
+    <form method="post"> 
+        {% csrf_token %}
+    
+    </form>
+    <p><a href={% url 'user_home' %}>Go Back</a></p>
+{% endblock %}

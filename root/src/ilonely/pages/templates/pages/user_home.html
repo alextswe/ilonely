@@ -1,15 +1,16 @@
 ﻿{% extends "pages/base.html" %}
 
 {% block content %}
-    <h1>User Profile Page</h1>
+    <h1 style="padding-left:10px;">User Profile Page</h1>
     {% if user.is_authenticated %}
-        <h2>Welcome {{ request.user.username }}!</h2>
+        <h2 style="padding-left:10px;">Welcome {{ request.user.username }}!</h2>
     {% else %}
         <!-- Unauthorized users should not have access to here -->
-        <h2>You do not have access to this page.</h2>
+        <h2 style="padding-left:10px;">You do not have access to this page.</h2>
     {% endif %}
     <!-- Links -->
     <p><a href={% url 'my_profile' %}>My Profile</a></p>
+    <p><a href={% url 'notifications' %}>Notifications</a></p>
     <p><a href={% url 'view_following' %}>View Following</a></p>
     <p><a href={% url 'view_nearby' %}>View Nearby</a></p>
 

@@ -151,6 +151,12 @@ def success(request):
 def user_home_view(request):
     return render(request,'pages/user_home.html', {'title':'User Home Page'})
 
+# Prevents anyone from accessing this page unless they are logged in to their account
+@login_required(login_url="home")
+def notifications_view(request):
+    return render(request, 'pages/notifications.html', 
+                    { 'title':'Notifications'})
+
 @login_required(login_url="home")
 def view_following(request):
     if request.method == 'POST':
