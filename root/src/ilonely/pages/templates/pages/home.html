@@ -12,6 +12,10 @@
     </div>
     <ul>
         <li><a href={% url 'register' %}>Register</a></li>
-        <li><a href={% url 'login' %}>Login</a></li>
+        {% if user.is_authenticated %}
+            <li><a href={% url 'user_home' %}>Login</a></li>
+        {% else %}
+            <li><a href={% url 'login' %}>Login</a></li>
+        {% endif %}
     </ul>
 {% endblock %}

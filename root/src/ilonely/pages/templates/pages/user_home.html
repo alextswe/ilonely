@@ -1,23 +1,22 @@
 ﻿{% extends "pages/base.html" %}
-<!-- FIXME: This page is for testing purposes -->
-<!-- FIXME: Please edit to feature proper content -->
 
 {% block content %}
-    <h1>FIXME: User Profile Page</h1>
+    <h1>User Profile Page</h1>
     {% if user.is_authenticated %}
         <h2>Welcome {{ request.user.username }}!</h2>
     {% else %}
         <!-- Unauthorized users should not have access to here -->
         <h2>You do not have access to this page.</h2>
     {% endif %}
+    <!-- Links -->
+    <p><a href={% url 'my_profile' %}>My Profile</a></p>
+    <p><a href={% url 'view_following' %}>View Following</a></p>
+    <p><a href={% url 'view_nearby' %}>View Nearby</a></p>
+
     <!-- Creates a logout button that takes current user to home page -->
     <form class="Logout-link" action="logout" method="post">
         {% csrf_token %}
         <button type="submit">Logout</button>
     </form>
-    <!-- Links -->
-    <p><a href={% url 'view_following' %}>View Following</a></p>
-    <p><a href={% url 'view_nearby' %}>View Nearby</a></p>
-    <p><a href={% url 'my_profile' %}>My Profile</a></p>
-    <p><a href={% url 'home' %}>Home</a></p>
+
 {% endblock %}
