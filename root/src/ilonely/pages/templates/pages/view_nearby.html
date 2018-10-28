@@ -8,9 +8,9 @@
         <li style="border: none;" class="list-group-item">            
             <button style="cursor:pointer;width:400px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{person.user.id}}">
                 {% if person.photo %}
-                    <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
+                    <img style="border-radius: 50%; width:50px; float:left;" src="../../{{person.photo.url}}" />
                 {% else %}
-                    <img style="border-radius: 50%; width:50px; float:left;" src="../../media/profile_photos/default.jpg" />
+                    <img style="border-radius: 50%; width:50px; float:left;" src="../../pages/media/profile_photos/default.jpg" />
                 {% endif %}
                 <p style="padding-left:15px;float:left;margin-top:10px;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p>
             </button>

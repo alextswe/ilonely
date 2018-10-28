@@ -10,7 +10,7 @@
                 {% if person.photo %}
                     <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
                 {% else %}
-                    <img style="border-radius: 50%; width:50px; float:left;" src="../../media/profile_photos/default.jpg" />
+                    <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
                 {% endif %}
                 <p style="padding-left:15px;float:left;margin-top:10px;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p>
             </button>
