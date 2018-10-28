@@ -8,16 +8,26 @@ from django.utils.translation import gettext as _
 
 class CustomUserCreationForm(UserCreationForm):
     # User fields
-    username = forms.CharField(label='Enter Username')
-    firstname = forms.CharField(label='Enter First Name')
-    lastname = forms.CharField(label='Enter Last Name')
-    email = forms.EmailField(label='Enter email')
-    password1 = forms.CharField(label='Enter password', widget=forms.PasswordInput)
+    username = forms.CharField(label='Username')
+    firstname = forms.CharField(label='First Name')
+    lastname = forms.CharField(label='Last Name')
+    email = forms.EmailField(label='Email', widget=forms.EmailInput)
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput)
+
+    # Profile fields
+    age = forms.IntegerField(label='Age')
 
     class Meta:
         model = User
-        fields = ('username', 'firstname', 'lastname', 'email', 'password1', 'password2',)
+        fields = ('username', 'firstname', 'lastname', 'age', 'email', 'password1', 'password2',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.Meta.fields:
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control'
+            })
 
     # Checks if username is taken
     def clean_username(self):
@@ -45,6 +55,18 @@ class CustomUserCreationForm(UserCreationForm):
 
         return password2
 
+    # Checks if age is over 18
+    def clean_age(self):
+        age = self.cleaned_data.get('age')
+
+        if age is None:
+            raise ValidationError(_("Age is required."), code='ageError')
+
+        if age < 18:
+            raise ValidationError(_("You must be over 18."), code='ageError')
+
+        return age
+
     def save(self, commit=True):
         user = User.objects.create_user(
             self.cleaned_data['username'],
@@ -57,6 +79,8 @@ class CustomUserCreationForm(UserCreationForm):
             user.save()
         return user
 
+# Retired
+'''
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
@@ -66,9 +90,10 @@ class ProfileForm(forms.ModelForm):
         age = self.cleaned_data.get('age')
 
         if age < 18:
-            raise ValidationError(_(""), code='ageError')
+            raise ValidationError(_("You must be over 18."), code='ageError')
 
         return age
+'''
 
 class DocumentForm(forms.ModelForm):
     class Meta:

@@ -5,13 +5,13 @@ from django.contrib.auth.signals import user_logged_in
 from django.contrib.gis.geoip2 import GeoIP2
 from pages.models import Profile
 
-# Profile is created when a user is created
+# Profile is created when after user is created
 @receiver(post_save, sender=User)
 def createProfile(sender, instance, created, **kwargs):
     # Do not create profile for superuser or staff
     if not instance.is_superuser and not instance.is_staff:
         if created:
-            profile = Profile.objects.create(user=instance)
+            profile = Profile.objects.create(user=instance, age=18)
             profile.save()
 
 # Location is set/updated whenever the sender logs in

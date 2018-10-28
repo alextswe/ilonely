@@ -8,7 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import CustomUserCreationForm, ProfileForm
+from .forms import CustomUserCreationForm
 from pages.models import Profile, Follow, Block
 import random,string
 
@@ -28,14 +28,14 @@ def register(request):
     assert isinstance(request, HttpRequest)
     if request.method == 'POST':
         form = CustomUserCreationForm(data=request.POST)
-        pform = ProfileForm(data=request.POST)
 
         # Automatically signs the user in
-        if form.is_valid() and pform.is_valid():
+        if form.is_valid():
             user = form.save()
-            profile = user.profile
-            profile.age = pform.cleaned_data.get('age')
-            profile.save()
+            user.profile.age = form.cleaned_data.get('age')
+            print(form.cleaned_data.get('age'))
+            user.profile.save()
+            user.save()
             auth_login(request, user)
             user.email_user(
                 subject='Welcome to iLonely!',
@@ -46,7 +46,6 @@ def register(request):
             messages.error(request, 'Account not created successfully.')
     else:
         form = CustomUserCreationForm()
-        pform = ProfileForm()
 
     return render(
         request,
@@ -54,7 +53,6 @@ def register(request):
         {
             'title':'Registration',
             'form':form,
-            'pform':pform,
         }
     )
 
