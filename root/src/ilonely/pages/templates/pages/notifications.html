@@ -16,7 +16,7 @@
             <!-- Displays message requests awaiting your confirmation: YELLOW -->
             {% for person in user_message_requests %}
                 <li style="border: none; " class="list-group-item"> 
-                    <button style="cursor:pointer;width:400px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#ffa500;box-shadow: 3px 3px 3px #cecece;" type="submit" name="accept_request" value="{{person.user.id}}">
+                    <button style="cursor:pointer;width:400px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#ffa500;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{person.user.id}}">
                         {% if person.photo %}
                             <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
                         {% else %}
@@ -25,10 +25,10 @@
                         <p style="padding-left:15px;float:left;margin-top:10px;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p>
                     </button>
                     <!-- FIXME: Align buttons better -->
-                    <button type="submit" class="btn btn-success disabled" style="width:200px;padding-top:5px;padding-bottom:5px;padding-left:20px;" name="acceptMsgRequest" value="{{profile.user.id}}">
+                    <button style="cursor:pointer;width:200px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#4cff00;box-shadow: 3px 3px 3px #cecece;" type="submit" name="acceptMsg" value="{{person.user.id}}">
                         &#x2713;
                     </button>
-                    <button type="submit" class="btn btn-danger disabled" style="width:200px;padding-top:5px;padding-bottom:5px;padding-left:20px;" name="declineMsgRequest" value="{{profile.user.id}}">
+                    <button style="cursor:pointer;width:200px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#ff0000;box-shadow: 3px 3px 3px #cecece;" type="submit" name="declineMsg" value="{{person.user.id}}">
                         &#x2717;
                     </button>   
                 </li>

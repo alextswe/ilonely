@@ -152,21 +152,17 @@ def user_home_view(request):
 # Prevents anyone from accessing this page unless they are logged in to their account
 @login_required(login_url="home")
 def notifications_view(request):
-    if request.method == 'POST':
-        viewUser = request.POST['viewUser']
-        return redirect(public_profile, userid = viewUser)
-    else:
-        me = User.objects.get(pk=request.user.id)
-        # Message Notifications:
+    def get_my_msg_requests(me):
         # --- Message requests "I" have sent
         try:
             myRequests = Message.objects.filter(author=me, isRequest=True)
             threadSet = Thread.objects.filter(pk__in = myRequests.values_list('thread')) 
             requestSet = User.objects.filter(pk__in = threadSet.values_list('userTwo'))
             myMsgRequestProfiles = list(Profile.objects.filter(user__in = requestSet))
-        except Message.DoesNotExist:
+        except ObjectDoesNotExist:
             myMsgRequestProfiles = None
-
+        return myMsgRequestProfiles
+    def get_user_msg_requests(me):
         # --- Message requests users have sent "me"
         try:
             threadSet = Thread.objects.filter(userTwo=me)
@@ -175,6 +171,41 @@ def notifications_view(request):
             userRequestProfiles = list(Profile.objects.filter(user__in = requestSet))
         except ObjectDoesNotExist:
             userRequestProfiles = None
+        return userRequestProfiles
+    def update_user_msg_requests(me, user, isAccepted):
+        try:
+            threadSet = Thread.objects.get(userOne=user, userTwo=me)
+            userRequest = Message.objects.get(thread = threadSet, isRequest=True)
+            if isAccepted:
+                userRequest.isRequest = False
+                userRequest.save()
+            else:
+                userRequest.delete()
+        except ObjectDoesNotExist:
+            # Do nothing
+            threadSet = None
+        return
+    if request.method == 'POST':
+        if request.POST.get('viewUser'):
+            viewUser = request.POST['viewUser']
+            return redirect(public_profile, userid = viewUser)
+        #acceptUser = request.POST.get('acceptMsg', None)
+        elif request.POST.get('acceptMsg'):
+            user = request.POST['acceptMsg']
+            update_user_msg_requests(User.objects.get(pk=request.user.id), User.objects.get(pk = user), True)
+            print("Accept")
+        elif request.POST.get('declineMsg'):
+            user = request.POST['acceptMsg']
+            update_user_msg_requests(User.objects.get(pk=request.user.id), User.objects.get(pk = user), False)
+            print("Decline")
+        
+        return redirect('notifications')
+    else:
+        me = User.objects.get(pk=request.user.id)
+        # Message Notifications:
+        
+        myMsgRequestProfiles = get_my_msg_requests(me)
+        userRequestProfiles = get_user_msg_requests(me)
 
         # FIXME: Follow Notifications:
         # ---Search for all pending follow requests 
@@ -229,22 +260,36 @@ def public_profile(request, userid):
         elif request.POST.get('messageUser'):
             # Find the user we want to message in the database
             messageUser = User.objects.get(pk = request.POST['messageUser'])
+
             try:
-                # Check if there is a thread indicating the users are already messaging
-                m1 = Thread.objects.get(userOne=me, userTwo=messageUser)
-                m1.delete()
-            except Thread.DoesNotExist:
+                # If userOne = me, I sent a message request
+                m = Thread.objects.get(userOne=me, userTwo=messageUser)
                 try:
-                    m2 = Thread.objects.get(userOne=messageUser, userTwo=me)
-                    m2.delete()
+                    userRequest = Message.objects.get(thread = m, isRequest=True)
+                    # If the message has not been confirmed, I can remove the request
+                    m.delete()
+                except Message.DoesNotExist:
+                    # If the message has been confirmed, go to message page so I can talk
+                    redirect('Has Not been implemented')
+            except Thread.DoesNotExist:
+                # If userTwo = me, I receieved a message request
+                try:
+                    m = Thread.objects.get(userOne=messageUser, userTwo=me)
+                    try:
+                        userRequest = Message.objects.get(thread = m, isRequest=True)
+                        # If the message has not been confirmed, go to notifications page to accept/decline
+                        redirect('notifications')
+                    except Message.DoesNotExist:
+                        # If the message has been confirmed, go to message page so I can talk
+                        redirect('Has Not been implemented')
                 except Thread.DoesNotExist:
-                    # A thread does not exist, so create a new thread between the users
-                    m2 = Thread(userOne=me, userTwo=messageUser)
-                    m2.save()
+                    # A thread does not exist between the users, so create a new thread
+                    m = Thread(userOne=me, userTwo=messageUser)
+                    m.save()
                     # Sends message request to a user
-                    newMessage = Message(thread=m2, author=me, isRequest=True)
-                    newMessage.save()
-                
+                    newMessage = Message(author=me, thread=m, isRequest=True)
+                    newMessage.save()        
+        
             #return redirect('Not implemented')
         elif request.POST.get('blockUser'):
             blockUser = User.objects.get(pk = request.POST['blockUser'])
