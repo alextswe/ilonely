@@ -1,21 +1,46 @@
 ﻿{% extends "pages/base.html" %}
 
 {% block content %}
-    <h2 style="padding-left:10px;">Follow Requests</h2>
-    <form method="post"> 
+    <form action="{% url 'notifications' %}" method="post"> 
         {% csrf_token %}
+        <!-- Follow Request -->
+        <h2 style="padding-left:10px;">Follow Requests</h2>
         <i>Fixme: Request Here</i><br>
         <i>Fixme: Request Here</i><br>
         <i>Fixme: Request Here</i><br>
-    </form>
-    <br>
-    <br>
-    <h2 style="padding-left:10px;">Message Requests</h2>
-    <form method="post"> 
-        {% csrf_token %}
-        <i>Fixme: Request Here</i><br>
-        <i>Fixme: Request Here</i><br>
-        <i>Fixme: Request Here</i><br>
+        <br>
+        <br>
+        <!-- Message Request -->
+        <h2 style="padding-left:10px;">Message Requests</h2>
+            <ul class="list-group list-group-flush">
+            <!-- Displays message requests awaiting your confirmation: YELLOW -->
+            {% for person in user_message_requests %}
+                <li style="border: none; " class="list-group-item"> 
+                    <button style="cursor:pointer;width:400px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#ffa500;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{person.user.id}}">
+                        {% if person.photo %}
+                            <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
+                        {% else %}
+                            <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
+                        {% endif %}
+                        <p style="padding-left:15px;float:left;margin-top:10px;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p>
+                    </button>
+                </li>
+            {% endfor %}
+            <!-- Displays your pending message requests: GRAY -->
+            {% for person in my_message_requests %}
+                <li style="border: none; " class="list-group-item"> 
+                    <button style="cursor:pointer;width:400px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{person.user.id}}">
+                        {% if person.photo %}
+                            <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
+                        {% else %}
+                            <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
+                        {% endif %}
+                        <p style="padding-left:15px;float:left;margin-top:10px;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p>
+                    </button>
+                </li>
+            {% endfor %}
+            
+            </ul>
     </form>
     <br>
     <br>

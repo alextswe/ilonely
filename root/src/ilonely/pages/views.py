@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import CustomUserCreationForm
-from pages.models import Profile, Follow, Block
+from pages.models import Profile, Follow, Block, Thread, Message
 import random,string
 
 # Create your views here.
@@ -152,17 +152,37 @@ def user_home_view(request):
 # Prevents anyone from accessing this page unless they are logged in to their account
 @login_required(login_url="home")
 def notifications_view(request):
-    me = User.objects.get(pk=request.user.id)
-    # Message Notifications:
-    # ---Search for all pending message requests 
-    # ---   and load profiles associated with them
+    if request.method == 'POST':
+        viewUser = request.POST['viewUser']
+        return redirect(public_profile, userid = viewUser)
+    else:
+        me = User.objects.get(pk=request.user.id)
+        # Message Notifications:
+        # --- Message requests "I" have sent
+        try:
+            myRequests = Message.objects.filter(author=me, isRequest=True)
+            threadSet = Thread.objects.filter(pk__in = myRequests.values_list('thread')) 
+            requestSet = User.objects.filter(pk__in = threadSet.values_list('userTwo'))
+            myMsgRequestProfiles = list(Profile.objects.filter(user__in = requestSet))
+        except Message.DoesNotExist:
+            myMsgRequestProfiles = None
 
-    # Follow Notifications:
-    # ---Search for all pending follow requests 
-    # ---   and load profiles associated with them
+        # --- Message requests users have sent "me"
+        try:
+            threadSet = Thread.objects.filter(userTwo=me)
+            userRequests = Message.objects.filter(thread__in = threadSet, isRequest=True)
+            requestSet = User.objects.filter(pk__in = userRequests.values_list('author'))
+            userRequestProfiles = list(Profile.objects.filter(user__in = requestSet))
+        except ObjectDoesNotExist:
+            userRequestProfiles = None
+
+        # FIXME: Follow Notifications:
+        # ---Search for all pending follow requests 
+        # ---   and load profiles associated with them
     return render(request, 'pages/notifications.html', 
                     {   'title':'Notifications',
-                        
+                        'my_message_requests': myMsgRequestProfiles,
+                        'user_message_requests': userRequestProfiles,
                      }
                   )
 
@@ -207,7 +227,25 @@ def public_profile(request, userid):
                 f = Follow(userFollowing=me, user=followUser, isRequest=True)
                 f.save()
         elif request.POST.get('messageUser'):
-            return redirect('Not implemented')
+            # Find the user we want to message in the database
+            messageUser = User.objects.get(pk = request.POST['messageUser'])
+            try:
+                # Check if there is a thread indicating the users are already messaging
+                m1 = Thread.objects.get(userOne=me, userTwo=messageUser)
+                m1.delete()
+            except Thread.DoesNotExist:
+                try:
+                    m2 = Thread.objects.get(userOne=messageUser, userTwo=me)
+                    m2.delete()
+                except Thread.DoesNotExist:
+                    # A thread does not exist, so create a new thread between the users
+                    m2 = Thread(userOne=me, userTwo=messageUser)
+                    m2.save()
+                    # Sends message request to a user
+                    newMessage = Message(thread=m2, author=me, isRequest=True)
+                    newMessage.save()
+                
+            #return redirect('Not implemented')
         elif request.POST.get('blockUser'):
             blockUser = User.objects.get(pk = request.POST['blockUser'])
             try:
@@ -219,9 +257,24 @@ def public_profile(request, userid):
     profile = Profile.objects.filter(user = userid).first()
     following = Follow.objects.filter(userFollowing=User.objects.get(pk = request.user.id), user=User.objects.get(pk = userid)).exists()
     blocking = Block.objects.filter(userBlocking=User.objects.get(pk = request.user.id), user=User.objects.get(pk = userid)).exists()
+    try:
+        myRequests = Message.objects.filter(author=User.objects.get(pk = request.user.id), isRequest=True)
+        threadSet = Thread.objects.filter(pk__in = myRequests.values_list('thread')) 
+        requestSet = User.objects.filter(pk__in = threadSet.values_list('userTwo'))
+        messaging = None
+        for user in requestSet:
+            if user == User.objects.get(pk = userid):
+                messaging = True
+    except Message.DoesNotExist:
+        messaging = None
     return render(request, 'pages/public_profile.html', 
                 {'title': (profile.user.first_name + ' ' + profile.user.last_name), 
-                'profile' : profile,'following' : following, 'blocking' : blocking})
+                'profile' : profile,
+                'following' : following,
+                'blocking' : blocking,
+                'messaging' : messaging,
+                }
+                  )
 
 @login_required(login_url="home")
 def my_profile(request):
