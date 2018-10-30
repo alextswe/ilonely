@@ -189,15 +189,12 @@ def notifications_view(request):
         if request.POST.get('viewUser'):
             viewUser = request.POST['viewUser']
             return redirect(public_profile, userid = viewUser)
-        #acceptUser = request.POST.get('acceptMsg', None)
         elif request.POST.get('acceptMsg'):
             user = request.POST['acceptMsg']
             update_user_msg_requests(User.objects.get(pk=request.user.id), User.objects.get(pk = user), True)
-            print("Accept")
         elif request.POST.get('declineMsg'):
             user = request.POST['acceptMsg']
             update_user_msg_requests(User.objects.get(pk=request.user.id), User.objects.get(pk = user), False)
-            print("Decline")
         
         return redirect('notifications')
     else:
@@ -247,6 +244,32 @@ def view_nearby(request):
 
 @login_required(login_url="home")
 def public_profile(request, userid):
+    def is_msg_request(me, user):
+        try:
+            threadSet = Thread.objects.get(userOne=me, userTwo=user) 
+            myRequests = Message.objects.get(author=me, thread=threadSet, isRequest=True)
+            return True            
+        except ObjectDoesNotExist:
+            return False
+    def is_pending_approval(me, user):
+        try:
+            threadSet = Thread.objects.get(userOne=user, userTwo=me) 
+            myRequests = Message.objects.get(thread=threadSet, isRequest=True)
+            return True            
+        except ObjectDoesNotExist:
+            return False
+    def is_messagable(me, user):
+        try:
+            threadSet = Thread.objects.get(userOne=me, userTwo=user) 
+            myRequests = Message.objects.get(author=me, thread=threadSet, isRequest=False)
+            return True            
+        except ObjectDoesNotExist:
+            try:
+                threadSet = Thread.objects.get(userOne=user, userTwo=me) 
+                myRequests = Message.objects.get(thread=threadSet, isRequest=False)
+                return True            
+            except ObjectDoesNotExist:
+                return False
     if request.method == 'POST':
         me = User.objects.get(pk = request.user.id)
         if request.POST.get('followUser'):
@@ -260,7 +283,7 @@ def public_profile(request, userid):
         elif request.POST.get('messageUser'):
             # Find the user we want to message in the database
             messageUser = User.objects.get(pk = request.POST['messageUser'])
-
+            
             try:
                 # If userOne = me, I sent a message request
                 m = Thread.objects.get(userOne=me, userTwo=messageUser)
@@ -269,8 +292,8 @@ def public_profile(request, userid):
                     # If the message has not been confirmed, I can remove the request
                     m.delete()
                 except Message.DoesNotExist:
-                    # If the message has been confirmed, go to message page so I can talk
-                    redirect('Has Not been implemented')
+                    # Fixme: If the message has been confirmed, go to message page so I can talk
+                    return redirect('Fixme: Create Message Page')
             except Thread.DoesNotExist:
                 # If userTwo = me, I receieved a message request
                 try:
@@ -278,10 +301,10 @@ def public_profile(request, userid):
                     try:
                         userRequest = Message.objects.get(thread = m, isRequest=True)
                         # If the message has not been confirmed, go to notifications page to accept/decline
-                        redirect('notifications')
+                        return redirect('notifications')
                     except Message.DoesNotExist:
                         # If the message has been confirmed, go to message page so I can talk
-                        redirect('Has Not been implemented')
+                        return redirect('Fixme: Create Message Page')
                 except Thread.DoesNotExist:
                     # A thread does not exist between the users, so create a new thread
                     m = Thread(userOne=me, userTwo=messageUser)
@@ -302,22 +325,18 @@ def public_profile(request, userid):
     profile = Profile.objects.filter(user = userid).first()
     following = Follow.objects.filter(userFollowing=User.objects.get(pk = request.user.id), user=User.objects.get(pk = userid)).exists()
     blocking = Block.objects.filter(userBlocking=User.objects.get(pk = request.user.id), user=User.objects.get(pk = userid)).exists()
-    try:
-        myRequests = Message.objects.filter(author=User.objects.get(pk = request.user.id), isRequest=True)
-        threadSet = Thread.objects.filter(pk__in = myRequests.values_list('thread')) 
-        requestSet = User.objects.filter(pk__in = threadSet.values_list('userTwo'))
-        messaging = None
-        for user in requestSet:
-            if user == User.objects.get(pk = userid):
-                messaging = True
-    except Message.DoesNotExist:
-        messaging = None
+
+    message_request = is_msg_request(User.objects.get(pk = request.user.id), User.objects.get(pk = userid))
+    pending_approval = is_pending_approval(User.objects.get(pk = request.user.id), User.objects.get(pk = userid))
+    messagable = is_messagable(User.objects.get(pk = request.user.id), User.objects.get(pk = userid))
     return render(request, 'pages/public_profile.html', 
                 {'title': (profile.user.first_name + ' ' + profile.user.last_name), 
                 'profile' : profile,
                 'following' : following,
                 'blocking' : blocking,
-                'messaging' : messaging,
+                'message_request' : message_request,
+                'pending_approval' : pending_approval,
+                'messagable': messagable,
                 }
                   )
 

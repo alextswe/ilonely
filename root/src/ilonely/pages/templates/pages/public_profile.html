@@ -21,8 +21,16 @@
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <button type="submit" class="{% if messaging %} btn btn-light {% else %} btn btn-success {% endif %}" style="width:100%;box-shadow: 3px 3px 3px #cecece;" name="messageUser" value="{{profile.user.id}}">
-                            {% if messaging %} Message Requested &#x2713; {% else %} Message {% endif %}
+                        <button type="submit" class="{% if message_request %} btn btn-light {% elif pending_approval or messagable %} btn btn-warning {% else %} btn btn-success {% endif %}" style="width:100%;box-shadow: 3px 3px 3px #cecece;" name="messageUser" value="{{profile.user.id}}">
+                            {% if message_request %} 
+                                Message Requested &#x2713; 
+                            {% elif pending_approval == True %} 
+                                Confirmation Pending 
+                            {% elif messagable == True %}
+                                Send Message
+                            {% else %}
+                                Message
+                            {% endif %}
                          </button>
                     </div>
                     <div class="col-5">
