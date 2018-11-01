@@ -35,15 +35,17 @@
     </div>
 
 <!-- Links -->
-<div class="row">
-  <div class="col-md-8">
-      <a href={% url 'forgot_username' %} class="btn btn-primary my-3 active" role="button">Forgot Username</a>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-8">
-      <a href={% url 'forgot_password' %} class="btn btn-primary my-3 active" role="button">Forgot Password</a>
-  </div>
+<div class="container; m-1">
+    <div class="row">
+      <div class="col-md-8">
+          <a href={% url 'forgot_username' %} class="btn btn-primary my-3 active" role="button">Forgot Username</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+          <a href={% url 'forgot_password' %} class="btn btn-primary my-3 active" role="button">Forgot Password</a>
+      </div>
+    </div>
 </div>
 
 {% endblock %}
