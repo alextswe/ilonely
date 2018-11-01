@@ -8,34 +8,44 @@
 
     <!-- Login page display -->
     <div class="mx-auto flex-shrink-0 p-2" style="width:300px">
+
         <div style="text-align:center;">
             <h2>Log In</h2>
             <p>Be less lonely, with ilonely.</p>
         </div>
 
-        <form method="post">
-            <div class="form-group">
-                {% csrf_token %}
-                Username:<br>
-                <input type="text" name="username" class="form-control"><br>
-                Password:<br>
-                <input type="password" name="password" class="form-control"><br>
-                <input type="submit" value="Submit" class="btn btn-primary my-3">
-            </div>
-        </form>
-
-        <!-- For printing out red error messages -->
+        <!-- For printing out error messages -->
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-danger" role="alert" style="display:inline-block">{{ message }}</div>
                 <br />
             {% endfor %}
         {% endif %}
+
+        <form method="post">
+            <div class="form-group">
+                {% csrf_token %}
+                Username:<br>
+                <input type="text" name="username" class="form-control" required><br>
+                Password:<br>
+                <input type="password" name="password" class="form-control" required><br>
+                <input type="submit" value="Submit" class="btn btn-primary my-3">
+            </div>
+        </form>
     </div>
 
-    <!-- Links -->
-    <p><a href={% url 'forgot_username' %}>Forgot Username</a></p>
-    <p><a href={% url 'forgot_password' %}>Forgot Password</a></p>
+<!-- Links -->
+<div class="row">
+  <div class="col-md-8">
+      <a href={% url 'forgot_username' %} class="btn btn-primary my-3 active" role="button">Forgot Username</a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-8">
+      <a href={% url 'forgot_password' %} class="btn btn-primary my-3 active" role="button">Forgot Password</a>
+  </div>
+</div>
+
 {% endblock %}
 
 <!-- Bootstrap JS -->

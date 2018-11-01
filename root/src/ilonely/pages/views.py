@@ -97,9 +97,9 @@ def forgot_username_view(request):
         if user is not None:
             user.email_user(
                 subject='iLonely: Account Username',
-                message = 'Did you forget your username? Don\'t worry, we didn\'t. Your username is: %s!' % user.get_username()
+                message = 'Did you forget your username? Don\'t worry, we didn\'t. Your username is: %s' % user.get_username()
             )
-        messages.success(request, "We sent an email to your account.");      
+        messages.success(request, "We sent an email with your username to your account.");      
     return render(
         request,
         'pages/forgot_username.html',
