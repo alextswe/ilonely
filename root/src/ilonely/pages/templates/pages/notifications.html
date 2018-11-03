@@ -5,6 +5,49 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     </head>
+    <style>
+
+    #profileButton {
+        cursor:pointer;
+        width:400px;
+        padding-top:5px;
+        padding-bottom:5px;
+        padding-left:20px;
+        border:none;
+        background-color:#ffa500;
+        box-shadow: 3px 3px 3px #cecece;
+    }
+
+    #acceptButton {
+        cursor:pointer;
+        border:none;
+        line-height: 25px;
+        width:40px;
+        background-color:#82dd5c;
+        font-size: 10pt;
+        font-family: tahoma;
+        margin-top: 15px;
+        margin-right: 20px;
+        position:absolute;
+        left:280px;
+        z-index:1;
+    }
+
+    #declineButton {
+        cursor:pointer;
+        border:none;
+        line-height: 25px;
+        width:40px;
+        background-color:#e41212;
+        font-size: 10pt;
+        font-family: tahoma;
+        margin-top: 15px;
+        margin-right: 20px;
+        position:absolute;
+        left:330px;
+        z-index:1;
+    }
+    </style>
 
     <!-- Login page display -->
     <div class="mx-auto flex-shrink-0 p-2" style="width:500px">
@@ -33,54 +76,56 @@
                 <br>
                 <!-- Message Request -->
                 <h2 style="padding-left:10px;">Message Requests</h2>
-                <ul class="list-group list-group-flush">
-                    <!-- Displays message requests awaiting your confirmation: YELLOW -->
-                    {% for person in user_message_requests %}
-                        <div class="row">
-                            <div class="column">
-                                <li style="border: none; " class="list-group-item"> 
-                                    <button style="cursor:pointer;width:400px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#ffa500;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{person.user.id}}">
+                    <div class=" container; m-3">
+                            <!-- Displays message requests awaiting your confirmation: YELLOW -->
+                            {% for person in user_message_requests %}
+                                <div class=" row">
+                                    <div class=" col-xs-6"> 
+                                        <button style="cursor:pointer;width:400px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#ffa500;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{person.user.id}}">
                                         {% if person.photo %}
                                             <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
                                         {% else %}
                                             <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
                                         {% endif %}
-                                        <p style="padding-left:15px;float:left;margin-top:10px;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p>
-                                    </button>
-                             
-                                </li>
-                            </div>
-                            <!-- FIXME: Align buttons better -->
-                            <div class="column">
-                                <button style="cursor:pointer;width:200px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#82dd5c;box-shadow: 3px 3px 3px #cecece;" type="submit" name="acceptMsg" value="{{person.user.id}}">
-                                    &#x2713;
-                                </button>
-                            </div>
-                            <div class="column">
-                                <button style="cursor:pointer;width:200px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#e41212;box-shadow: 3px 3px 3px #cecece;"; type="submit" name="declineMsg" value="{{person.user.id}}">
-                                    &#x2717;
-                                </button>
-                            </div>
-                        </div>
-                    {% endfor %}
-                    <!-- Displays your pending message requests: GRAY -->
-                    {% for person in my_message_requests %}
-                    <div class="row">
-                            <div class="column">
-                                <li style="border: none; " class="list-group-item"> 
-                                    <button style="cursor:pointer;width:400px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{person.user.id}}">
-                                        {% if person.photo %}
-                                            <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
-                                        {% else %}
-                                            <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
-                                        {% endif %}
-                                        <p style="padding-left:15px;float:left;margin-top:10px;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p>
-                                    </button>
-                                </li>
-                            </div>
+                                        <p style="padding-left:15px;float:left;margin-top:10px;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p> 
+                                        </button>
+                   
+                                    </div>
+                                    <!-- Accept/Decline Message Request buttons -->
+                                    <div class=" col-xs-6"> 
+                                        <button id ="acceptButton" type="submit" name="acceptMsg" value="{{person.user.id}}">
+                                            &#x2713;
+                                        </button>
+                                    </div>
+                                    <div class=" col-xs-6"> 
+                                        <button id ="declineButton" type="submit" name="declineMsg" value="{{person.user.id}}">
+                                            &#x2717;
+                                        </button>
+                                    </div>
+                                    <br>
+                                </div>
+                            {% endfor %}
+                            
                     </div>
-                    {% endfor %}
-                </ul>
+                    <!-- Displays your pending message requests: GRAY -->
+                    <ul class="list-group list-group-flush row">
+                        {% for person in my_message_requests %}
+                            <div class="row">
+                                    <div class="column">
+                                        <li style="border: none; " class="list-group-item"> 
+                                            <button style="cursor:pointer;width:400px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{person.user.id}}">
+                                                {% if person.photo %}
+                                                    <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
+                                                {% else %}
+                                                    <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
+                                                {% endif %}
+                                                <p style="padding-left:15px;float:left;margin-top:10px;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p>
+                                            </button>
+                                        </li>
+                                    </div>
+                            </div>
+                        {% endfor %}
+                    </ul>
                 <!-- Links -->
                 <div class="container; m-1">
                     <a href={% url 'user_home' %} class="btn btn-primary my-3 active" role="button">Go Back</a>
