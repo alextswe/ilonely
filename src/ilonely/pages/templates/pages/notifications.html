@@ -1,0 +1,96 @@
+﻿{% extends "pages/base.html"%}
+
+{% block content %}
+    <head>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    </head>
+
+    <!-- Login page display -->
+    <div class="mx-auto flex-shrink-0 p-2" style="width:500px">
+
+        <div style="text-align:center;">
+            <h2>Notifications</h2>
+        </div>
+
+        <!-- For printing out error messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert" style="display:inline-block">{{ message }}</div>
+                <br />
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <form action="{% url 'notifications' %}" method="post">
+            <div class="form-group">
+                {% csrf_token %}
+                <!-- Follow Request -->
+                <h2 style="padding-left:10px;">Follow Requests</h2>
+                <!-- FIXME: Insert list of pending follow requests-->
+
+                <br>
+                <br>
+                <!-- Message Request -->
+                <h2 style="padding-left:10px;">Message Requests</h2>
+                <ul class="list-group list-group-flush">
+                    <!-- Displays message requests awaiting your confirmation: YELLOW -->
+                    {% for person in user_message_requests %}
+                        <div class="row">
+                            <div class="column">
+                                <li style="border: none; " class="list-group-item"> 
+                                    <button style="cursor:pointer;width:400px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#ffa500;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{person.user.id}}">
+                                        {% if person.photo %}
+                                            <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
+                                        {% else %}
+                                            <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
+                                        {% endif %}
+                                        <p style="padding-left:15px;float:left;margin-top:10px;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p>
+                                    </button>
+                             
+                                </li>
+                            </div>
+                            <!-- FIXME: Align buttons better -->
+                            <div class="column">
+                                <button style="cursor:pointer;width:200px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#82dd5c;box-shadow: 3px 3px 3px #cecece;" type="submit" name="acceptMsg" value="{{person.user.id}}">
+                                    &#x2713;
+                                </button>
+                            </div>
+                            <div class="column">
+                                <button style="cursor:pointer;width:200px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#e41212;box-shadow: 3px 3px 3px #cecece;"; type="submit" name="declineMsg" value="{{person.user.id}}">
+                                    &#x2717;
+                                </button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <!-- Displays your pending message requests: GRAY -->
+                    {% for person in my_message_requests %}
+                    <div class="row">
+                            <div class="column">
+                                <li style="border: none; " class="list-group-item"> 
+                                    <button style="cursor:pointer;width:400px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{person.user.id}}">
+                                        {% if person.photo %}
+                                            <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
+                                        {% else %}
+                                            <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
+                                        {% endif %}
+                                        <p style="padding-left:15px;float:left;margin-top:10px;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p>
+                                    </button>
+                                </li>
+                            </div>
+                    </div>
+                    {% endfor %}
+                </ul>
+                <!-- Links -->
+                <div class="container; m-1">
+                    <a href={% url 'user_home' %} class="btn btn-primary my-3 active" role="button">Go Back</a>
+                </div>
+            </div>
+        </form>
+
+{% endblock %}
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
