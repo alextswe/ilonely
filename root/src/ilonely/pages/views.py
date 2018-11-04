@@ -193,7 +193,7 @@ def notifications_view(request):
             user = request.POST['acceptMsg']
             update_user_msg_requests(User.objects.get(pk=request.user.id), User.objects.get(pk = user), True)
         elif request.POST.get('declineMsg'):
-            user = request.POST['acceptMsg']
+            user = request.POST['declineMsg']
             update_user_msg_requests(User.objects.get(pk=request.user.id), User.objects.get(pk = user), False)
         
         return redirect('notifications')

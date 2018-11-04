@@ -21,7 +21,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <button type="submit" class="{% if message_request %} btn btn-light {% elif pending_approval or messagable %} btn btn-warning {% else %} btn btn-success {% endif %}" style="width:100%;box-shadow: 3px 3px 3px #cecece;" name="messageUser" value="{{profile.user.id}}">
+                        <button type="submit" class="{% if message_request %} btn btn-light {% elif pending_approval %} btn btn-warning {% else %} btn btn-success {% endif %}" style="width:100%;box-shadow: 3px 3px 3px #cecece;" name="messageUser" value="{{profile.user.id}}">
                             {% if message_request %} 
                                 Message Requested &#x2713; 
                             {% elif pending_approval == True %} 
