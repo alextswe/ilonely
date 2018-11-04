@@ -18,12 +18,12 @@ class Profile(models.Model):
         return '%s\'s Profile' % self.user.get_username()
 
 class Post(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE) #apparently cascade delete happens automatically?
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True) #apparently cascade delete happens automatically?
     postContent = models.TextField()
     datePosted = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return '%s\'s post - %s' % (self.user.get_username(), self.datePosted.strftime("%x %X"))
+        return '%s\'s post - %s' % (self.profile.user.get_username(), self.datePosted.strftime("%x %X"))
 
 class Follow(models.Model):
     userFollowing = models.ForeignKey(User, on_delete=models.PROTECT, related_name="userFollowing")

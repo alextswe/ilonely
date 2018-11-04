@@ -1,0 +1,158 @@
+﻿{% extends "pages/base.html" %}
+
+{% block content %}
+    <div class="container-fluid" style="height:500px">
+        <div class="row" style="height:100%;">
+            <div class="col">
+            </div>
+            <div class="col-6">
+                <ul class="nav nav-pills nav-fill" role="tablist" id="feedTabs" style="padding-top:20px;">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" role="tab" id="nearby-tab" aria-controls="nearby" aria-selected="true" href="#nearby">Nearby</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" role="tab" id="following-tab" aria-controls="following" aria-selected="false" href="#following">Following</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" role="tab" id="personal-tab" aria-controls="personal" aria-selected="false" href="#personal">My Posts</a>
+                    </li>
+                </ul>
+                <div class="tab-content card" id="myTabContent">
+                    <div class="card-body tab-pane fade show active" style="height:400px;overflow-y:auto;" id="nearby" role="tabpanel" aria-labelledby="nearby-tab">
+                        <form action="{% url 'feed' %}" method="post"> {% csrf_token %}
+                            <ul class="list-group list-group-flush">
+                            {% for post in nearbyPosts %}
+                                <li style="border: none; " class="list-group-item"> 
+                                    <button style="cursor:pointer;width:100%;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{post.profile.user.id}}">
+                                        {% if person.photo %}
+                                            <img style="border-radius: 50%; width:50px; float:left;" src="{{post.profile.photo.url}}" />
+                                        {% else %}
+                                            <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
+                                        {% endif %}
+                                        <p style="padding-left:15px;float:left;margin-top:10px;">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</p>
+                                        <p style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
+                                        <br />
+                                        <hr class="my-4" style="width:80%;" />
+                                        <p>{{post.postContent}}</p>
+                                    </button>
+                                </li>
+                            {% endfor %}
+                            </ul> 
+                        </form>
+                    </div>
+                    <div class="card-body tab-pane fade" style="height:400px;overflow-y:auto;" id="following" role="tabpanel" aria-labelledby="following-tab">
+                        <form action="{% url 'feed' %}" method="post"> {% csrf_token %}
+                            <ul class="list-group list-group-flush">
+                            {% for post in followingPosts %}
+                                <li style="border: none; " class="list-group-item"> 
+                                    <button style="cursor:pointer;width:100%;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{post.profile.user.id}}">
+                                        {% if person.photo %}
+                                            <img style="border-radius: 50%; width:50px; float:left;" src="{{post.profile.photo.url}}" />
+                                        {% else %}
+                                            <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
+                                        {% endif %}
+                                        <p style="padding-left:15px;float:left;margin-top:10px;">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</p>
+                                        <p style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
+                                        <br />
+                                        <hr class="my-4" style="width:80%;" />
+                                        <p>{{post.postContent}}</p>
+                                    </button>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </form>
+                    </div>
+                    <div class="card-body tab-pane fade" style="height:400px;overflow-y:auto;" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                        <ul class="list-group list-group-flush">
+                        {% for post in personalPosts %}
+                            <li style="border: none; " class="list-group-item"> 
+                                <button style="cursor:pointer;float:left; width:95%;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{post.profile.user.id}}">
+                                    {% if person.photo %}
+                                        <img style="border-radius: 50%; width:50px; float:left;" src="{{post.profile.photo.url}}" />
+                                    {% else %}
+                                        <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
+                                    {% endif %}
+                                    <p style="padding-left:15px;float:left;margin-top:10px;">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</p>
+                                    <p style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
+                                    <br />
+                                    <hr class="my-4" style="width:80%;" />
+                                    <p>{{post.postContent}}</p>
+                                </button>
+                                <form action="{% url 'feed' %}" method="post"> {% csrf_token %}
+                                    <button style="float:left;width:5%;padding-top:5px;padding-bottom:5px;" class="btn btn-danger" type="submit" name="deletePost" value="{{post.id}}">
+                                        &#x2717;
+                                    </button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <!--code grabbed from: https://stackoverflow.com/questions/10523433/how-do-i-keep-the-current-tab-active-with-twitter-bootstrap-after-a-page-reload
+                being to used to maintain bootstrap tab position on page refresh -->
+                <script>
+                    $(function () {
+                        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                            // save the latest tab; use cookies if you like 'em better:
+                            localStorage.setItem('lastTab', $(this).attr('href'));
+                        });
+
+                        // go to the latest tab, if it exists:
+                        var lastTab = localStorage.getItem('lastTab');
+                        if (lastTab) {
+                            $('[href="' + lastTab + '"]').tab('show');
+                        }
+                    });
+                </script>
+
+                <button type="button" class="btn btn-primary" style="margin-top:20px;width:100%" data-toggle="modal" data-target="#postModal">
+                    Post to Feed
+                </button>              
+            </div>
+            <div class="col">
+                
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        $(function(){
+           $('postToFeed').on('submit', function(e){
+                e.preventDefault();
+                $.ajax({
+                    url: "/feed/",
+                    type: "POST",
+                    data: $("postToFeed").serialize(),
+                    success: function(data){ }
+                });
+           }); 
+        });
+    </script>
+    <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Post to feed</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="postToFeed" action="{% url 'feed' %}" method="post"> {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group shadow-textarea">
+                            <textarea id="postContent" name="postContent" style="width:100%; border-radius:.25rem; border:1px solid #ced4da; 
+                                      box-shadow:0px 2px 5px 0px rgba(0,0,0,0.16), 0px 2px 10px 0px rgba(0,0,0,0.12) !important;" 
+                                      placeholder="Enter post content here..." maxlength="300" rows="4" ></textarea>                       
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Post</button>                   
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <p><a href={% url 'user_home' %}>Go Back</a></p>
+{% endblock %}
