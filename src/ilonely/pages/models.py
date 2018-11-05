@@ -13,6 +13,8 @@ class Profile(models.Model):
     age = models.PositiveIntegerField()
     photo = models.ImageField(upload_to="profile_photos/", null=True)
     location = models.CharField(max_length=150, blank=True, default='') #of the form: Riverside, CA
+    latitude = models.FloatField(max_length=150, default=0.0)
+    longitude = models.FloatField(max_length=150, default=0.0)
 
     def __str__(self):
         return '%s\'s Profile' % self.user.get_username()

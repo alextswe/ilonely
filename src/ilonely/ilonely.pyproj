@@ -41,12 +41,15 @@
     <Compile Include="pages\forms.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="pages\migrations\__init__.py" />
+    <Compile Include="pages\geo.py" />
     <Compile Include="pages\models.py" />
     <Compile Include="pages\signals.py" />
     <Compile Include="pages\tests.py" />
     <Compile Include="pages\views.py" />
     <Compile Include="pages\__init__.py" />
+    <Compile Include="populate.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="user\admin.py" />
     <Compile Include="user\apps.py" />
     <Compile Include="user\migrations\__init__.py" />

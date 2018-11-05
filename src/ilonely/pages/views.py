@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import CustomUserCreationForm
 from pages.models import Profile, Follow, Block, Thread, Message, Post
+from pages.geo import getNearby
 import random,string
 
 # Create your views here.
@@ -239,7 +240,7 @@ def view_nearby(request):
         me = User.objects.get(pk=request.user.id)
         myProfile = Profile.objects.filter(user = me).first()
         #need to exclude blocked users
-        peopleNearMe = Profile.objects.filter(location = myProfile.location).exclude(user = me).all() #need to convert locations to lowercase
+        peopleNearMe = getNearby(request, 10)
         return render(request, 'pages/view_nearby.html', {'title':'Nearby', 'people' : peopleNearMe,})
 
 @login_required(login_url="home")
