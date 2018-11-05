@@ -136,6 +136,12 @@
     <Content Include="pages\templates\pages\login.html" />
     <Content Include="pages\templates\pages\my_profile.html" />
     <Content Include="pages\templates\pages\notifications.html" />
+    <Content Include="pages\templates\pages\password_reset_complete.html" />
+    <Content Include="pages\templates\pages\password_reset_confirm.html" />
+    <Content Include="pages\templates\pages\password_reset_done.html" />
+    <Content Include="pages\templates\pages\password_reset_email.html" />
+    <Content Include="pages\templates\pages\password_reset_subject.txt" />
+    <Content Include="pages\templates\pages\password_reset_form.html" />
     <Content Include="pages\templates\pages\public_profile.html" />
     <Content Include="pages\templates\pages\register.html" />
     <Content Include="pages\templates\pages\success.html">
