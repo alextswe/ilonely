@@ -129,7 +129,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="pages\templates\pages\base.html" />
-    <Content Include="pages\templates\pages\dataviewer.html" />
+    <Content Include="pages\templates\pages\feed.html" />
     <Content Include="pages\templates\pages\forgot_password.html" />
     <Content Include="pages\templates\pages\forgot_username.html" />
     <Content Include="pages\templates\pages\home.html" />

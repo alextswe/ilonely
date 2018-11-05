@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import CustomUserCreationForm
-from pages.models import Profile, Follow, Block, Thread, Message
+from pages.models import Profile, Follow, Block, Thread, Message, Post
 import random,string
 
 # Create your views here.
@@ -368,14 +368,31 @@ def my_profile(request):
                     {'title': (profile.user.first_name + ' Profile Page'),
                     'profile' : profile,})
 
-def dataviewer(request):
-    users = User.objects.all()
-    profiles = Profile.objects.all()
-    follows = Follow.objects.all()
-    blocks = Block.objects.all()
-    return render(request, 'pages/dataviewer.html', 
-                  {'title': 'View the data', 
-                   'users': users, 
-                   'profiles' : profiles, 
-                   'follows' : follows, 
-                   'blocks' : blocks,})
+@login_required(login_url="home")
+def feed(request):
+    me = User.objects.get(pk=request.user.id)
+    myProfile = Profile.objects.get(user = me)
+    if request.method == 'POST':
+        if request.POST.get('viewUser'):
+            return redirect(public_profile, userid = request.POST['viewUser'])
+        elif request.POST.get('deletePost'):
+            postid = request.POST['deletePost']
+            p = Post.objects.get(pk = postid)
+            p.delete()
+        else:
+            myPost = request.POST['postContent']
+            p = Post(profile=myProfile, postContent=myPost)
+            p.save()
+    #posts of people I follow
+    followSet = User.objects.filter(pk__in = Follow.objects.filter(userFollowing = me).values_list('user'))
+    profilesIFollow = Profile.objects.filter(user__in = followSet)
+    followingPosts = list(Post.objects.filter(profile__in = profilesIFollow).order_by('-datePosted'))
+    #posts of people nearby
+    profilesNearMe = Profile.objects.filter(location = myProfile.location).exclude(user = me)
+    nearbyPosts = list(Post.objects.filter(profile__in = profilesNearMe).order_by('-datePosted'))
+    #myPosts
+    personalPosts = list(Post.objects.filter(profile = myProfile).order_by('-datePosted'))
+    return render(request, 'pages/feed.html', {'title' : 'feed', 
+                                               'followingPosts' : followingPosts, 
+                                               'nearbyPosts' : nearbyPosts,
+                                               'personalPosts' : personalPosts})
