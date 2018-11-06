@@ -240,7 +240,7 @@ def view_nearby(request):
         me = User.objects.get(pk=request.user.id)
         myProfile = Profile.objects.filter(user = me).first()
         #need to exclude blocked users
-        peopleNearMe = getNearby(request, 10)
+        peopleNearMe = getNearby(me, 10)
         return render(request, 
                       'pages/view_nearby.html', 
                       {'title':'Nearby', 'people' : peopleNearMe, 'profile':myProfile})

@@ -13,10 +13,9 @@ def getLocation():
     return geodata
 
 # returns a list of people nearby in a something mi radius
-def getNearby(request, radius):
-    me = request.user
-    myProfile = me.profile
-    profiles = Profile.objects.exclude(user = me).all()
+def getNearby(user, radius):
+    myProfile = user.profile
+    profiles = Profile.objects.exclude(user = user).all()
     nearbyPeople = []
 
     meLoc = (myProfile.latitude, myProfile.longitude)
