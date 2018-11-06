@@ -1,0 +1,254 @@
+[
+{
+    "model": "pages.profile",
+    "pk": 1,
+    "fields": {
+        "user": 29,
+        "bio": "Hi I am Ryan. blah blah. This is a full bio with all kinds of information.\r\n\r\n-there even is some bullet items\r\n\r\n-another bullet item",
+        "age": 22,
+        "photo": "profile_photos/ryan.jpg",
+        "location": "Riverside, CA",
+        "latitude": 0.0,
+        "longitude": 0.0
+    }
+},
+{
+    "model": "pages.profile",
+    "pk": 2,
+    "fields": {
+        "user": 30,
+        "bio": "Hi I am Josh. blah blah",
+        "age": 22,
+        "photo": "",
+        "location": "Riverside, CA",
+        "latitude": 0.0,
+        "longitude": 0.0
+    }
+},
+{
+    "model": "pages.profile",
+    "pk": 4,
+    "fields": {
+        "user": 33,
+        "bio": "Hi I am Krishna. blah blah",
+        "age": 22,
+        "photo": "",
+        "location": "Riverside, CA",
+        "latitude": 0.0,
+        "longitude": 0.0
+    }
+},
+{
+    "model": "pages.profile",
+    "pk": 5,
+    "fields": {
+        "user": 31,
+        "bio": "Hi I am Melissa. blah blah",
+        "age": 22,
+        "photo": "",
+        "location": "Fontana, CA",
+        "latitude": 34.1173,
+        "longitude": -117.4378
+    }
+},
+{
+    "model": "pages.profile",
+    "pk": 9,
+    "fields": {
+        "user": 41,
+        "bio": "Hello",
+        "age": 99,
+        "photo": "",
+        "location": "Riverside, CA",
+        "latitude": 0.0,
+        "longitude": 0.0
+    }
+},
+{
+    "model": "pages.profile",
+    "pk": 11,
+    "fields": {
+        "user": 49,
+        "bio": "",
+        "age": 55,
+        "photo": "",
+        "location": "Riverside, CA",
+        "latitude": 0.0,
+        "longitude": 0.0
+    }
+},
+{
+    "model": "pages.post",
+    "pk": 1,
+    "fields": {
+        "profile": 2,
+        "postContent": "this is a cool post about something important but not really that important because its social media.",
+        "datePosted": "2018-11-04T17:45:47.705Z"
+    }
+},
+{
+    "model": "pages.post",
+    "pk": 2,
+    "fields": {
+        "profile": 5,
+        "postContent": "this is a post by Melissa also about something relevant and important",
+        "datePosted": "2018-11-04T17:46:14.321Z"
+    }
+},
+{
+    "model": "pages.post",
+    "pk": 3,
+    "fields": {
+        "profile": 4,
+        "postContent": "This is another cool post. Just have to fit the post into the character limit which is currently 300 but we may be inclined to change it to something more or less who knows honestly. In all actuality, it doesn't even really matter",
+        "datePosted": "2018-11-04T17:47:56.877Z"
+    }
+},
+{
+    "model": "pages.post",
+    "pk": 4,
+    "fields": {
+        "profile": 2,
+        "postContent": "Another post by Josh here. Hey my name is Josh. I am just posting some cool stuff here. Trying to take note of when I post relevant to when others post and how that affects where I show up in the feed. Order bys are important.",
+        "datePosted": "2018-11-04T17:49:03.175Z"
+    }
+},
+{
+    "model": "pages.post",
+    "pk": 10,
+    "fields": {
+        "profile": 1,
+        "postContent": "sdfsdfsdf",
+        "datePosted": "2018-11-04T19:16:03.220Z"
+    }
+},
+{
+    "model": "pages.post",
+    "pk": 12,
+    "fields": {
+        "profile": 1,
+        "postContent": "sdfsd dfdf  ffff fsdf",
+        "datePosted": "2018-11-04T19:16:20.138Z"
+    }
+},
+{
+    "model": "pages.follow",
+    "pk": 23,
+    "fields": {
+        "userFollowing": 31,
+        "user": 29,
+        "isRequest": true
+    }
+},
+{
+    "model": "pages.follow",
+    "pk": 25,
+    "fields": {
+        "userFollowing": 29,
+        "user": 30,
+        "isRequest": true
+    }
+},
+{
+    "model": "pages.follow",
+    "pk": 26,
+    "fields": {
+        "userFollowing": 29,
+        "user": 33,
+        "isRequest": true
+    }
+},
+{
+    "model": "pages.follow",
+    "pk": 27,
+    "fields": {
+        "userFollowing": 29,
+        "user": 31,
+        "isRequest": true
+    }
+},
+{
+    "model": "pages.block",
+    "pk": 12,
+    "fields": {
+        "userBlocking": 30,
+        "user": 41
+    }
+},
+{
+    "model": "pages.thread",
+    "pk": 9,
+    "fields": {
+        "userOne": 30,
+        "userTwo": 29
+    }
+},
+{
+    "model": "pages.thread",
+    "pk": 10,
+    "fields": {
+        "userOne": 30,
+        "userTwo": 41
+    }
+},
+{
+    "model": "pages.thread",
+    "pk": 11,
+    "fields": {
+        "userOne": 29,
+        "userTwo": 41
+    }
+},
+{
+    "model": "pages.thread",
+    "pk": 12,
+    "fields": {
+        "userOne": 31,
+        "userTwo": 29
+    }
+},
+{
+    "model": "pages.message",
+    "pk": 9,
+    "fields": {
+        "thread": 9,
+        "messageContent": "",
+        "author": 30,
+        "datePosted": "2018-10-29T01:29:56.778Z",
+        "isRequest": true
+    }
+},
+{
+    "model": "pages.message",
+    "pk": 10,
+    "fields": {
+        "thread": 10,
+        "messageContent": "",
+        "author": 30,
+        "datePosted": "2018-10-29T01:30:02.372Z",
+        "isRequest": true
+    }
+},
+{
+    "model": "pages.message",
+    "pk": 11,
+    "fields": {
+        "thread": 11,
+        "messageContent": "",
+        "author": 29,
+        "datePosted": "2018-10-29T02:41:12.196Z",
+        "isRequest": true
+    }
+},
+{
+    "model": "pages.message",
+    "pk": 12,
+    "fields": {
+        "thread": 12,
+        "messageContent": "",
+        "author": 31,
+        "datePosted": "2018-11-05T16:29:21.523Z",
+        "isRequest": true
+    }
+}
+]

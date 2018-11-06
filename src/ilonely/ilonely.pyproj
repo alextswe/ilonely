@@ -64,6 +64,7 @@
     <Folder Include="pages\media\profile_photos\" />
     <Folder Include="pages\migrations\" />
     <Folder Include="pages\media\" />
+    <Folder Include="pages\fixtures\" />
     <Folder Include="pages\static\" />
     <Folder Include="pages\static\css\" />
     <Folder Include="pages\static\css\img\" />
@@ -96,6 +97,10 @@
     <Folder Include="user\templates\user\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".env">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="pages\fixtures\original.json" />
     <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\static\css\.DS_Store" />
     <Content Include="pages\static\css\base.css" />

@@ -2,7 +2,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.contrib.auth.signals import user_logged_in
-from django.contrib.gis.geoip2 import GeoIP2
 from pages.models import Profile
 from pages.geo import getLocation
 
@@ -20,15 +19,11 @@ def createProfile(sender, instance, created, **kwargs):
 def setLocation(sender, request, user, **kwargs):
     # Checks if user a superuser or staff
     if not user.is_superuser and not user.is_staff:
-        userLocDict = getLocation(request)
-        city = userLocDict["city"]
-        state = userLocDict["region_code"]
-        lat = userLocDict["latitude"]
-        long = userLocDict["longitude"]
+        userLocDict = getLocation()
 
-        # Search for user's profile
         profile = Profile.objects.filter(user=user).first()
-        profile.location = ("%s, %s") % (city, state)
-        profile.latitude = lat
-        profile.longitude = long
+        profile.location = ("%s, %s") % (userLocDict["city"], userLocDict["region_code"])
+        profile.latitude = userLocDict["latitude"]
+        profile.longitude = userLocDict["longitude"]
+
         profile.save()

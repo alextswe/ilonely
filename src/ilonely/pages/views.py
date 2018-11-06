@@ -241,7 +241,9 @@ def view_nearby(request):
         myProfile = Profile.objects.filter(user = me).first()
         #need to exclude blocked users
         peopleNearMe = getNearby(request, 10)
-        return render(request, 'pages/view_nearby.html', {'title':'Nearby', 'people' : peopleNearMe,})
+        return render(request, 
+                      'pages/view_nearby.html', 
+                      {'title':'Nearby', 'people' : peopleNearMe, 'profile':myProfile})
 
 @login_required(login_url="home")
 def public_profile(request, userid):

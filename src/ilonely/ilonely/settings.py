@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
+from decouple import config
 import os
 import posixpath
 
@@ -134,4 +135,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = '610.squad.ucr@gmail.com'
 EMAIL_HOST_PASSWORD = 'kqwbtvfurcqccmwi'
 
-GEOIP_PATH = 'resources/geoIP'
+IP_STACK_ACCESS_KEY = config('IP_STACK_ACCESS_KEY', default='')
