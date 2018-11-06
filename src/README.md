@@ -2,6 +2,11 @@
 A webapp to connect lonely people with other lonely people.
 
 ## Current Sprint Goals:
+ + Feed
+ + Messaging
+ + Discover Nearby
+
+## Sprint 1 Goals:
  + Registration
    + Users must input a unique **username** and **email** to register.
    + User must also input **first name**, **last name**, and **age**
