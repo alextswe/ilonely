@@ -23,33 +23,34 @@
 
 <body>
     {% if request.user.is_authenticated %}
-        <div id="mySidenav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Home</button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href={% url 'view_nearby'%}>Nearby</a>
-                    <a class="dropdown-item" href={% url 'view_following'%}>Following</a>
-                </div>
+        <nav class="navbar navbar-expand-lg fixed-top bg-light navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href={% url 'home' %}>iLonely</a>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href={% url 'user_home' %}>Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href={% url 'my_profile' %}>My profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href={% url 'notifications' %}>Notifications</a></li>
+                    <li class="nav-item"><a class="nav-link" href={% url 'view_following' %}>Following</a></li>
+                    <li class="nav-item"><a class="nav-link" href={% url 'view_nearby' %}>Nearby</a></li>
+                </ul>
+                
+                <form class="form-inline my-2 my-lg-0 Logout-link" action="logout" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-sm">Logout</button>
+                </form>
             </div>
-        </div>
+        </nav>
     {% else %}
-        <div id="mySidenav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href={% url 'home'%}>Home</a>
-        </div>
+        <nav class="navbar navbar-expand-lg fixed-top bg-light navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href={% url 'home' %}>iLonely</a>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class ="nav-link" href={% url 'register' %}>Register</a></li>
+                    <li class="nav-item"><a class ="nav-link" href={% url 'login' %}>Login</a></li>
+                </ul>
+            </div>
+        </nav>
     {% endif %}
-
-    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-        <form class="form-inline">
-            <button class="btn btn-outline-success" style="background-color: antiquewhite;" type="button" onclick="openNav()">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </form>
-        <div class="mx-auto order-0">
-            <h1>iLonely</h1>
-        </div>
-    </nav>
 
 	<div class="container body-content">
     </div>

@@ -8,7 +8,7 @@ import requests
 
 # returns the user's location info in a dictionary
 def getLocation():
-    response = requests.get('http://api.ipstack.com/check?access_key=' + 'PUT ACCESS KEY HERE!')
+    response = requests.get('http://api.ipstack.com/check?access_key=' + 'adb841f493ebe55b01d9d14d8992f765')
     geodata = response.json()
     return geodata
 

@@ -3,7 +3,7 @@ Definition of urls for ilonely.
 """
 
 from datetime import datetime
-from django.conf.urls import url
+from django.conf.urls import include, url
 from django.urls import path
 import django.contrib.auth.views
 import pages.views
@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^my_profile/$', pages.views.my_profile, name='my_profile'),
     url(r'^feed$', pages.views.feed, name='feed'),
     url(r'^admin/', admin.site.urls), # admin site url
+    url(r'^messages/', include('postman.urls', namespace='postman')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

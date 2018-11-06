@@ -4,7 +4,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>ilonely</Name>
     <RootNamespace>ilonely</RootNamespace>
-    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -120,9 +120,6 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="pages\static\css\img\iLonely.jpg" />
-    <Content Include="pages\static\css\sidebar.css">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="pages\static\js\bootstrap.bundle.js" />
     <Content Include="pages\static\js\bootstrap.bundle.js.map" />
     <Content Include="pages\static\js\bootstrap.bundle.min.js" />
@@ -133,9 +130,6 @@
     <Content Include="pages\static\js\bootstrap.min.js.map" />
     <Content Include="pages\static\js\geo.js" />
     <Content Include="pages\static\js\jquery-3.3.1.min.js" />
-    <Content Include="pages\static\js\sidebar.js">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="pages\templates\pages\base.html" />
     <Content Include="pages\templates\pages\feed.html" />
     <Content Include="pages\templates\pages\forgot_password.html" />

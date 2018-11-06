@@ -23,44 +23,6 @@
                 {% endfor %}
             {% endif %}
         </div>
-        <!-- Links -->
-        <div class="container; m-1">
-
-            <div class="row">
-                <div class="col-md-2">
-                    <a href={% url 'my_profile' %} class="btn btn-danger my-3 active" role="button">My Profile</a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <a href={% url 'home' %} class="btn btn-success my-3 disabled" role="button">Messaging</a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <a href={% url 'notifications' %} class="btn btn-primary my-3 active" role="button">Notifications</a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <a href={% url 'view_following' %} class="btn btn-info my-3 active" role="button">View Following</a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <a href={% url 'view_nearby' %} class="btn btn-info my-3 active" role="button">View Nearby</a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <!-- Creates a logout button that takes current user to home page -->
-                    <form class="Logout-link" action="logout" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary my-3">Logout</button>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 
     {% else %}
