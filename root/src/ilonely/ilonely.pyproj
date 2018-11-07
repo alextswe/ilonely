@@ -67,6 +67,7 @@
     <Folder Include="pages\static\js\" />
     <Folder Include="pages\templates\" />
     <Folder Include="pages\templates\pages\" />
+    <Folder Include="pages\templates\pages\registration\" />
     <Folder Include="resources\" />
     <Folder Include="resources\geoIP\" />
     <Folder Include="static\" />
@@ -130,20 +131,19 @@
     </Content>
     <Content Include="pages\templates\pages\base.html" />
     <Content Include="pages\templates\pages\dataviewer.html" />
-    <Content Include="pages\templates\pages\forgot_password.html" />
-    <Content Include="pages\templates\pages\forgot_username.html" />
     <Content Include="pages\templates\pages\home.html" />
-    <Content Include="pages\templates\pages\login.html" />
     <Content Include="pages\templates\pages\my_profile.html" />
     <Content Include="pages\templates\pages\notifications.html" />
-    <Content Include="pages\templates\pages\password_reset_complete.html" />
-    <Content Include="pages\templates\pages\password_reset_confirm.html" />
-    <Content Include="pages\templates\pages\password_reset_done.html" />
-    <Content Include="pages\templates\pages\password_reset_email.html" />
-    <Content Include="pages\templates\pages\password_reset_subject.txt" />
-    <Content Include="pages\templates\pages\password_reset_form.html" />
     <Content Include="pages\templates\pages\public_profile.html" />
     <Content Include="pages\templates\pages\register.html" />
+    <Content Include="pages\templates\pages\registration\forgot_username.html" />
+    <Content Include="pages\templates\pages\registration\login.html" />
+    <Content Include="pages\templates\pages\registration\password_reset_complete.html" />
+    <Content Include="pages\templates\pages\registration\password_reset_confirm.html" />
+    <Content Include="pages\templates\pages\registration\password_reset_done.html" />
+    <Content Include="pages\templates\pages\registration\password_reset_email.html" />
+    <Content Include="pages\templates\pages\registration\password_reset_form.html" />
+    <Content Include="pages\templates\pages\registration\password_reset_subject.txt" />
     <Content Include="pages\templates\pages\success.html">
       <SubType>Code</SubType>
     </Content>
