@@ -71,6 +71,7 @@
     <Folder Include="pages\static\js\" />
     <Folder Include="pages\templates\" />
     <Folder Include="pages\templates\pages\" />
+    <Folder Include="pages\templates\postman\" />
     <Folder Include="pages\templates\registration\" />
     <Folder Include="resources\" />
     <Folder Include="resources\geoIP\" />
@@ -133,7 +134,6 @@
     <Content Include="pages\static\js\jquery-3.3.1.min.js" />
     <Content Include="pages\templates\pages\base.html" />
     <Content Include="pages\templates\pages\feed.html" />
-    
     <Content Include="pages\templates\pages\home.html" />
     <Content Include="pages\templates\pages\my_profile.html" />
     <Content Include="pages\templates\pages\notifications.html" />
@@ -145,6 +145,7 @@
     <Content Include="pages\templates\pages\user_home.html" />
     <Content Include="pages\templates\pages\view_following.html" />
     <Content Include="pages\templates\pages\view_nearby.html" />
+    <Content Include="pages\templates\postman\base.html" />
     <Content Include="pages\templates\registration\forgot_username.html" />
     <Content Include="pages\templates\registration\login.html" />
     <Content Include="pages\templates\registration\password_reset_complete.html" />

@@ -29,12 +29,12 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item"><a class="nav-link" href={% url 'user_home' %}>Home</a></li>
                     <li class="nav-item"><a class="nav-link" href={% url 'my_profile' %}>My profile</a></li>
-                    <li class="nav-item"><a class="nav-link" href={% url 'messaging' %}>Messages</a></li>
+                    <li class="nav-item"><a class="nav-link" href={% url 'postman:inbox' %}>Messages</a></li>
                     <li class="nav-item"><a class="nav-link" href={% url 'notifications' %}>Notifications</a></li>
                     <li class="nav-item"><a class="nav-link" href={% url 'view_following' %}>Following</a></li>
                     <li class="nav-item"><a class="nav-link" href={% url 'view_nearby' %}>Nearby</a></li>
                 </ul>
-                
+            
                 <form class="form-inline my-2 my-lg-0 Logout-link" action="logout" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary btn-sm">Logout</button>

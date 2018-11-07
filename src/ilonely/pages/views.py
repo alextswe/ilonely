@@ -163,10 +163,6 @@ def success(request):
 def user_home_view(request):
     return render(request,'pages/user_home.html', {'title':'User Home Page'})
 
-@login_required(login_url="home")
-def messaging(request):
-    return render(request,'pages/messaging.html', {'title': 'Messages'})
-
 # Prevents anyone from accessing this page unless they are logged in to their account
 @login_required(login_url="home")
 def notifications_view(request):
