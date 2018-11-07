@@ -8,23 +8,22 @@
 
     <!-- Login page display -->
     {% if user.is_authenticated %}
-    <div class="bg-light text-dark">
-        <div class="mx-auto flex-shrink-0 p-2" style="width:300px">
-            <div style="text-align:center;">
-                <h2>Your Page</h2>
-                <p>Welcome {{ request.user.username }}!</p>
+        <div class="bg-light text-dark">
+            <div class="mx-auto flex-shrink-0 p-2" style="width:300px">
+                <div style="text-align:center;">
+                    <h2>Your Page</h2>
+                    <p>Welcome {{ request.user.username }}!</p>
+                </div>
+
+                <!-- For printing out error messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger" role="alert" style="display:inline-block">{{ message }}</div>
+                        <br />
+                    {% endfor %}
+                {% endif %}
             </div>
-
-            <!-- For printing out error messages -->
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-danger" role="alert" style="display:inline-block">{{ message }}</div>
-                    <br />
-                {% endfor %}
-            {% endif %}
         </div>
-    </div>
-
     {% else %}
         <!-- Unauthorized users should not have access to here -->
         <h2>Please log in to access this page</h2>

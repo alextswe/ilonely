@@ -1,0 +1,23 @@
+{% extends "pages/base.html" %}
+
+{% block content %}
+    <head>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/messaging.css' %}"/>
+    </head>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2 px-1 bg-dark sidebar">
+                <div class="py-2 sticky-top flex-grow-1">
+                    <div class="nav flex-sm-column">
+                        <a class="nav-link" href={% url 'postman:inbox' %}>Inbox</a>
+                        <a class="nav-link" href="#">Two</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col" id="main">
+                <h1>Main Area</h1>  
+            </div>
+        </div>
+    </div>
+{% endblock %}
