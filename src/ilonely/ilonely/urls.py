@@ -4,7 +4,9 @@ Definition of urls for ilonely.
 
 from datetime import datetime
 from django.conf.urls import include, url
-from django.urls import path
+from django.urls import path, include
+from django.contrib.auth import views
+
 import django.contrib.auth.views
 import django.contrib.auth.urls
 import pages.views
@@ -17,15 +19,17 @@ admin.autodiscover()
 urlpatterns = [
     url(r'^$', pages.views.home, name='home'),
     url(r'^register$', pages.views.register, name='register'),
+
     url(r'^login$', pages.views.login_view, name='login'),
     url(r'^logout$', pages.views.logout_view, name='logout'),
-    url(r'^forgot_username$', pages.views.forgot_username_view, name='forgot_username'),
-    url(r'^forgot_password$', pages.views.forgot_password_view, name='forgot_password'),
-    url('^', django.contrib.auth.urls),
-    #url(r'^password_reset/$', pages.views.password_reset, name='password_reset'),
-    #url(r'^password_reset/done/$', pages.views.password_reset_done, name='password_reset_done'),
-    #url(r'^password_reset_confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',pages.views.password_reset_confirm, name='password_reset_confirm'),
-    #url(r'^reset/done/$', pages.views.password_reset_complete, name='password_reset_complete'),
+    path('forgot_username', pages.views.forgot_username_view, name='forgot_username'),
+    path('password_change/', views.PasswordChangeView.as_view(), name='password_change'),
+    path('password_change/done/', views.PasswordChangeDoneView.as_view(), name='password_change_done'),
+    path('password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
     url(r'^success$', pages.views.success, name='success'),
     url(r'^user_home$', pages.views.user_home_view, name='user_home'),
     url(r'^notifications$', pages.views.notifications_view, name='notifications'),
