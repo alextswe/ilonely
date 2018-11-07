@@ -67,7 +67,7 @@
     <Folder Include="pages\static\js\" />
     <Folder Include="pages\templates\" />
     <Folder Include="pages\templates\pages\" />
-    <Folder Include="pages\templates\pages\registration\" />
+    <Folder Include="pages\templates\registration\" />
     <Folder Include="resources\" />
     <Folder Include="resources\geoIP\" />
     <Folder Include="static\" />
@@ -136,20 +136,20 @@
     <Content Include="pages\templates\pages\notifications.html" />
     <Content Include="pages\templates\pages\public_profile.html" />
     <Content Include="pages\templates\pages\register.html" />
-    <Content Include="pages\templates\pages\registration\forgot_username.html" />
-    <Content Include="pages\templates\pages\registration\login.html" />
-    <Content Include="pages\templates\pages\registration\password_reset_complete.html" />
-    <Content Include="pages\templates\pages\registration\password_reset_confirm.html" />
-    <Content Include="pages\templates\pages\registration\password_reset_done.html" />
-    <Content Include="pages\templates\pages\registration\password_reset_email.html" />
-    <Content Include="pages\templates\pages\registration\password_reset_form.html" />
-    <Content Include="pages\templates\pages\registration\password_reset_subject.txt" />
     <Content Include="pages\templates\pages\success.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="pages\templates\pages\user_home.html" />
     <Content Include="pages\templates\pages\view_following.html" />
     <Content Include="pages\templates\pages\view_nearby.html" />
+    <Content Include="pages\templates\registration\forgot_username.html" />
+    <Content Include="pages\templates\registration\login.html" />
+    <Content Include="pages\templates\registration\password_reset_complete.html" />
+    <Content Include="pages\templates\registration\password_reset_confirm.html" />
+    <Content Include="pages\templates\registration\password_reset_done.html" />
+    <Content Include="pages\templates\registration\password_reset_email.html" />
+    <Content Include="pages\templates\registration\password_reset_form.html" />
+    <Content Include="pages\templates\registration\password_reset_subject.txt" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="resources\geoIP\GeoLite2-City.mmdb" />
