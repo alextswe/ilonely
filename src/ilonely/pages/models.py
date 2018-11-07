@@ -64,3 +64,9 @@ class Document(models.Model):
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
+class ResetURL(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
+    url = models.CharField(max_length=255, blank=True)
+    timeStamp = models.DateTimeField(auto_now_add=True)
+    isValid = models.BooleanField(default=False)
+

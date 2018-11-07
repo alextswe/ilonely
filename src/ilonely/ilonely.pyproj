@@ -70,8 +70,8 @@
     <Folder Include="pages\static\css\img\" />
     <Folder Include="pages\static\js\" />
     <Folder Include="pages\templates\" />
-    <Folder Include="pages\templates\postman\" />
     <Folder Include="pages\templates\pages\" />
+    <Folder Include="pages\templates\registration\" />
     <Folder Include="resources\" />
     <Folder Include="resources\geoIP\" />
     <Folder Include="static\" />
@@ -121,9 +121,6 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="pages\static\css\img\iLonely.jpg" />
-    <Content Include="pages\static\css\messaging.css">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="pages\static\js\bootstrap.bundle.js" />
     <Content Include="pages\static\js\bootstrap.bundle.js.map" />
     <Content Include="pages\static\js\bootstrap.bundle.min.js" />
@@ -136,13 +133,8 @@
     <Content Include="pages\static\js\jquery-3.3.1.min.js" />
     <Content Include="pages\templates\pages\base.html" />
     <Content Include="pages\templates\pages\feed.html" />
-    <Content Include="pages\templates\pages\forgot_password.html" />
-    <Content Include="pages\templates\pages\forgot_username.html" />
+    
     <Content Include="pages\templates\pages\home.html" />
-    <Content Include="pages\templates\pages\login.html" />
-    <Content Include="pages\templates\pages\messaging.html">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="pages\templates\pages\my_profile.html" />
     <Content Include="pages\templates\pages\notifications.html" />
     <Content Include="pages\templates\pages\public_profile.html" />
@@ -153,9 +145,14 @@
     <Content Include="pages\templates\pages\user_home.html" />
     <Content Include="pages\templates\pages\view_following.html" />
     <Content Include="pages\templates\pages\view_nearby.html" />
-    <Content Include="pages\templates\postman\base.html">
-      <SubType>Code</SubType>
-    </Content>
+    <Content Include="pages\templates\registration\forgot_username.html" />
+    <Content Include="pages\templates\registration\login.html" />
+    <Content Include="pages\templates\registration\password_reset_complete.html" />
+    <Content Include="pages\templates\registration\password_reset_confirm.html" />
+    <Content Include="pages\templates\registration\password_reset_done.html" />
+    <Content Include="pages\templates\registration\password_reset_email.html" />
+    <Content Include="pages\templates\registration\password_reset_form.html" />
+    <Content Include="pages\templates\registration\password_reset_subject.txt" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="resources\geoIP\GeoLite2-City.mmdb" />

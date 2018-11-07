@@ -5,31 +5,49 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     </head>
-    <!-- Forgot Username Display -->
-    <div class="mx-auto flex-shrink-0 p-2" style="width:400px">
+
+    <!-- Login page display -->
+    <div class="mx-auto flex-shrink-0 p-2" style="width:300px">
 
         <div style="text-align:center;">
-            <h2>Forgot Your Password?</h2>
-            <p>Please enter your username</p>
+            <h2>Log In</h2>
+            <p>Be less lonely, with ilonely.</p>
         </div>
-        <!-- Output confirmation message -->
+
+        <!-- For printing out error messages -->
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-success" role="alert" style="display:inline-block">{{ message }}</div>
+                <div class="alert alert-danger" role="alert" style="display:inline-block">{{ message }}</div>
                 <br />
             {% endfor %}
         {% endif %}
 
-        <!-- Creates a field for email submission -->
         <form method="post">
             <div class="form-group">
                 {% csrf_token %}
                 Username:<br>
                 <input type="text" name="username" class="form-control" required><br>
+                Password:<br>
+                <input type="password" name="password" class="form-control" required><br>
                 <input type="submit" value="Submit" class="btn btn-primary my-3">
             </div>
         </form>
     </div>
+
+<!-- Links -->
+<div class="container; m-1">
+    <div class="row">
+      <div class="col-md-8">
+          <a href={% url 'forgot_username' %} class="btn btn-primary my-3 active" role="button">Forgot Username</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+          <a href={% url 'password_reset' %} class="btn btn-primary my-3 active" role="button">Forgot Password</a>
+      </div>
+    </div>
+</div>
+
 {% endblock %}
 
 <!-- Bootstrap JS -->

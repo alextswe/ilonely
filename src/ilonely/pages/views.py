@@ -13,6 +13,19 @@ from pages.models import Profile, Follow, Block, Thread, Message, Post
 from pages.geo import getNearby
 import random,string
 
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.http import HttpResponseRedirect, QueryDict
+from django.shortcuts import resolve_url
+from django.template.response import TemplateResponse
+from django.utils.encoding import force_text
+from django.utils.http import is_safe_url, urlsafe_base64_decode
+from django.utils.six.moves.urllib.parse import urlparse, urlunparse
+from django.utils.translation import ugettext as _
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.debug import sensitive_post_parameters
+from django.urls import reverse
 # Create your views here.
 
 def home(request):
@@ -74,7 +87,7 @@ def login_view(request):
         form = AuthenticationForm()
     return render(
         request,
-        'pages/login.html',
+        'registration/login.html',
         {
             'title':'Login',
             'form':form
@@ -103,7 +116,7 @@ def forgot_username_view(request):
         messages.success(request, "We sent an email with your username to your account.");      
     return render(
         request,
-        'pages/forgot_username.html',
+        'registration/forgot_username.html',
         {
             'title':'Forgot Username',
         }
