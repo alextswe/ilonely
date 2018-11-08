@@ -9,25 +9,56 @@
         <!-- OpenLayers CSS-->
         <link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css">
         <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
-    </head>
 
-    <h2 style="padding-left:10px;">See who is near you!</h2>
-    
+        <script src="static/js/extras.js"></script>
+    </head>
+    <style>
+        #profileButton {
+            cursor: pointer;
+            width: 400px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 20px;
+            border: none;
+            background-color: #f2f2f2;
+            box-shadow: 3px 3px 3px #cecece;
+        }
+
+        #filters {
+            text-align:center;
+            height: 120px;
+        }
+    </style>
+    <div class="mb-3 p-2" id="filters">
+        <h2>Nearby in {{request.user.profile.location}}</h2>
+        <div class="nav btn-toolbar justify-content-center">
+            <div class="m-1" style="align-self:center">
+                Miles:
+            </div>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons" >
+                <button class="btn btn-outline-primary" onclick="sortPeople(10)">10</button>
+                <button class="btn btn-outline-primary" onclick="sortPeople(5)">5</button>
+                <button class="btn btn-outline-primary" onclick="sortPeople(3)">3</button>
+                <button class="btn btn-outline-primary" onclick="sortPeople(1)">1</button>
+            </div>
+        </div>
+    </div>
     <div class="container-fluid">
         <div class="row">
-            <div class="col col-lg-4">
-                <div class="h-75" style="overflow-y:auto;">
+            <div class="col-3-auto">
+                <div class="h-75" style="overflow-y:scroll;">
                     <form action="{% url 'view_nearby' %}" method="post"> {% csrf_token %}
-                    <ul class="list-group list-group-flush">
-                    {% for person in people %}
-                        <li style="border: none;" class="list-group-item">            
-                            <button class="py-1 pl-3 w-100" style="cursor:pointer;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{person.user.id}}">
+                    <ul class="list-group list-group-flush" id="profiles">
+                    {% for person, distance in people %}
+                        <li style="border: none;" class="list-group-item">             
+                            <button type="submit" name="viewUser" id="profileButton" value="{{person.user.id}}" >
                                 {% if person.photo %}
                                     <img style="border-radius: 50%; width:50px; float:left;" src="../../{{person.photo.url}}" />
                                 {% else %}
                                     <img style="border-radius: 50%; width:50px; float:left;" src="../../pages/media/profile_photos/default.jpg" />
                                 {% endif %}
                                 <p style="padding-left:15px;float:left;margin-top:10px;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p>
+                                <p style="text-align:right;align-self:center" class="distances text-muted ">{{ distance }}mi</p>
                             </button>
                         </li>
                     {% endfor %}
@@ -35,13 +66,12 @@
                     </form>
                 </div>
             </div>
-            <div class="col-lg">
+            <div class="col">
                 <div id="map" class="map h-75"></div>
             </div>
         </div>
     </div>
-    <p><a href={% url 'user_home' %}>Go Back</a></p>
-    
+
     <!--TODO: Work on map!-->
     <script type="text/javascript">
         var map = new ol.Map({
@@ -57,7 +87,6 @@
             })
         });
     </script>    
-
 {% endblock %}
 
 <!-- Bootstrap JS -->

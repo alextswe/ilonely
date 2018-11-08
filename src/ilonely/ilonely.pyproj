@@ -4,7 +4,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>ilonely</Name>
     <RootNamespace>ilonely</RootNamespace>
-    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
+    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -91,6 +91,8 @@
     <Folder Include="static\css\" />
     <Folder Include="static\css\img\" />
     <Folder Include="static\js\" />
+    <Folder Include="static\postman\" />
+    <Folder Include="static\postman\css\" />
     <Folder Include="user\" />
     <Folder Include="user\migrations\" />
     <Folder Include="user\templates\" />
@@ -100,6 +102,7 @@
     <Content Include=".env">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="db.sqlite3" />
     <Content Include="pages\fixtures\original.json" />
     <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\static\css\.DS_Store" />
@@ -128,7 +131,7 @@
     <Content Include="pages\static\js\bootstrap.js.map" />
     <Content Include="pages\static\js\bootstrap.min.js" />
     <Content Include="pages\static\js\bootstrap.min.js.map" />
-    <Content Include="pages\static\js\geo.js" />
+    <Content Include="pages\static\js\extras.js" />
     <Content Include="pages\static\js\jquery-3.3.1.min.js" />
     <Content Include="pages\templates\pages\base.html" />
     <Content Include="pages\templates\pages\feed.html" />
@@ -147,7 +150,6 @@
     <Content Include="pages\templates\pages\view_following.html" />
     <Content Include="pages\templates\pages\view_nearby.html" />
     <Content Include="requirements.txt" />
-    <Content Include="db.sqlite3" />
     <Content Include="resources\geoIP\GeoLite2-City.mmdb" />
     <Content Include="resources\geoIP\GeoLite2-Country.mmdb" />
     <Content Include="static\admin\css\autocomplete.css" />
@@ -282,9 +284,9 @@
     <Content Include="static\css\bootstrap.css.map" />
     <Content Include="static\css\bootstrap.min.css" />
     <Content Include="static\css\bootstrap.min.css.map" />
-    <Content Include="static\css\geolocation.css" />
     <Content Include="static\css\home.css" />
     <Content Include="static\css\img\iLonely.jpg" />
+    <Content Include="static\css\messaging.css" />
     <Content Include="static\css\sidebar.css" />
     <Content Include="static\js\bootstrap.bundle.js" />
     <Content Include="static\js\bootstrap.bundle.js.map" />
@@ -295,9 +297,10 @@
     <Content Include="static\js\bootstrap.min.js" />
     <Content Include="static\js\bootstrap.min.js.map" />
     <Content Include="static\js\geo.js" />
-    <Content Include="static\js\geolocation.js" />
     <Content Include="static\js\jquery-3.3.1.min.js" />
     <Content Include="static\js\sidebar.js" />
+    <Content Include="static\postman\css\admin.css" />
+    <Content Include="static\postman\css\postman.css" />
     <Content Include="user\templates\user\index.html" />
   </ItemGroup>
   <ItemGroup>

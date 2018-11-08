@@ -25,3 +25,8 @@ function getLocation() {
 function twoDec(num) {
     return Math.round(100 * num) / 100;
 }
+
+function sortPeople(radius) {
+    out = document.getElementById("out")
+    out.innerHTML = "I ran!";
+}
