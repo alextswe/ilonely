@@ -6,15 +6,15 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     </head>
     <style>
-
     #profileButton {
         cursor:pointer;
         width:400px;
         padding-top:5px;
         padding-bottom:5px;
         padding-left:20px;
+        margin-left:40px;
+        margin-bottom:15px;
         border:none;
-        background-color:#ffa500;
         box-shadow: 3px 3px 3px #cecece;
     }
 
@@ -31,7 +31,7 @@
         margin-top: 15px;
         margin-right: 20px;
         position:absolute;
-        left:280px;
+        left:320px;
         z-index:1;
     }
 
@@ -48,7 +48,7 @@
         margin-top: 15px;
         margin-right: 20px;
         position:absolute;
-        left:330px;
+        left:370px;
         z-index:1;
     }
     </style>
@@ -85,7 +85,7 @@
                         {% for person in user_message_requests %}
                             <div class=" row">
                                 <div class=" col-xs-6"> 
-                                    <button style="cursor:pointer;width:400px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#ffa500;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{person.user.id}}">
+                                    <button id ="profileButton" style="background-color:#ffa500;" type="submit" name="viewUser" value="{{person.user.id}}">
                                     {% if person.photo %}
                                         <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
                                     {% else %}
@@ -116,7 +116,7 @@
                         {% for person in my_message_requests %}
                             <div class=" row">
                                 <div class=" col-xs-6"> 
-                                    <button style="cursor:pointer;width:400px;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{person.user.id}}">
+                                    <button id ="profileButton" style="background-color:#f2f2f2;" type="submit" name="viewUser" value="{{person.user.id}}">
                                     {% if person.photo %}
                                         <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
                                     {% else %}

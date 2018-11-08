@@ -194,6 +194,7 @@ def notifications_view(request):
                 userRequest.isRequest = False
                 userRequest.save()
             else:
+                threadSet.delete()
                 userRequest.delete()
         except ObjectDoesNotExist:
             # Do nothing
