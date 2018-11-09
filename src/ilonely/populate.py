@@ -33,7 +33,7 @@ for i in range(20):
     profile = user.profile    
     profile.location = ("%s, %s") % (city, state)
     profile.latitude = fake.geo_coordinate(execLat, radius=(0.001*10**randNum + 0.001*10**randNum2))
-    profile.longitude = fake.geo_coordinate(execLong, radius=(0.001*10**randNum + 0.001*10**randNum2))
+    profile.longitude = fake.geo_coordinate(execLong, radius=(0.001*10**randNum2 + 0.001*10**randNum))
     profile.bio = ' '.join(fake.sentences(nb=randNum+randNum2+1, ext_word_list=None))
     profile.save()
     # generate posts for users

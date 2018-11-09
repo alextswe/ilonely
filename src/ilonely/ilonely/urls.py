@@ -37,7 +37,7 @@ urlpatterns = [
     url(r'^view_nearby$', pages.views.view_nearby, name='view_nearby'),
     url(r'^public_profile/(?P<userid>\d+)/$', pages.views.public_profile, name='public_profile'),
     url(r'^my_profile/$', pages.views.my_profile, name='my_profile'),
-    url(r'^feed$', pages.views.feed, name='feed'),
+    url(r'^feed$', pages.views.user_home_view, name='feed'),
     url(r'^admin/', admin.site.urls), # admin site url
     url(r'^messages/', include('postman.urls', namespace='postman')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
