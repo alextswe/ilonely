@@ -28,6 +28,6 @@ def getNearby(user, radius, distList=None):
                 if distance < radius:
                     nearbyPeople.append(profile)
                     if distList is not None:
-                        distList.append('%.2f'%(distance))
+                        distList.append('%.2f'%(round(distance,1)))
     
     return nearbyPeople

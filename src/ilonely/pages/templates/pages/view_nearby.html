@@ -57,8 +57,11 @@
                                 {% else %}
                                     <img style="border-radius: 50%; width:50px; float:left;" src="../../pages/media/profile_photos/default.jpg" />
                                 {% endif %}
-                                <p style="padding-left:15px;float:left;margin-top:10px;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p>
-                                <p style="text-align:right;align-self:center" class="distances text-muted ">{{ distance }}mi</p>
+                                <span>
+                                    <p style="padding-left:15px;float:left;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}<br/>
+                                    <small class="text-muted" style="float:left">{{person.age}} years old</small></p>
+                                </span>
+                                <small style="text-align:right;align-self:center;float:right" class="distances text-muted ">{{ distance }}mi</small>
                             </button>
                         </li>
                     {% endfor %}
