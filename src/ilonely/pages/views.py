@@ -56,8 +56,6 @@ def register(request):
                 message = 'Hi %s! We hope you\'ll enjoy iLonely!' % user.get_username()
             )
             return redirect('success')
-        else:
-            messages.error(request, 'Account not created successfully.')
     else:
         form = CustomUserCreationForm()
 
@@ -161,7 +159,32 @@ def success(request):
 # Prevents anyone from accessing this page unless they are logged in to their account
 @login_required(login_url="home")
 def user_home_view(request):
-    return render(request,'pages/user_home.html', {'title':'User Home Page'})
+    me = User.objects.get(pk=request.user.id)
+    myProfile = Profile.objects.get(user = me)
+    if request.method == 'POST':
+        if request.POST.get('viewUser'):
+            return redirect(public_profile, userid = request.POST['viewUser'])
+        elif request.POST.get('deletePost'):
+            postid = request.POST['deletePost']
+            p = Post.objects.get(pk = postid)
+            p.delete()
+        else:
+            myPost = request.POST['postContent']
+            p = Post(profile=myProfile, postContent=myPost)
+            p.save()
+    #posts of people I follow
+    followSet = User.objects.filter(pk__in = Follow.objects.filter(userFollowing = me).values_list('user'))
+    profilesIFollow = Profile.objects.filter(user__in = followSet)
+    followingPosts = list(Post.objects.filter(profile__in = profilesIFollow).order_by('-datePosted'))
+    #posts of people nearby
+    profilesNearMe = Profile.objects.filter(location = myProfile.location).exclude(user = me)
+    nearbyPosts = list(Post.objects.filter(profile__in = profilesNearMe).order_by('-datePosted'))
+    #myPosts
+    personalPosts = list(Post.objects.filter(profile = myProfile).order_by('-datePosted'))
+    return render(request, 'pages/user_home.html', {'title' : 'User Home', 
+                                               'followingPosts' : followingPosts, 
+                                               'nearbyPosts' : nearbyPosts,
+                                               'personalPosts' : personalPosts})
 
 # Prevents anyone from accessing this page unless they are logged in to their account
 @login_required(login_url="home")

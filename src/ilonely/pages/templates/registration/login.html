@@ -8,7 +8,6 @@
 
     <!-- Login page display -->
     <div class="mx-auto flex-shrink-0 p-2" style="width:300px">
-
         <div style="text-align:center;">
             <h2>Log In</h2>
             <p>Be less lonely, with ilonely.</p>
@@ -17,35 +16,33 @@
         <!-- For printing out error messages -->
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-danger" role="alert" style="display:inline-block">{{ message }}</div>
-                <br />
+                {% if message.tag == error%}
+                    <div class="alert alert-danger" role="alert" style="display:inline-block">{{ message }}</div>
+                    <br />
+                {% endif %}
             {% endfor %}
         {% endif %}
 
         <form method="post">
+            {% csrf_token %}
             <div class="form-group">
-                {% csrf_token %}
-                Username:<br>
-                <input type="text" name="username" class="form-control" required><br>
-                Password:<br>
-                <input type="password" name="password" class="form-control" required><br>
-                <input type="submit" value="Submit" class="btn btn-primary my-3">
+            Username:<br>
+            <input type="text" name="username" class="form-control" required>
+            <small class="form-text text-muted">
+                <a href={% url 'forgot_username' %} class="text-muted" role="button">Forgot Username</a><br>
+            </small>
             </div>
+            <div class="form-group">
+            Password:<br>
+            <input type="password" name="password" class="form-control" required>
+            <small class="form-text text-muted">
+                <a href={% url 'password_reset' %} class="text-muted" role="button">Forgot Password</a><br>
+            </small>
+            </div>
+            <input type="submit" value="Submit" class="btn btn-primary my-3">
         </form>
     </div>
 
-<!-- Links -->
-<div class="container; m-1">
-    <div class="row">
-      <div class="col-md-8">
-          <a href={% url 'forgot_username' %} class="btn btn-primary my-3 active" role="button">Forgot Username</a>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-8">
-          <a href={% url 'password_reset' %} class="btn btn-primary my-3 active" role="button">Forgot Password</a>
-      </div>
-    </div>
 </div>
 
 {% endblock %}

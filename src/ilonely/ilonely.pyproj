@@ -4,7 +4,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>ilonely</Name>
     <RootNamespace>ilonely</RootNamespace>
-    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
+    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -42,6 +42,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="pages\geo.py" />
+    <Compile Include="pages\migrations\0001_initial.py" />
+    <Compile Include="pages\migrations\__init__.py" />
     <Compile Include="pages\models.py" />
     <Compile Include="pages\signals.py" />
     <Compile Include="pages\tests.py" />
@@ -122,6 +124,7 @@
     <Content Include="pages\templates\pages\base.html" />
     <Content Include="pages\templates\pages\feed.html" />
     <Content Include="pages\templates\pages\home.html" />
+    <Content Include="pages\templates\pages\messaging.html" />
     <Content Include="pages\templates\pages\my_profile.html" />
     <Content Include="pages\templates\pages\notifications.html" />
     <Content Include="pages\templates\pages\public_profile.html" />
