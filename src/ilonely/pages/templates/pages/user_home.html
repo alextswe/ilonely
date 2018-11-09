@@ -1,5 +1,4 @@
 ﻿{% extends "pages/base.html"%}
-
 {% block content %}
     <head>
         <!-- Bootstrap CSS -->
@@ -8,6 +7,7 @@
 
     <!-- Login page display -->
     {% if user.is_authenticated %}
+        {% include "pages/feed.html" %}
         <div class="bg-light text-dark">
             <div class="mx-auto flex-shrink-0 p-2" style="width:300px">
                 <div style="text-align:center;">
