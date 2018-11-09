@@ -13,7 +13,7 @@ def getLocation():
     return geodata
 
 # returns a list of people nearby in a something mi radius
-def getNearby(user, radius):
+def getNearby(user, radius, distList=None):
     myProfile = user.profile
     profiles = Profile.objects.exclude(user = user).all()
     nearbyPeople = []
@@ -24,7 +24,10 @@ def getNearby(user, radius):
         for profile in profiles:
             userLoc = (profile.latitude, profile.longitude)
             if all(userLoc):
-                if haversine(meLoc, userLoc, miles=True) < radius:
+                distance = haversine(meLoc, userLoc, miles=True)
+                if distance < radius:
                     nearbyPeople.append(profile)
-
+                    if distList is not None:
+                        distList.append('%.2f'%(distance))
+    
     return nearbyPeople

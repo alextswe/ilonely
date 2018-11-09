@@ -250,13 +250,16 @@ def view_nearby(request):
         viewUser = request.POST['viewUser']
         return redirect(public_profile, userid = viewUser)
     else:
+        distList=[]
         me = User.objects.get(pk=request.user.id)
         myProfile = Profile.objects.filter(user = me).first()
         #need to exclude blocked users
-        peopleNearMe = getNearby(me, 10)
+        peopleNearMe = getNearby(me, 10, distList)
         return render(request, 
                       'pages/view_nearby.html', 
-                      {'title':'Nearby', 'people' : peopleNearMe, 'profile':myProfile})
+                      {'title':'Nearby', 
+                       'people': zip(peopleNearMe, distList),
+                       'profile': myProfile})
 
 @login_required(login_url="home")
 def public_profile(request, userid):
