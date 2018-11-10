@@ -77,6 +77,7 @@ WSGI_APPLICATION = 'ilonely.wsgi.application'
 
 #Postman Settings
 POSTMAN_AUTO_MODERATE_AS = True
+POSTMAN_DISABLE_USER_EMAILING = True
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases

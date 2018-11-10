@@ -178,7 +178,16 @@ def user_home_view(request):
     followingPosts = list(Post.objects.filter(profile__in = profilesIFollow).order_by('-datePosted'))
     #posts of people nearby
     profilesNearMe = Profile.objects.filter(location = myProfile.location).exclude(user = me)
-    nearbyPosts = list(Post.objects.filter(profile__in = profilesNearMe).order_by('-datePosted'))
+    profilesIBlock = User.objects.filter(pk__in = Block.objects.filter(userBlocking = me).values_list('user'))
+    blockedUsers = list(Profile.objects.filter(user__in = profilesIBlock))
+    nearby = list(Post.objects.filter(profile__in = profilesNearMe).order_by('-datePosted'))
+    nearbyPosts = []
+    for i in nearby:
+        if i in blockedUsers:
+            continue
+        else:
+            nearbyPosts.append(i)        
+        
     #myPosts
     personalPosts = list(Post.objects.filter(profile = myProfile).order_by('-datePosted'))
     return render(request, 'pages/user_home.html', {'title' : 'User Home', 
@@ -259,10 +268,11 @@ def view_following(request):
         return redirect(public_profile, userid = viewUser)
     else:
         me = User.objects.get(pk=request.user.id)
-        #need to exclude blocked users
+        #blocked users are removed from the follow list
         if Follow.objects.filter(userFollowing=me):
             followSet = User.objects.filter(pk__in = Follow.objects.filter(userFollowing = me).values_list('user'))
             profilesIFollow = list(Profile.objects.filter(user__in = followSet))
+
         else:
             profilesIFollow = None
         return render(request, 'pages/view_following.html', 
@@ -277,8 +287,18 @@ def view_nearby(request):
         distList=[]
         me = User.objects.get(pk=request.user.id)
         myProfile = Profile.objects.filter(user = me).first()
-        #need to exclude blocked users
-        peopleNearMe = getNearby(me, 10, distList)
+        #blocked users are filtered
+        peopleNear = getNearby(me, 10, distList)
+        profilesIBlock = User.objects.filter(pk__in = Block.objects.filter(userBlocking = me).values_list('user'))
+        blockedUsers = list(Profile.objects.filter(user__in = profilesIBlock))
+        peopleNearMe = []
+
+        for i in peopleNear:
+            if i in blockedUsers:
+                continue
+            else:
+                peopleNearMe.append(i)  
+
         return render(request, 
                       'pages/view_nearby.html', 
                       {'title':'Nearby', 
@@ -364,7 +384,14 @@ def public_profile(request, userid):
                 b.delete()
             except Block.DoesNotExist:
                 b = Block(userBlocking=me, user=blockUser)
-                b.save()     
+                b.save()
+            
+            try:
+                f = Follow.objects.get(userFollowing=me, user=blockUser)
+                f.delete()
+            except Follow.DoesNotExist:
+                f = Follow(userFollowing=me, user=blockUser)
+
     profile = Profile.objects.filter(user = userid).first()
     following = Follow.objects.filter(userFollowing=User.objects.get(pk = request.user.id), user=User.objects.get(pk = userid)).exists()
     blocking = Block.objects.filter(userBlocking=User.objects.get(pk = request.user.id), user=User.objects.get(pk = userid)).exists()
@@ -433,6 +460,7 @@ def feed(request):
     #posts of people nearby
     profilesNearMe = Profile.objects.filter(location = myProfile.location).exclude(user = me)
     nearbyPosts = list(Post.objects.filter(profile__in = profilesNearMe).order_by('-datePosted'))
+    #profilesIBlock = list(Profile.objects.filter(user__in = blockSet))
     #myPosts
     personalPosts = list(Post.objects.filter(profile = myProfile).order_by('-datePosted'))
     return render(request, 'pages/feed.html', {'title' : 'feed', 
