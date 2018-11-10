@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^register$', pages.views.register, name='register'),
 
     url(r'^login$', pages.views.login_view, name='login'),
-    url(r'^logout$', pages.views.logout_view, name='logout'),
+    url('logout$', pages.views.logout_view, name='logout'),
     path('forgot_username', pages.views.forgot_username_view, name='forgot_username'),
     path('password_change/', views.PasswordChangeView.as_view(), name='password_change'),
     path('password_change/done/', views.PasswordChangeDoneView.as_view(), name='password_change_done'),
