@@ -16,7 +16,7 @@ fake = Faker()
 users = []
 profiles = []
 
-for i in range(20):
+for i in range(5):
     # generate users
     randNum = randrange(1,3)
     randNum2 = randrange(0,2)

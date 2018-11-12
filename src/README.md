@@ -15,6 +15,7 @@ A webapp to connect lonely people with other lonely people.
  + Secure Login
  + Change/Update Profile
 
+<!--
 ## Visual Studio Virtual Environment Setup
  1. Open the project in Visual Studio by clicking on the `.sln` file.
  2. In the **Solution Explorer Window**, right click on **Python Environments**.
@@ -25,3 +26,4 @@ A webapp to connect lonely people with other lonely people.
 A virtual environment should be generated according to the `requirements.txt` file. Make sure to update the `requirements.txt` by right clicking on env and selecting **Generate requirements.txt**.
 
 For those not using Visual Studio use the command `pip install -r requirements.txt` to set up your virtual environment and `pip freeze > requirements.txt` to generate the requirements file.
+--->

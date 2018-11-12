@@ -39,12 +39,12 @@
                 <a href={% url 'password_reset' %} class="text-muted" role="button">Forgot Password</a><br>
             </small>
             </div>
-            <input type="submit" value="Submit" class="btn btn-primary my-3">
+            <input type="submit" value="Submit" class="btn btn-primary">
         </form>
+        <small class="form-text text-muted">
+            Don't have an account? <a href={% url 'register' %} role="button">Sign up.</a><br>
+        </small>
     </div>
-
-</div>
-
 {% endblock %}
 
 <!-- Bootstrap JS -->

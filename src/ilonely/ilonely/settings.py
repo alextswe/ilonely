@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'pages',
+    'leaflet',
     # Add your apps here to enable them
     'django.contrib.admin',
     'django.contrib.auth',
@@ -78,6 +79,11 @@ WSGI_APPLICATION = 'ilonely.wsgi.application'
 #Postman Settings
 POSTMAN_AUTO_MODERATE_AS = True
 POSTMAN_DISABLE_USER_EMAILING = True
+
+# Leaflet Settings
+LEAFLET_CONFIG = {
+    'TILES': 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+}
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases

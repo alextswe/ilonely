@@ -1,25 +1,28 @@
 function getLocation() {
-    var message = document.getElementById("location");
+    function getLocation() {
+        var output = document.getElementById("message");
 
-    if (!navigator.geolocation) {
-        message.innerHTML = "<p>Geolocation is not supported by your browser</p>";
-        return;
+        if (!navigator.geolocation) {
+            // alert user that their browser does not support geolocation
+            output.innerHTML = "Not supported";
+            return;
+        }
+
+        function success(position) {
+            document.getElementById('latitude').value = position.coords.latitude;
+            document.getElementById('longitude').value = position.coords.longitude;
+            output.innerHTML = "Success!";
+            // document.getElementById.submit("geolocation");
+        }
+
+        function error() {
+            // alert user of geolocation error
+            // do not update user's location
+            output.innerHTML = "geolocation api error";
+        }
+        output.innerHTML = "Looking for your location...";
+        navigator.geolocation.getCurrentPosition(success, error);
     }
-
-    function success(position) {
-        var lat = position.coords.latitude;
-        var long = position.coords.longitude;
-
-        message.innerHTML = "Lat: " + lat + " Long: " + long;
-    }
-
-    function error() {
-        message.innerHTML = "Unable to retrieve your location";
-    }
-
-    message.innerHTML = "<p>Locating…</p>";
-
-    navigator.geolocation.getCurrentPosition(success, error);
 }
 
 function sortPeople(radius) {
@@ -35,3 +38,5 @@ function sortPeople(radius) {
         }
     }
 }
+
+// map.setView([{{ user.profile.latitude }}, {{ user.profile.longitude }}], 14);

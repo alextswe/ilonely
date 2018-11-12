@@ -12,6 +12,7 @@ from .forms import CustomUserCreationForm
 from pages.models import Profile, Follow, Block, Thread, Message, Post
 from pages.geo import getNearby
 import random,string
+from django.core import serializers
 
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
@@ -195,6 +196,18 @@ def user_home_view(request):
                                                'nearbyPosts' : nearbyPosts,
                                                'personalPosts' : personalPosts})
 
+@login_required(login_url="home")
+def set_location(request): 
+    if request.method == 'POST':
+        me = User.objects.get(pk=request.user.id)
+        myProfile = Profile.objects.get(user = me)
+        lat = request.POST.get('latitude')
+        long = request.POST.get('longitude')
+        myProfile.latitude = lat
+        myProfile.longitude = long
+        print("Lat, long:", lat, long)
+        return redirect('user_home')
+
 # Prevents anyone from accessing this page unless they are logged in to their account
 @login_required(login_url="home")
 def notifications_view(request):
@@ -281,29 +294,42 @@ def view_following(request):
 @login_required(login_url="home")
 def view_nearby(request):
     if request.method == 'POST':
-        viewUser = request.POST['viewUser']
-        return redirect(public_profile, userid = viewUser)
+        if request.POST.get('viewUser'):
+            viewUser = request.POST['viewUser']
+            return redirect(public_profile, userid = viewUser)
+    elif request.method == 'GET':
+        distList=[]
+        peopleNearMe=[]
+        miles = 10
+        me = User.objects.get(pk=request.user.id)
+        myProfile = Profile.objects.get(user = me)
+        
+        if request.GET.get('milesFilter'):
+            miles = int(request.GET['milesFilter'])
+            peopleNear = getNearby(me, miles, distList)       
+        else:
+            peopleNear = getNearby(me, 10, distList)
+
+        peopleNearMe=blockUsers(peopleNear, me)
+        return render(request, 
+                        'pages/view_nearby.html', 
+                        {'title':'Nearby', 
+                        'people': zip(peopleNearMe, distList),
+                        'profile': myProfile,
+                        'radius': miles})
     else:
         distList=[]
+        peopleNearMe=[]
         me = User.objects.get(pk=request.user.id)
-        myProfile = Profile.objects.filter(user = me).first()
-        #blocked users are filtered
+        myProfile = Profile.objects.get(user = me)
         peopleNear = getNearby(me, 10, distList)
-        profilesIBlock = User.objects.filter(pk__in = Block.objects.filter(userBlocking = me).values_list('user'))
-        blockedUsers = list(Profile.objects.filter(user__in = profilesIBlock))
-        peopleNearMe = []
-
-        for i in peopleNear:
-            if i in blockedUsers:
-                continue
-            else:
-                peopleNearMe.append(i)  
-
+        peopleNearMe=blockUsers(peopleNear, me)
         return render(request, 
-                      'pages/view_nearby.html', 
-                      {'title':'Nearby', 
-                       'people': zip(peopleNearMe, distList),
-                       'profile': myProfile})
+                        'pages/view_nearby.html', 
+                        {'title':'Nearby', 
+                        'people': zip(peopleNearMe, distList),
+                        'profile': myProfile,
+                        'zoom': 10})
 
 @login_required(login_url="home")
 def public_profile(request, userid):
@@ -467,3 +493,16 @@ def feed(request):
                                                'followingPosts' : followingPosts, 
                                                'nearbyPosts' : nearbyPosts,
                                                'personalPosts' : personalPosts})
+
+def blockUsers(peopleNear, me):
+    profilesIBlock = User.objects.filter(pk__in = Block.objects.filter(userBlocking = me).values_list('user'))
+    blockedUsers = list(Profile.objects.filter(user__in = profilesIBlock))
+    peopleNearMe = []
+
+    for i in peopleNear:
+        if i in blockedUsers:
+            continue
+        else:
+            peopleNearMe.append(i)  
+
+    return peopleNearMe
