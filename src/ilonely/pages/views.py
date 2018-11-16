@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpRequest, HttpResponseRedirect
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, authenticate
@@ -11,8 +11,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from .forms import CustomUserCreationForm
 from pages.models import Profile, Follow, Block, Thread, Message, Post
 from pages.geo import getNearby
+from geopy.geocoders import Nominatim
 import random,string
-from django.core import serializers
 
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
@@ -178,7 +178,7 @@ def user_home_view(request):
     profilesIFollow = Profile.objects.filter(user__in = followSet)
     followingPosts = list(Post.objects.filter(profile__in = profilesIFollow).order_by('-datePosted'))
     #posts of people nearby
-    profilesNearMe = Profile.objects.filter(location = myProfile.location).exclude(user = me)
+    profilesNearMe = getNearby(me, 10)
     profilesIBlock = User.objects.filter(pk__in = Block.objects.filter(userBlocking = me).values_list('user'))
     blockedUsers = list(Profile.objects.filter(user__in = profilesIBlock))
     nearby = list(Post.objects.filter(profile__in = profilesNearMe).order_by('-datePosted'))
@@ -200,13 +200,21 @@ def user_home_view(request):
 def set_location(request): 
     if request.method == 'POST':
         me = User.objects.get(pk=request.user.id)
-        myProfile = Profile.objects.get(user = me)
-        lat = request.POST.get('latitude')
-        long = request.POST.get('longitude')
-        myProfile.latitude = lat
-        myProfile.longitude = long
-        print("Lat, long:", lat, long)
-        return redirect('user_home')
+        profile = Profile.objects.get(user = me)
+        profile.latitude = request.POST.get('latitude')
+        profile.longitude = request.POST.get('longitude')
+        geolocator = Nominatim(user_agent="ilonely")
+        location = geolocator.reverse("%s, %s" % (profile.latitude, profile.longitude))
+        state = location.raw['address']['state']
+        try:
+            city = (location.raw['address']['city'])
+        except:
+            city = (location.raw['address']['hamlet'])
+        profile.location = ("%s, %s") % (city, state)
+        profile.save()
+        return HttpResponse(status=204)
+    else:
+        return HttpResponseBadRequest(request)
 
 # Prevents anyone from accessing this page unless they are logged in to their account
 @login_required(login_url="home")
@@ -301,15 +309,17 @@ def view_nearby(request):
         distList=[]
         peopleNearMe=[]
         miles = 10
+        age = None
         me = User.objects.get(pk=request.user.id)
         myProfile = Profile.objects.get(user = me)
-        
+
+        if request.GET.get('ageFilter'):
+            age = int(request.GET['ageFilter'])
+
         if request.GET.get('milesFilter'):
             miles = int(request.GET['milesFilter'])
-            peopleNear = getNearby(me, miles, distList)       
-        else:
-            peopleNear = getNearby(me, 10, distList)
 
+        peopleNear = getNearby(me, miles, distList, age)       
         peopleNearMe=blockUsers(peopleNear, me)
         return render(request, 
                         'pages/view_nearby.html', 
@@ -484,7 +494,7 @@ def feed(request):
     profilesIFollow = Profile.objects.filter(user__in = followSet)
     followingPosts = list(Post.objects.filter(profile__in = profilesIFollow).order_by('-datePosted'))
     #posts of people nearby
-    profilesNearMe = Profile.objects.filter(location = myProfile.location).exclude(user = me)
+    profilesNearMe = getNearby(me, 10)
     nearbyPosts = list(Post.objects.filter(profile__in = profilesNearMe).order_by('-datePosted'))
     #profilesIBlock = list(Profile.objects.filter(user__in = blockSet))
     #myPosts

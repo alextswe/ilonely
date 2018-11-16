@@ -31,6 +31,12 @@
             width:  100%;
             height: 75%;
         }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+          -webkit-appearance: none; 
+          margin: 0; 
+        }
     </style>
 
     <div class="mb-3 p-2" id="filters">
@@ -38,40 +44,36 @@
         <div class="nav btn-toolbar justify-content-center">
             <form method="GET">
                 <!-- Filter nearby users by miles -->
-                <div class="btn-group btn-group-toggle" data-toggle="buttons" >
-                    <span class="btn input-group-text" id="basic-addon1">Miles</span>
-                    <label class="btn btn-outline-primary">
-                        <input type="radio" onclick="sortPeople(10)" autocomplete="off" name="milesFilter" value="10">10
-                    </label>
-                    <label class="btn btn-outline-primary">
-                        <input type="radio" onclick="sortPeople(5)" autocomplete="off" name="milesFilter" value="5">5
-                    </label>
-                    <label class="btn btn-outline-primary">
-                        <input type="radio" onclick="sortPeople(3)" autocomplete="off" name="milesFilter" value="3">3
-                    </label>
-                    <label class="btn btn-outline-primary">
-                        <input type="radio" onclick="sortPeople(1)" autocomplete="off" name="milesFilter" value="1">1
-                    </label>
-                </div>
+                <span class="input-group">
+                    <span class="btn-group btn-group-toggle mr-2" data-toggle="buttons">
+                        <span class="btn input-group-text">Mile</span>
+                        <label class="btn btn-outline-primary">
+                            <input type="radio" autocomplete="off" name="milesFilter" value="10">10
+                        </label>
+                        <label class="btn btn-outline-primary">
+                            <input type="radio" autocomplete="off" name="milesFilter" value="5">5
+                        </label>
+                        <label class="btn btn-outline-primary">
+                            <input type="radio" autocomplete="off" name="milesFilter" value="3">3
+                        </label>
+                        <label class="btn btn-outline-primary">
+                            <input type="radio" autocomplete="off" name="milesFilter" value="1">1                        
+                        </label>
+                    </span>
                 
-                <!-- Filter nearby users by age -->
-                <!--
-                <div>
-                    <label class="btn btn-outline-primary active">
-                        <input type="radio" onclick="sortPeople(10)" autocomplete="off" name="milesFilter"  value="10" checked>10
-                    </label>
-                    <label class="btn btn-outline-primary">
-                        <input type="radio" onclick="sortPeople(5)" autocomplete="off" name="milesFilter" value="5">5
-                    </label>
-                    <label class="btn btn-outline-primary">
-                        <input type="radio" onclick="sortPeople(3)" autocomplete="off" name="milesFilter" value="3">3
-                    </label>
-                    <label class="btn btn-outline-primary">
-                        <input type="radio" onclick="sortPeople(1)" autocomplete="off" name="milesFilter" value="1">1
-                    </label>
-                </div>
-                --->
-                <input type="submit" class="btn btn-primary my-3" value="Submit"/>
+                    <!-- Filter nearby users by age -->
+                    <span class="input-group mr-2">
+                        <span class="input-group-prepend">
+                            <span class="input-group-text">Age</span>
+                        </span>
+                        <label class="form-control" style="width:150px">
+                            <input type="range" min="18" max="100" value="100" class="slider" name="ageFilter" id="ageSlider">
+                        </label>
+                        <input type="number" min="18" max="100" class="form-control" style="width:52px" id="ageOutput"/>
+                    </span>
+
+                    <input type="submit" class="btn btn-primary" value="Submit"/>
+                </span>
             </form>
         </div>
     </div>
@@ -90,10 +92,8 @@
                                 {% else %}
                                     <img style="border-radius: 50%; width:50px; float:left;" src="../../pages/media/profile_photos/default.jpg" />
                                 {% endif %}
-                                <span>
-                                    <p style="padding-left:15px;float:left;">{{person.user.first_name}}&nbsp;{{person.user.last_name}}<br/>
-                                    <small class="text-muted" style="float:left">{{person.age}} years old</small></p>
-                                </span>
+                                <p style="padding-left:15px;margin-bottom:0;float:left;" class="personName">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p><br>
+                                <small class="text-muted" style="padding-left:15px;float:left">{{person.age}} years old</small>
                                 <small style="text-align:right;align-self:center;float:right" class="distances text-muted ">{{ distance }}mi</small>
                             </button>
                             <p class="lat" hidden>{{person.latitude}}</p>
@@ -110,10 +110,14 @@
         </div>
     </div>
 
-    <div id="testing">TESTING FOR MAP stuff</div>
+    <!-- Leaflet map script-->
     <script type="text/javascript">
         function map_init_basic(map, options) {
-            L.marker([{{ user.profile.latitude }},{{ user.profile.longitude }}]).addTo(map);
+            var youMarker = L.marker([{{ user.profile.latitude }},{{ user.profile.longitude }}], {
+                            riseOnHover: 'True', 
+                            title: 'That\'s you!',
+                            autoPan: 'True'
+            }).addTo(map).bindPopup("<b>You are here.</b>").openPopup();
             map.setView([{{ user.profile.latitude }}, {{ user.profile.longitude }}], 11);
             circle = L.circle([{{ user.profile.latitude }}, {{ user.profile.longitude }}], {
                     color: 'blue',
@@ -122,16 +126,31 @@
                     radius: {{ radius }}*1609.344
             }).addTo(map);
 
+            map.fitBounds(circle.getBounds())
+
             lats = document.getElementsByClassName("lat");
             longs = document.getElementsByClassName("long");
+            names = document.getElementsByClassName("personName");
             for (i = 0; i < lats.length; i++) {
                 lat = lats[i].innerHTML;
                 long = longs[i].innerHTML;
-                L.marker([parseFloat(lat), parseFloat(long)]).addTo(map);
+                name = names[i].innerHTML;
+                L.marker([parseFloat(lat), parseFloat(long)], {riseOnHover:'True'}).addTo(map).bindPopup("<b>"+name.toString()+"</b>"); 
             }
+        }
+    </script>
+        
+    <script>
+        var slider = document.getElementById("ageSlider");
+        var output = document.getElementById("ageOutput");
+        output.value = slider.value;
 
-            var out = document.getElementById('testing');
-            out.innerHTML = "hey ;)";
+        slider.oninput = function() {
+            output.value = this.value;
+        }
+
+        output.oninput = function () {
+            slider.value = this.value;
         }
     </script>
 {% endblock %}

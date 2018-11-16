@@ -1,4 +1,9 @@
 ﻿{% extends "pages/base.html"%}
+
+{% block extrahead %}
+<script src="static/js/extras.js"></script>
+{% endblock %}
+
 {% block content %}
     <!-- Login page display -->
     {% if user.is_authenticated %}
@@ -12,5 +17,16 @@
         <!-- Unauthorized users should not have access to here -->
         <h2>Please log in to access this page</h2>
     {% endif %}
+
+    <form id="geolocation" action="{% url 'set_location'%}" method="POST">
+        {% csrf_token %}
+        <input type="text" id="latitude" name="latitude" value="" hidden/>
+        <input type="text" id="longitude" name="longitude" value="" hidden/>
+        <input type="submit" hidden/>
+    </form>
+
+    <script type="text/javascript">
+        window.onload = getLocation();
+    </script>
 
 {% endblock %}
