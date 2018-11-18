@@ -46,6 +46,12 @@
     <Compile Include="pages\migrations\__init__.py" />
     <Compile Include="pages\models.py" />
     <Compile Include="pages\signals.py" />
+    <Compile Include="pages\templatetags\notif_badge_tags.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pages\templatetags\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="pages\tests.py" />
     <Compile Include="pages\views.py" />
     <Compile Include="pages\__init__.py" />
@@ -67,6 +73,7 @@
     <Folder Include="pages\migrations\" />
     <Folder Include="pages\media\" />
     <Folder Include="pages\fixtures\" />
+    <Folder Include="pages\templatetags\" />
     <Folder Include="pages\templates\" />
     <Folder Include="pages\templates\pages\" />
     <Folder Include="pages\templates\postman\" />
@@ -121,6 +128,8 @@
   <ItemGroup>
     <Content Include="pages\fixtures\original.json" />
     <Content Include="pages\media\profile_photos\default.jpg" />
+    <Content Include="pages\media\profile_photos\ryan.jpg" />
+    <Content Include="pages\templates\pages\notification_badge.html" />
     <Content Include="pages\templates\pages\base.html" />
     <Content Include="pages\templates\pages\feed.html" />
     <Content Include="pages\templates\pages\home.html" />
