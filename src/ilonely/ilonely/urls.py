@@ -41,4 +41,5 @@ urlpatterns = [
     url(r'^feed$', pages.views.user_home_view, name='feed'),
     url(r'^admin/', admin.site.urls), # admin site url
     url(r'^messages/', include('postman.urls', namespace='postman')),
+    url(r'^accounts/', include('allauth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
