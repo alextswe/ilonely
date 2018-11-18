@@ -1,24 +1,24 @@
 function getLocation() {
-    var message = document.getElementById("location");
+    // var output = document.getElementById("message");
 
     if (!navigator.geolocation) {
-        message.innerHTML = "<p>Geolocation is not supported by your browser</p>";
+        // output.innerHTML = "Not supported";
         return;
     }
 
     function success(position) {
-        var lat = position.coords.latitude;
-        var long = position.coords.longitude;
-
-        message.innerHTML = "Lat: " + lat + " Long: " + long;
+        document.getElementById('latitude').value = position.coords.latitude;
+        document.getElementById('longitude').value = position.coords.longitude;
+        // output.innerHTML = "Success!";
+        document.getElementById("geolocation").submit();
+        return;
     }
 
     function error() {
-        message.innerHTML = "Unable to retrieve your location";
+        // output.innerHTML = "geolocation api error";
     }
 
-    message.innerHTML = "<p>Locating…</p>";
-
+    // output.innerHTML = "Looking for your location...";
     navigator.geolocation.getCurrentPosition(success, error);
 }
 

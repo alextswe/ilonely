@@ -43,8 +43,10 @@ class CustomUserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.Meta.fields:
+            actualField = self.fields.get(field)
             self.fields[field].widget.attrs.update({
-                'class': 'form-control'
+                'class': 'form-control',
+                # 'placeholder': actualField.label
             })
 
     # Checks if username is taken

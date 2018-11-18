@@ -32,6 +32,7 @@ urlpatterns = [
 
     url(r'^success$', pages.views.success, name='success'),
     url(r'^user_home$', pages.views.user_home_view, name='user_home'),
+    url(r'^set_location$', pages.views.set_location, name='set_location'),
     url(r'^notifications$', pages.views.notifications_view, name='notifications'),
     url(r'^view_following$', pages.views.view_following, name='view_following'),
     url(r'^view_nearby$', pages.views.view_nearby, name='view_nearby'),
@@ -40,4 +41,5 @@ urlpatterns = [
     url(r'^feed$', pages.views.user_home_view, name='feed'),
     url(r'^admin/', admin.site.urls), # admin site url
     url(r'^messages/', include('postman.urls', namespace='postman')),
+    url(r'^accounts/', include('allauth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
