@@ -20,5 +20,13 @@
     {% endblock %}
 </head>
 <body>
-    <p style="text-align:center; margin-top: -10px">{{new_notifications}}</p>
+    {% if new_notifications > 0 %}
+        <span class="badge badge-danger" style="height:20px; vertical-align:middle; text-align:center; margin-left:-5px">
+            {% if new_notifications < 100 %}
+                <p style="text-align:center">{{new_notifications}}</p>
+            {% else %}
+                <p style="text-align:center">100+</p>
+            {% endif %}
+        </span>
+    {% endif %}
 </body>
