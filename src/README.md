@@ -1,16 +1,26 @@
 # iLonely
-A webapp to connect lonely people with other lonely people.
+A webapp based off the Nearby mobile app.
 
-## Current Sprint Goals:
+## Current Sprint Goals
+ + Social Authentication
+   + Register using an existing Google account
+ + Events
+ + Connect with Instagram
+
+## Sprint 2 Goals:
  + Feed
  + Messaging
  + Discover Nearby
+   + Finds nearby users up to a 10 miles radius
+   + Change search raduius to 5, 3, or 1 mile(s)
+   + Filter nearby users by age
+   + Displays a map showing nearby user's last location 
 
 ## Sprint 1 Goals:
  + Registration
    + Users must input a unique **username** and **email** to register.
    + User must also input **first name**, **last name**, and **age**
-   + Password must be at least 8 characters and cannot be entirely numeric
+   + Password must be at least **8 characters** and **cannot be entirely numeric**
    + Emails users upon successful registration
  + Secure Login
  + Change/Update Profile
