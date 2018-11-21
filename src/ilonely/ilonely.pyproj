@@ -100,9 +100,6 @@
     <Folder Include="pages\static\leaflet\leaflet\images\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include=".env">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="pages\fixtures\original.json" />
     <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\media\profile_photos\ryan.jpg" />
