@@ -51,7 +51,7 @@ def register(request):
             print(form.cleaned_data.get('age'))
             user.profile.save()
             user.save()
-            auth_login(request, user)
+            auth_login(request, user, 'django.contrib.auth.backends.ModelBackend')
             user.email_user(
                 subject='Welcome to iLonely!',
                 message = 'Hi %s! We hope you\'ll enjoy iLonely!' % user.get_username()
@@ -76,7 +76,7 @@ def login_view(request):
         if form.is_valid():
             # Log in the user
             user = form.get_user()
-            login(request, user)
+            login(request, user, 'django.contrib.auth.backends.ModelBackend')
             # Take user to their home page
             return redirect('user_home')
         else:
