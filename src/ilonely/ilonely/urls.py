@@ -42,4 +42,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls), # admin site url
     url(r'^messages/', include('postman.urls', namespace='postman')),
     url(r'^accounts/', include('allauth.urls')),
+    url(r'^Instalink/$', pages.views.linkInstagram, name='Instalink'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

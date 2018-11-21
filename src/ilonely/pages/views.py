@@ -27,7 +27,17 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.urls import reverse
+from instagram.client import InstagramAPI
+#import urllib2
+import json
+import requests
 # Create your views here.
+
+INSTAGRAM_CLIENT_ID = '9788a776a2e44e7a842fc85132f528dc' # Keep Secret
+INSTAGRAM_CLIENT_SECRET = '1a18bbccc88b4d0ca151edc06d39ed37' # Really Keep Secret
+INSTAGRAM_REDIRECT_URI = 'http://localhost:8000/Instalink/'
+instagram_auth_url = 'https://api.instagram.com/oauth/authorize/?client_id=' + INSTAGRAM_CLIENT_ID + '&redirect_uri=' + INSTAGRAM_REDIRECT_URI + '&response_type=code'
+
 
 def home(request):
     assert isinstance(request, HttpRequest)
@@ -89,7 +99,7 @@ def login_view(request):
         'registration/login.html',
         {
             'title':'Login',
-            'form':form
+            'form':form,
         }
     )
 
@@ -194,7 +204,8 @@ def user_home_view(request):
     return render(request, 'pages/user_home.html', {'title' : 'User Home', 
                                                'followingPosts' : followingPosts, 
                                                'nearbyPosts' : nearbyPosts,
-                                               'personalPosts' : personalPosts})
+                                               'personalPosts' : personalPosts,
+                                               'instagram_auth':instagram_auth_url,})
 
 @login_required(login_url="home")
 def set_location(request): 
@@ -468,11 +479,15 @@ def my_profile(request):
         profile.save()
         return render(request, 'pages/my_profile.html', 
                         {'title': (profile.user.first_name + ' Profile Page'),
-                        'profile' : profile,})
+                        'profile' : profile,
+                        }
+                      )
     else:
         return render(request, 'pages/my_profile.html',
-                    {'title': (profile.user.first_name + ' Profile Page'),
-                    'profile' : profile,})
+                        {'title': (profile.user.first_name + ' Profile Page'),
+                        'profile' : profile,
+                        }
+                      )
 
 @login_required(login_url="home")
 def feed(request):
@@ -516,3 +531,55 @@ def blockUsers(peopleNear, me):
             peopleNearMe.append(i)  
 
     return peopleNearMe
+
+@login_required(login_url="home")
+def linkInstagram(request):
+    # Fixme: Handle case where some fool enters an erroneous code in the url
+    def get_access_code(code):
+        if code != None:
+            url = 'https://api.instagram.com/oauth/access_token'
+            data = {
+                'client_id': INSTAGRAM_CLIENT_ID,
+                'client_secret': INSTAGRAM_CLIENT_SECRET,
+                'grant_type': 'authorization_code',
+                'redirect_uri': INSTAGRAM_REDIRECT_URI,
+                'code': code
+            }
+            r = requests.post(url, data=data)
+            parsed_json = json.loads(r.text)
+            access_token = parsed_json['access_token']
+            return access_token
+        else:
+            return None
+    def get_media(code):
+        access_token = get_access_code(code)
+        media_urls = []
+        if access_token != None:
+            url = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=' + access_token
+            r = requests.get(url)
+            parsed_json = json.loads(r.text)
+            for row in parsed_json['data']:
+                media_urls.append(row.get('images').get('low_resolution').get('url'))
+            return media_urls
+        else:
+            return None
+
+    code = request.GET.get('code',None)
+    media_urls = get_media(code)
+    if media_urls != None:
+        # Fixme: Update html file to feed.html
+        return render(request, 'instagram/upload_pictures.html',
+                  {
+                      'media_urls' : media_urls,
+                  }
+                 )
+    else:
+        # Fail silently
+        return redirect('home')
+   
+@login_required(login_url="home")
+def uploadInstapics(request):
+    return render(request, 'instagram/upload_pictures.html',
+                  {
+                  }
+                 )

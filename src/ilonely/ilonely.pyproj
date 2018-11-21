@@ -4,7 +4,8 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>ilonely</Name>
     <RootNamespace>ilonely</RootNamespace>
-    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
+    <WebBrowserPort>8000</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -66,6 +67,7 @@
     <Folder Include="pages\migrations\" />
     <Folder Include="pages\media\" />
     <Folder Include="pages\fixtures\" />
+    <Folder Include="pages\templates\instagram\" />
     <Folder Include="pages\templatetags\" />
     <Folder Include="pages\templates\" />
     <Folder Include="pages\templates\pages\" />
@@ -114,6 +116,7 @@
     <Content Include="pages\templates\pages\success.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="pages\templates\instagram\upload_pictures.html" />
     <Content Include="pages\templates\pages\user_home.html" />
     <Content Include="pages\templates\pages\view_following.html" />
     <Content Include="pages\templates\pages\view_nearby.html" />
