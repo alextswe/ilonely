@@ -1,34 +1,62 @@
 {% extends "pages/base.html" %}
   
 {% block content %}
-    
-    <div style="text-align:center;padding-bottom:10px;">
-        {% if profile.image %}
-        <img src="{{profile.photo.url}}" />
-        {% else %}
-            <img style="border-radius: 50%; width:50px; float:center;" src="pages/media/profile_photos/default.jpg" />
-        {% endif %}
-        <form method="post"> 
-            {% csrf_token %}
-            <div style="text-align:center;padding-bottom:10px;">
-                <h3>
-                    {{profile.user.first_name}}&nbsp;{{profile.user.last_name}}
-                </h3>
-            </div>
-            <div style="text-align:center;padding-bottom:10px;">
-                First name: <input type="text" name="fnamespace" value= {{profile.user.first_name}}
-            </div>
-            <div style="text-align:center;padding-bottom:10px;">
-                Last name: <input type="text" name="lnamespace" value= {{profile.user.last_name}}
-            </div>
-            <div style="text-align:center;">Age: <input type="text" name="agespace" value= {{profile.age}} ></div> <br>
-            <div style="text-align:center;">
-                Bio: <textarea name="biospace" maxlength="500" rows="4" cols="50">{{profile.bio}}</textarea>
-            </div>
-            <input type="submit" name ="editFields" value="Submit">
-        </form>
+<div class="mx-auto m-2" style="width:550px">
+    <div class="row">
+        <div class="col">
+            {% if profile.photo %}
+                <img style="border-radius: 50%; box-shadow: 3px 3px 3px #cecece; width:150px; margin-left:auto;margin-right:auto;display:block;" src="../../{{profile.photo.url}}" />
+            {% else %}
+                <img style="border-radius: 50%; box-shadow: 3px 3px 3px #cecece; width:150px; margin-left:auto;margin-right:auto;display:block;" src="../../pages/media/profile_photos/default.jpg" />
+            {% endif %}
+                
+        </div>
     </div>
-    <p><a href={% url 'user_home' %}>Go Back</a></p>
+        
+    <form method="post"> 
+        {% csrf_token %}
+        <div class="card p-4">
+            <h3 class="text-muted">Edit Profile</h3>
+            <div class="row">
+                <div class="col"><hr class="mb-4"/></div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3">First Name</label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="text" name="fnamespace" value= {{profile.user.first_name}}>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3">Last Name</label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="text" name="lnamespace" value= {{profile.user.last_name}}>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3">Age</label>
+                <div class="col-sm-9">
+                    <input type="number" min="18" class="form-control" name="agespace" value= {{profile.age}} >
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3">Bio</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" name="biospace" maxlength="500" rows="4" cols="50">{{profile.bio}}</textarea>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col"><hr class="mb-4"/></div>
+            </div>
+
+            <input class="btn btn-success" type="submit" name ="editFields" value="Save">
+        </div>
+    </form>
+</div>
 {% endblock %}
 
 
