@@ -5,6 +5,7 @@
     <Name>ilonely</Name>
     <RootNamespace>ilonely</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <WebBrowserPort>8000</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -99,9 +100,13 @@
     <Folder Include="pages\static\leaflet\leaflet\images\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".env">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="pages\fixtures\original.json" />
     <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\media\profile_photos\ryan.jpg" />
+    <Content Include="pages\static\css\img\google_sign_in.png" />
     <Content Include="pages\templates\pages\notification_badge.html" />
     <Content Include="pages\templates\pages\base.html" />
     <Content Include="pages\templates\pages\feed.html" />
