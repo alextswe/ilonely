@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'pages',
     'leaflet',
     'postman',
+    'social_django',
     # Add your apps here to enable them
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,12 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-
-    # for django allauth
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google'
 ]
 
 MIDDLEWARE = [
@@ -76,6 +71,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
 
         },
@@ -125,14 +122,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-    # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
+SITE_ID = 1
 
-SITE_ID=1
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.open_id.OpenIdAuth',
+    'social_core.backends.google.GoogleOpenId',
+    'social_core.backends.google.GoogleOAuth2',
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
@@ -166,3 +163,8 @@ EMAIL_HOST_USER = '610.squad.ucr@gmail.com'
 EMAIL_HOST_PASSWORD = 'kqwbtvfurcqccmwi'
 
 IP_STACK_ACCESS_KEY = config('IP_STACK_ACCESS_KEY', default='')
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('GOOGLE_OAUTH2_KEY', default='')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('GOOGLE_OAUTH2_SECRET', default='')
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'user_home'
