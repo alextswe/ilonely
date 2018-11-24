@@ -4,7 +4,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>ilonely</Name>
     <RootNamespace>ilonely</RootNamespace>
-    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
     <WebBrowserPort>8000</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup>
@@ -105,6 +105,7 @@
     <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\media\profile_photos\ryan.jpg" />
     <Content Include="pages\static\css\img\google_sign_in.png" />
+    <Content Include="pages\static\js\popper.min.js" />
     <Content Include="pages\templates\pages\notification_badge.html" />
     <Content Include="pages\templates\pages\base.html" />
     <Content Include="pages\templates\pages\feed.html" />
@@ -122,6 +123,8 @@
     <Content Include="pages\templates\pages\view_following.html" />
     <Content Include="pages\templates\pages\view_nearby.html" />
     <Content Include="pages\templates\postman\base.html" />
+    <Content Include="pages\templates\postman\base_folder.html" />
+    <Content Include="pages\templates\postman\base_write.html" />
     <Content Include="pages\templates\registration\forgot_username.html" />
     <Content Include="pages\templates\registration\login.html" />
     <Content Include="pages\templates\registration\password_reset_complete.html" />
