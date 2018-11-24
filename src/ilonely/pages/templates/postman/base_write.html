@@ -9,13 +9,13 @@
 {% endblock %}
 {% block content %}
 <div class="container-fluid card p-4" id="postman">
-<h1>{% block pm_write_title %}{% endblock %}</h1>
+<h1 class="card-title">{% block pm_write_title %}{% endblock %}</h1>
 <form action="{% if next_url %}?next={{ next_url|urlencode }}{% endif %}" method="post">{% csrf_token %}
 <table>
 {% block pm_write_recipient %}{% endblock %}
 {{ form.as_table }}
 </table>
-<button type="submit" class="pm_btn pm_btn-send">{% trans "Send" %}</button>
+<button type="submit" class="btn btn-secondary pm_btn-send">{% trans "Send" %}</button>
 </form>
 </div>
 {% endblock %}

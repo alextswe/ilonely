@@ -21,7 +21,7 @@ in the INSTALLED_APPS setting.
 <span class="pm_by-mode">{% if by_conversation %}<a href="{{ by_message_url }}">{% endif %}{% trans "message" %}{% if by_conversation %}</a>{% endif %}</span>
 </div>{% endblock pm_by_modes %}
 <form action="{% block pm_form_action %}{% endblock %}" method="post">{% csrf_token %}
-{% block pm_form_buttons %}<span id="pm_buttons">
+{% block pm_form_buttons %}<span class="btn-group" role="group" id="pm_buttons">
 {% block pm_archive_button %}<button type="submit" class="btn btn-secondary pm_btn-archive" onclick="this.form.action='{% url 'postman:archive' %}'">{% trans "Archive" %}</button>{% endblock %}
 {% block pm_undelete_button %}<button type="submit" class="btn btn-secondary pm_btn-undelete" onclick="this.form.action='{% url 'postman:undelete' %}'">{% trans "Undelete" %}</button>{% endblock %}
 {% block pm_read_button %}<button type="submit" class="btn btn-secondary pm_btn-read" onclick="this.form.action='{% url 'postman:mark-read' %}'">{% trans "Mark as read" %}</button>{% endblock %}
