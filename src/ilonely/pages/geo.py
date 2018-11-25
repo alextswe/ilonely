@@ -2,7 +2,7 @@ from math import sin, cos, sqrt
 from geopy import distance
 from django.contrib.auth.models import User
 from django.conf import settings
-from pages.models import Profile
+from pages.models import Profile, Event
 from urllib.parse import urljoin
 import requests
 
@@ -35,3 +35,21 @@ def getNearby(user, radius, distList=None, age=None):
                         distList.append('%.2f'%(round(length,1)))
     
     return nearbyPeople
+
+# returns a list of events nearby in a something mi radius
+def getNearbyEvents(me, radius, distList=None):
+    events = Event.objects.all()
+    nearbyEvents = []
+    myLoc = (me.latitude, me.longitude)
+
+    if events is not None:
+        for event in events:
+            eventLoc = (event.latitude, event.longitude)
+            if all(eventLoc):
+                length = distance.distance(myLoc, eventLoc).miles
+                if length < radius:
+                    nearbyEvents.append(event)
+                    if distList is not None:
+                        distList.append('%.2f'%(round(length,1)))
+    
+    return nearbyEvents

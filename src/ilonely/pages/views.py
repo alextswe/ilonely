@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import CustomUserCreationForm
-from pages.models import Profile, Follow, Block, Thread, Message, Post
+from pages.models import Profile, Follow, Block, Thread, Message, Post, Event
 from pages.geo import getNearby
 from geopy.geocoders import Nominatim
 import random,string
@@ -582,3 +582,48 @@ def uploadInstapics(request):
                   {
                   }
                  )
+
+
+@login_required(login_url="home")
+def events(request):
+    me = Profile.objects.get(user = User.objects.get(pk=request.user.id))
+    radius = 20
+    activeEvent = 0
+    if request.method == 'POST':
+        if request.POST.get('viewEvent'): #select specific event to be shown on right side of screen
+            activeEvent = Event.objects.filter(pk = request.POST['viewEvent'])
+        else: #add event form submission
+            eventName = request.POST['eventName']
+            eventCategory = request.POST['eventCategory']
+            eventDate = request.POST['eventDate']
+            eventTime = request.POST['eventTime']
+            eventLocation = "Riverside, CA"
+            eventLong = 0.0
+            eventLat = 0.0
+            eventDescription = request.POST['eventDescription']
+            e = Event(name=eventName, date=eventDate, location=eventLocation, longitude=eventLong, latitude=eventLat, description=eventDescription, category=eventCategory)
+            e.save() 
+    #gonna need to be getNearbyEvents that returns events / distances
+    distances = []
+    events = Event.objects.all() #getNearbyEvents(me, radius, distances)
+    return render(request, 'pages/events.html', {'title' : 'Events', 
+                                               'events' : zip(events, distances), 
+                                               'activeEvent' : activeEvent
+                                               })
+
+def activeEvent(request, activeEventId):
+    me = Profile.objects.get(user = User.objects.get(pk=request.user.id))
+    event = Event.objects.filter(pk = activeEventId)
+    going = [False]
+    if request.method == 'POST':
+        if request.POST.get('rsvp'):
+            going = request.POST['rsvp']
+            if going:
+                e = Events.objects.get(pk = activeEvent.id).rsvp_list.add(me)
+                e.save()
+            else:
+                e = Events.objects.get(pk = activeEvent.id).rsvp_list.remove(me)
+                e.save()
+    return render(request, 'pages/aciveEvent.html', {'title' : 'Events', 
+                                               'activeEvent' : zip(event, going)
+                                               })

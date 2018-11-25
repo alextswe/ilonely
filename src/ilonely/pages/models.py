@@ -63,3 +63,13 @@ class Document(models.Model):
     description = models.CharField(max_length=255, blank=True)
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+class Event(models.Model):
+    name = models.CharField(max_length=100, blank=False)
+    date = models.DateTimeField(auto_now_add=False)
+    location = models.CharField(max_length=150, blank=False, default='') #like Riverside, CA
+    latitude = models.FloatField(max_length=150, default=0.0)
+    longitude = models.FloatField(max_length=150, default=0.0)
+    description = models.CharField(max_length=500, blank=False)
+    category = models.CharField(max_length=100)
+    rsvp_list = models.ManyToManyField(Profile, blank=True)

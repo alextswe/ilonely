@@ -1,0 +1,14 @@
+﻿<div class="eventContent">
+    <!--this needs an ajax partial postback-->
+    <button type="submit" class="{% if going %} btn btn-light {% else %} btn btn-primary {% endif %}" 
+            style="width:100%;box-shadow: 3px 3px 3px #cecece;" name="rsvp" 
+            value="{% if going %} False {% else %} True {% endif %}"> 
+            {% if going %} Cancel {% else %} RSVP {% endif %}
+    </button>
+    event name
+    event date
+    event location
+    event category
+    event description
+    rsvp list
+</div>
