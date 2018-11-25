@@ -1,24 +1,23 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
-from django.template import RequestContext
-from django.contrib import messages
-from django.contrib.auth import login as auth_login, authenticate
-from django.contrib.auth import login, logout
-from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
+from .forms import CustomUserCreationForm, CustomForgotUsernameForm
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import CustomUserCreationForm
-from pages.models import Profile, Follow, Block, Thread, Message, Post, Event
+from pages.models import Profile, Follow, Block, Thread, Message, Post
 from pages.geo import getNearby
 from geopy.geocoders import Nominatim
 import random,string
 
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
-from django.http import HttpResponseRedirect, QueryDict
-from django.shortcuts import resolve_url
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, QueryDict
+from django.shortcuts import render, redirect, resolve_url
+from django.template import RequestContext
 from django.template.response import TemplateResponse
+from django.urls import reverse
 from django.utils.encoding import force_text
 from django.utils.http import is_safe_url, urlsafe_base64_decode
 from django.utils.six.moves.urllib.parse import urlparse, urlunparse
@@ -26,9 +25,13 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
-from django.urls import reverse
+
+from geopy.geocoders import Nominatim
 from instagram.client import InstagramAPI
+from pages.geo import getNearby
+from pages.models import Profile, Follow, Block, Thread, Message, Post
 import json
+import random,string
 import requests
 # Create your views here.
 
@@ -60,7 +63,7 @@ def register(request):
             print(form.cleaned_data.get('age'))
             user.profile.save()
             user.save()
-            auth_login(request, user, 'django.contrib.auth.backends.ModelBackend')
+            login(request, user, 'django.contrib.auth.backends.ModelBackend')
             user.email_user(
                 subject='Welcome to iLonely!',
                 message = 'Hi %s! We hope you\'ll enjoy iLonely!' % user.get_username()
@@ -87,10 +90,7 @@ def login_view(request):
             user = form.get_user()
             login(request, user, 'django.contrib.auth.backends.ModelBackend')
             # Take user to their home page
-            return redirect('user_home')
-        else:
-            # Print error message
-            messages.error(request, 'Incorrect username or password')
+            return redirect('user_home') 
     else:
         form = AuthenticationForm()
     return render(
@@ -110,50 +110,30 @@ def logout_view(request):
 
 def forgot_username_view(request):
     assert isinstance(request, HttpRequest)
+    confirm = False
     if request.method == 'POST':
-        email = request.POST.get("email", None)
-        try:
-            user = User.objects.filter(email=email).first()
-        except User.DoesNotExist:
-            user = None
-        if user is not None:
-            user.email_user(
-                subject='iLonely: Account Username',
-                message = 'Did you forget your username? Don\'t worry, we didn\'t. Your username is: %s' % user.get_username()
-            )
-        messages.success(request, "We sent an email with your username to your account.");      
+        form = CustomForgotUsernameForm(data=request.POST)
+        if form.is_valid:
+            confirm = True
+            try:
+                user = User.objects.filter(email=form['email']).first()
+            except User.DoesNotExist:
+                user = None
+            if user is not None:
+                user.email_user(
+                    subject='iLonely: Account Username',
+                    message = 'Did you forget your username? Don\'t worry, we didn\'t. Your username is: %s' % user.get_username()
+                )
+    else:
+        form = CustomForgotUsernameForm()
     return render(
         request,
         'registration/forgot_username.html',
         {
             'title':'Forgot Username',
-        }
-    )
-
-def forgot_password_view(request):
-    assert isinstance(request, HttpRequest)
-    if request.method == 'POST':
-        username = request.POST.get("username", None)
-        try:
-            user = User.objects.filter(username=username).first()
-        except User.DoesNotExist:
-            user = None
-        if user is not None:
-            if user.get_username() == username:
-                password = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(7))
-                user.set_password(password)
-                user.save()
-                user.email_user(
-                subject='iLonely: Reset Account Password',
-                message = 'Hi {0}! Your password has been reset to: {1} \nCopy and paste this into the login page to finish resetting your password'.format(user.get_username(),password) 
-            )
-        messages.success(request, "An email has been sent to your account with further instructions.")  
-       
-    return render(
-        request,
-        'pages/forgot_password.html',
-        {
-            'title':'Forgot Password',
+            'form': form,
+            'confirm': confirm,
+            'confirmation_message': 'We sent an email with your username to your account'
         }
     )
 
@@ -282,9 +262,6 @@ def notifications_view(request):
         myMsgRequestProfiles = get_my_msg_requests(me)
         userRequestProfiles = get_user_msg_requests(me)
 
-        # FIXME: Follow Notifications:
-        # ---Search for all pending follow requests 
-        # ---   and load profiles associated with them
     return render(request, 'pages/notifications.html', 
                     {   'title':'Notifications',
                         'my_message_requests': myMsgRequestProfiles,
@@ -401,8 +378,8 @@ def public_profile(request, userid):
                     # If the message has not been confirmed, I can remove the request
                     m.delete()
                 except Message.DoesNotExist:
-                    # Fixme: If the message has been confirmed, go to message page so I can talk
-                    return redirect('Fixme: Create Message Page')
+                    # If the message has been confirmed, go to message page so I can chat
+                    return redirect('messaging')
             except Thread.DoesNotExist:
                 # If userTwo = me, I receieved a message request
                 try:
@@ -412,8 +389,8 @@ def public_profile(request, userid):
                         # If the message has not been confirmed, go to notifications page to accept/decline
                         return redirect('notifications')
                     except Message.DoesNotExist:
-                        # If the message has been confirmed, go to message page so I can talk
-                        return redirect('Fixme: Create Message Page')
+                        # If the message has been confirmed, go to message page so I can chat
+                        return redirect('messaging')
                 except Thread.DoesNotExist:
                     # A thread does not exist between the users, so create a new thread
                     m = Thread(userOne=me, userTwo=messageUser)
@@ -533,7 +510,7 @@ def blockUsers(peopleNear, me):
 
 @login_required(login_url="home")
 def linkInstagram(request):
-    # Fixme: Handle case where some fool enters an erroneous code in the url
+    # Fixme: Hide code from url and silently fail when someone enters a code in url
     def get_access_code(code):
         if code != None:
             url = 'https://api.instagram.com/oauth/access_token'

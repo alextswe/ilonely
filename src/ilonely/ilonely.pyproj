@@ -105,6 +105,7 @@
     <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\media\profile_photos\ryan.jpg" />
     <Content Include="pages\static\css\img\google_sign_in.png" />
+    <Content Include="pages\static\js\popper.min.js" />
     <Content Include="pages\static\js\datepair.js" />
     <Content Include="pages\static\js\jquery.datepair.js" />
     <Content Include="pages\static\js\jquery.timepicker.css" />
@@ -128,6 +129,8 @@
     <Content Include="pages\templates\pages\view_following.html" />
     <Content Include="pages\templates\pages\view_nearby.html" />
     <Content Include="pages\templates\postman\base.html" />
+    <Content Include="pages\templates\postman\base_folder.html" />
+    <Content Include="pages\templates\postman\base_write.html" />
     <Content Include="pages\templates\registration\forgot_username.html" />
     <Content Include="pages\templates\registration\login.html" />
     <Content Include="pages\templates\registration\password_reset_complete.html" />

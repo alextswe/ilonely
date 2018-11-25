@@ -7,22 +7,27 @@
     </head>
 
     <!-- Login page display -->
-    <div class="mx-auto flex-shrink-0 p-2" style="width:300px">
+    <div class="mx-auto flex-shrink-0 p-2" style="width:450px">
         <div style="text-align:center;">
             <h2>Log In</h2>
             <p>Be less lonely, with ilonely.</p>
-        </div>
 
-        <!-- For printing out error messages -->
-        {% if messages %}
-            {% for message in messages %}
-                {% if message.tag == error%}
-                    <div class="alert alert-danger" role="alert" style="display:inline-block">{{ message }}</div>
+            <!-- For printing out error messages -->
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger" role="alert" style="display:inline-block; font-weight:bold"> {{ error }} </div>
+                        <br />
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert" style="display:inline-block; font-weight:bold"> {{ error }} </div>
                     <br />
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="mx-auto flex-shrink-0 p-2" style="width:300px">
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
