@@ -14,6 +14,8 @@ import pages.views
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from pages.views import UserAutocomplete
+from pages.forms import WriteForm
 admin.autodiscover()
 
 urlpatterns = [
@@ -43,4 +45,5 @@ urlpatterns = [
     url(r'^messages/', include('postman.urls', namespace='postman')),
     url(r'auth/', include('social_django.urls', namespace='social')),
     url(r'^Instalink/$', pages.views.linkInstagram, name='Instalink'),
+    url(r'^messages/write/recipients/$', UserAutocomplete.as_view(), name='write-autocomplete'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

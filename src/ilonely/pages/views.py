@@ -18,7 +18,9 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
+from django.db.models import Q
 
+from dal import autocomplete
 from geopy.geocoders import Nominatim
 from instagram.client import InstagramAPI
 from pages.geo import getNearby
@@ -552,3 +554,15 @@ def uploadInstapics(request):
                   {
                   }
                  )
+
+#Based on django auto complete tutorial documentation
+class UserAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        me = User.objects.get(pk=request.user.id)
+        if not self.request.user.is_authenticated():
+            return User.objects.none()
+        return User.objects.all()
+        #messagelist = Message.objects.filter(isRequest=False)
+        #messagelist2 = messagelist.thread.filter(Q(userOne=me) | Q(userTwo=me)).values_list('user')
+        #messagesapproved = User.objects.filter(messagelist2)
+        return messagesapproved

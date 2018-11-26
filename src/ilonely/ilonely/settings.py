@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'leaflet',
     'postman',
     'social_django',
+    'dal',
+    'dal_select2',
     # Add your apps here to enable them
     'django.contrib.admin',
     'django.contrib.auth',
