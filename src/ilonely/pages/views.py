@@ -160,7 +160,7 @@ def user_home_view(request):
             myPost = request.POST.get('postContent', '')  
             myPic = request.FILES.get('pc_image', None)
             if myPic != None:
-                fs = FileSystemStorage(location='media/post_photos/')
+                fs = FileSystemStorage(location='../media/post_photos/')
                 filename = fs.save(myPic.name, myPic)
             p = Post(profile=myProfile, postContent=myPost, picture=myPic)
             p.save()
@@ -484,7 +484,7 @@ def feed(request):
             myPost = request.POST.get('postContent', '')  
             myPic = request.FILES.get('pc_image', None)
             if myPic != None:
-                fs = FileSystemStorage(location='media/post_photos/')
+                fs = FileSystemStorage(location='../media/post_photos/')
                 filename = fs.save(myPic.name, myPic)
             p = Post(profile=myProfile, postContent=myPost, picture=myPic)
             p.save()
