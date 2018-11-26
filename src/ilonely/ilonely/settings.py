@@ -89,6 +89,9 @@ WSGI_APPLICATION = 'ilonely.wsgi.application'
 #Postman Settings
 POSTMAN_AUTO_MODERATE_AS = True
 POSTMAN_DISABLE_USER_EMAILING = True
+POSTMAN_AUTOCOMPLETER_APP = {
+    'arg_default': 'postman_users',
+}
 
 # Leaflet Settings
 LEAFLET_CONFIG = {

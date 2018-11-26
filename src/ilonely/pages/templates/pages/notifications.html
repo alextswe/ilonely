@@ -56,18 +56,9 @@
 
     <!-- Login page display -->
     <div class="mx-auto flex-shrink-0 p-2" style="width:500px">
-
         <div style="text-align:center;">
             <h2>Notifications</h2>
         </div>
-
-        <!-- For printing out error messages -->
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-danger" role="alert" style="display:inline-block">{{ message }}</div>
-                <br />
-            {% endfor %}
-        {% endif %}
     </div>
  
     <form action="{% url 'notifications' %}" method="post">
