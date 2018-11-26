@@ -4,7 +4,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>ilonely</Name>
     <RootNamespace>ilonely</RootNamespace>
-    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
+    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <WebBrowserPort>8000</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup>
@@ -132,7 +132,14 @@
     <Content Include="marketplace\__pycache__\admin.cpython-36.pyc" />
     <Content Include="marketplace\__pycache__\models.cpython-36.pyc" />
     <Content Include="marketplace\__pycache__\__init__.cpython-36.pyc" />
-    <Content Include="media\product_pictures\13.png" />
+    <Content Include="media\product_pictures\1tb_harddrive.jpg" />
+    <Content Include="media\product_pictures\burnt_laptop.jpg" />
+    <Content Include="media\product_pictures\dc_potter.png" />
+    <Content Include="media\product_pictures\drumset.jpg" />
+    <Content Include="media\product_pictures\Metronome.png" />
+    <Content Include="media\product_pictures\no-image-available.png" />
+    <Content Include="media\product_pictures\ram.jpg" />
+    <Content Include="media\product_pictures\toaster.jpg" />
     <Content Include="pages\fixtures\original.json" />
     <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\media\profile_photos\ryan.jpg" />
