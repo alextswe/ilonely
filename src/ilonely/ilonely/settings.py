@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'pages',
+    'marketplace',
     'leaflet',
     'postman',
     'social_django',
@@ -88,6 +89,9 @@ WSGI_APPLICATION = 'ilonely.wsgi.application'
 #Postman Settings
 POSTMAN_AUTO_MODERATE_AS = True
 POSTMAN_DISABLE_USER_EMAILING = True
+POSTMAN_AUTOCOMPLETER_APP = {
+    'arg_default': 'postman_users',
+}
 
 # Leaflet Settings
 LEAFLET_CONFIG = {
@@ -148,9 +152,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-MEDIA_URL='/pages/media/'
+MEDIA_URL='/media/'
 
-MEDIA_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['pages/media/']))
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
 

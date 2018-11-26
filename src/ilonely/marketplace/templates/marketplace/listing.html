@@ -1,0 +1,63 @@
+{% extends "pages/base.html" %}
+
+{% block content %}
+<style>
+.profileButton {
+    cursor:pointer;
+    color: black;
+    padding:10px;
+}
+
+.profileButton:hover {
+    color: black;
+}
+
+.profileImage {
+    border-radius: 50%; 
+    width:50px; 
+    float:left;
+}
+
+</style>
+
+<div class="container mx-auto card">
+    <div class="row">
+        <div class="col-lg-6 border-right">
+            <div class="w-100 p-2">
+            {% if product.photo %}
+                <img style="width:100%" src="{{ product.photo.url }}" />
+            {% endif %}
+            </div>
+        </div>
+        <div class="col-lg">
+            <div class="w-100" style="height:50px;">
+                <a href="{% url 'public_profile' product.seller.user.id %}" class="profileButton" style="text-decoration:none;">
+                    <div>
+                        {% if product.seller.profile.photo %}
+                            <img class="profileImage p-1" src="{{product.seller.user.photo.url}}" />
+                        {% else %}
+                            <img class="profileImage p-1" src="pages/media/profile_photos/default.jpg" />
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h5>{{product.seller.user.first_name}}&nbsp;{{product.seller.user.last_name}}</h5>
+                    </div>
+                </a>
+            </div>
+            <hr />
+            <div>
+                <h4 style="display:inline">{{ product.name }}</h4>
+                <div style="float:right; font-size:15pt">
+                    {% if product.price is not 0 %}
+                        <b style="color:green">${{product.price}}</b>
+                    {% else %}
+                        <b>FREE</b>
+                    {% endif%}
+                </div>
+            </div>
+            <p>{{ product.description }}</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

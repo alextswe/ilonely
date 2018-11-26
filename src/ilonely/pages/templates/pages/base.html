@@ -1,5 +1,6 @@
 ﻿{% load static %}
-
+{% load i18n static %}
+{% load postman_tags %}
 <!DOCTYPE html>
 
 <head>
@@ -16,7 +17,7 @@
 
     <!--Javascript-->
     <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js'%}"></script>
-    <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'js/popper.min.js'%}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap.min.js'%}"></script>
 
     {% block extrahead %}{% endblock %}
@@ -30,7 +31,16 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item"><a class="nav-link" href={% url 'user_home' %}>Home</a></li>
                     <li class="nav-item"><a class="nav-link" href={% url 'my_profile' %}>My profile</a></li>
-                    <li class="nav-item"><a class="nav-link" href={% url 'postman:inbox' %}>Messages</a></li>
+                    <li class="nav-item dropdown">{% postman_unread as unread_count %}
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans "Messages" %}{% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href={% url 'postman:inbox' %}>{% trans "Inbox" %}</a>
+                            <a class="dropdown-item" href={% url 'postman:sent' %}>{% trans "Sent Messages" %}</a>
+                            <a class="dropdown-item" href={% url 'postman:write' %}>{% trans "Write" %}</a>
+                            <a class="dropdown-item" href={% url 'postman:archives' %}>{% trans "Archives" %}</a>
+                            <a class="dropdown-item" href={% url 'postman:trash' %}>{% trans "Trash" %}</a>
+                        </div>
+                    </li>
                     <li class="nav-item">
                     <a class="nav-link" href={% url 'notifications' %}>
                         Notifications
@@ -40,6 +50,7 @@
                     </li>
                     <li class="nav-item"><a class="nav-link" href={% url 'view_following' %}>Following</a></li>
                     <li class="nav-item"><a class="nav-link" href={% url 'view_nearby' %}>Nearby</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'marketplace' %}">Marketplace</a></li>
                 </ul> 
             
                 <form class="form-inline my-2 my-lg-0 Logout-link" action="logout" method="post">
@@ -53,15 +64,14 @@
             <div class="container-fluid">
                 <a class="navbar-brand" href={% url 'home' %}>iLonely</a>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class ="nav-link" href={% url 'register' %}>Register</a></li>
+                    <li class="nav-item"><a class   ="nav-link" href={% url 'register' %}>Register</a></li>
                     <li class="nav-item"><a class ="nav-link" href={% url 'login' %}>Login</a></li>
                 </ul>
             </div>
         </nav>
     {% endif %}
-
-	{% block content %}{% endblock %}
     {% block postman_menu %} {% endblock %}
+    {% block content %}{% endblock %}
     <div class="w-100 bg-light" style="position:fixed; bottom:0">
 	    <footer>
 		    <p>iLonely by 6:10 Squad</p>
