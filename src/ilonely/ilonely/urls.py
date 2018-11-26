@@ -43,4 +43,5 @@ urlpatterns = [
     url(r'^messages/', include('postman.urls', namespace='postman')),
     url(r'auth/', include('social_django.urls', namespace='social')),
     url(r'^Instalink/$', pages.views.linkInstagram, name='Instalink'),
+    url(r'^upload_pictures/$', pages.views.upload_pictures, name='upload_pictures'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
