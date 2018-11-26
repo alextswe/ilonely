@@ -48,7 +48,6 @@ def register(request):
         if form.is_valid():
             user = form.save()
             user.profile.age = form.cleaned_data.get('age')
-            print(form.cleaned_data.get('age'))
             user.profile.save()
             user.save()
             auth_login(request, user, 'django.contrib.auth.backends.ModelBackend')

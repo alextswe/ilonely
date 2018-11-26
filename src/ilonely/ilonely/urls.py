@@ -10,6 +10,8 @@ from django.contrib.auth import views
 import django.contrib.auth.views
 import django.contrib.auth.urls
 import pages.views
+# import marketplace.urls
+
 # enables admin site
 from django.contrib import admin
 from django.conf import settings
@@ -42,4 +44,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls), # admin site url
     url(r'^messages/', include('postman.urls', namespace='postman')),
     url(r'auth/', include('social_django.urls', namespace='social')),
+    path(r'marketplace/', include('marketplace.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
