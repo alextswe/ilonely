@@ -43,7 +43,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="pages\geo.py" />
-    <Compile Include="pages\migrations\0001_initial.py" />
     <Compile Include="pages\migrations\__init__.py" />
     <Compile Include="pages\models.py" />
     <Compile Include="pages\signals.py" />
@@ -110,7 +109,6 @@
     <Content Include="pages\static\js\jquery.datepair.js" />
     <Content Include="pages\static\js\jquery.timepicker.css" />
     <Content Include="pages\static\js\jquery.timepicker.js" />
-    <Content Include="pages\templates\pages\activeEvent.html" />
     <Content Include="pages\templates\pages\events.html" />
     <Content Include="pages\templates\pages\notification_badge.html" />
     <Content Include="pages\templates\pages\base.html" />
@@ -138,7 +136,6 @@
     <Content Include="pages\templates\registration\password_reset_form.html" />
     <Content Include="pages\templates\registration\password_reset_subject.txt" />
     <Content Include="requirements.txt" />
-    <Content Include="db.sqlite3" />
     <Content Include="pages\static\admin\css\autocomplete.css" />
     <Content Include="pages\static\admin\css\base.css" />
     <Content Include="pages\static\admin\css\changelists.css" />
@@ -330,9 +327,6 @@
     <Content Include="pages\static\leaflet\leaflet\leaflet.js" />
     <Content Include="pages\static\leaflet\proj4js.js" />
     <Content Include="pages\static\leaflet\proj4leaflet.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <InterpreterReference Include="Global|PythonCore|3.6" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

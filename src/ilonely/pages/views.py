@@ -31,8 +31,6 @@ from django.db.models import Q
 from geopy.geocoders import Nominatim
 from instagram.client import InstagramAPI
 import os
-from pages.geo import getNearby
-from pages.models import Profile, Follow, Block, Thread, Message, Post
 import json
 import requests
 from datetime import datetime
