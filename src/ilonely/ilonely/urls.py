@@ -10,12 +10,14 @@ from django.contrib.auth import views
 import django.contrib.auth.views
 import django.contrib.auth.urls
 import pages.views
+import postman.views
 # import marketplace.urls
 
 # enables admin site
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from ajax_select import urls as ajax_select_urls
 admin.autodiscover()
 
 urlpatterns = [
@@ -45,5 +47,8 @@ urlpatterns = [
     url(r'^messages/', include('postman.urls', namespace='postman')),
     url(r'auth/', include('social_django.urls', namespace='social')),
     url(r'^Instalink/$', pages.views.linkInstagram, name='Instalink'),
+    url(r'^events/(?P<activeEventId>\d+)/$', pages.views.events, name='events'),
     path(r'marketplace/', include('marketplace.urls')),
+    url(r'^ajax_select/', include(ajax_select_urls)),
+    url(r'^upload_pictures/$', pages.views.upload_pictures, name='upload_pictures'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

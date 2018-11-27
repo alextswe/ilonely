@@ -1,12 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-#I believe primary keys are handling automatically
-#We may need to add extra getter setter methods
-#for example if a user tries to log in we need a method
-#getUser(username, password) that returns a userid or 
-#null or -1 if the user does not exist
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField()
@@ -23,6 +17,7 @@ class Post(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True) #apparently cascade delete happens automatically?
     postContent = models.TextField()
     datePosted = models.DateTimeField(auto_now_add=True)
+    picture = models.ImageField(upload_to="post_photos/",null=True)
 
     def __str__(self):
         return '%s\'s post - %s' % (self.profile.user.get_username(), self.datePosted.strftime("%x %X"))
@@ -63,3 +58,17 @@ class Document(models.Model):
     description = models.CharField(max_length=255, blank=True)
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+class Event(models.Model):
+    name = models.CharField(max_length=100, blank=False)
+    date = models.CharField(max_length=100, blank=False)
+    location = models.CharField(max_length=150, blank=False, default='') #like Riverside, CA
+    latitude = models.FloatField(max_length=150, default=0.0)
+    longitude = models.FloatField(max_length=150, default=0.0)
+    description = models.CharField(max_length=500, blank=False)
+    category = models.CharField(max_length=100)
+    poster = models.ForeignKey(Profile, blank=True, on_delete=models.PROTECT, related_name='poster', default=1)
+    rsvp_list = models.ManyToManyField(Profile, blank=True)
+
+    def __str__(self):
+        return '%s - %s' % (self.name, self.location)

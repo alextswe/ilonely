@@ -1,28 +1,20 @@
+from django import forms
+from django.contrib.auth import (    authenticate, get_user_model, password_validation,)
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from pages.models import Document
+from django.contrib.auth.hashers import ( UNUSABLE_PASSWORD_PREFIX, identify_hasher,)
 from django.contrib.auth.models import User
-from django import forms
-from pages.models import Profile
-from django.core.exceptions import ValidationError
-from django.utils.translation import gettext as _
 from django.contrib.auth.tokens import default_token_generator
-
-import unicodedata
-
-from django import forms
-from django.contrib.auth import (
-    authenticate, get_user_model, password_validation,
-)
-from django.contrib.auth.hashers import (
-    UNUSABLE_PASSWORD_PREFIX, identify_hasher,
-)
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
 from django.template import loader
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.utils.text import capfirst
+from django.utils.translation import gettext as _
 from django.utils.translation import gettext, gettext_lazy as _
+from pages.models import Document, Profile
+import unicodedata
 
 class CustomUserCreationForm(UserCreationForm):
     # User fields
