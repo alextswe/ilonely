@@ -46,8 +46,8 @@
                     <li class="nav-item">
                     <a class="nav-link" href={% url 'notifications' %}>
                         Notifications
-                            {% load notif_badge_tags %}
-                            {% show_new_notifications request.user.id %}
+                        {% load notif_badge_tags %}
+                        {% show_new_notifications request.user.id %}
                     </a>
                     </li>
                     <li class="nav-item"><a class="nav-link" href={% url 'view_following' %}>Following</a></li>

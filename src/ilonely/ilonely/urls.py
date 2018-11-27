@@ -49,4 +49,5 @@ urlpatterns = [
     url(r'^Instalink/$', pages.views.linkInstagram, name='Instalink'),
     path(r'marketplace/', include('marketplace.urls')),
     url(r'^ajax_select/', include(ajax_select_urls)),
+    url(r'^upload_pictures/$', pages.views.upload_pictures, name='upload_pictures'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
