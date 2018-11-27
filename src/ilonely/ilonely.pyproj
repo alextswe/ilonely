@@ -37,6 +37,15 @@
     <Compile Include="ilonely\settings.py" />
     <Compile Include="ilonely\urls.py" />
     <Compile Include="ilonely\wsgi.py" />
+    <Compile Include="marketplace\admin.py" />
+    <Compile Include="marketplace\apps.py" />
+    <Compile Include="marketplace\forms.py" />
+    <Compile Include="marketplace\migrations\__init__.py" />
+    <Compile Include="marketplace\models.py" />
+    <Compile Include="marketplace\tests.py" />
+    <Compile Include="marketplace\urls.py" />
+    <Compile Include="marketplace\views.py" />
+    <Compile Include="marketplace\__init__.py" />
     <Compile Include="pages\admin.py" />
     <Compile Include="pages\apps.py" />
     <Compile Include="pages\forms.py">
@@ -61,6 +70,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ilonely\" />
+    <Folder Include="marketplace\" />
+    <Folder Include="marketplace\migrations\" />
+    <Folder Include="marketplace\static\" />
+    <Folder Include="marketplace\static\product_pictures\" />
+    <Folder Include="marketplace\templates\" />
+    <Folder Include="marketplace\templates\marketplace\" />
+    <Folder Include="marketplace\__pycache__\" />
     <Folder Include="pages\" />
     <Folder Include="pages\media\profile_photos\" />
     <Folder Include="pages\migrations\" />
@@ -100,6 +116,16 @@
     <Folder Include="pages\static\leaflet\leaflet\images\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="db.sqlite3" />
+    <Content Include="marketplace\templates\marketplace\listing.html" />
+    <Content Include="marketplace\templates\marketplace\marketplace.html" />
+    <Content Include="marketplace\templates\marketplace\seller_view.html" />
+    <Content Include="marketplace\__pycache__\admin.cpython-36.pyc" />
+    <Content Include="marketplace\__pycache__\forms.cpython-36.pyc" />
+    <Content Include="marketplace\__pycache__\models.cpython-36.pyc" />
+    <Content Include="marketplace\__pycache__\urls.cpython-36.pyc" />
+    <Content Include="marketplace\__pycache__\views.cpython-36.pyc" />
+    <Content Include="marketplace\__pycache__\__init__.cpython-36.pyc" />
     <Content Include="pages\fixtures\original.json" />
     <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\media\profile_photos\ryan.jpg" />
