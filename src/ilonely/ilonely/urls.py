@@ -43,6 +43,5 @@ urlpatterns = [
     url(r'^messages/', include('postman.urls', namespace='postman')),
     url(r'auth/', include('social_django.urls', namespace='social')),
     url(r'^Instalink/$', pages.views.linkInstagram, name='Instalink'),
-    url(r'^events$', pages.views.events, name='events'),
-    url(r'^activeEvent/(?P<activeEventId>\d+)/$', pages.views.activeEvent, name='activeEvent'),
+    url(r'^events/(?P<activeEventId>\d+)/$', pages.views.events, name='events'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

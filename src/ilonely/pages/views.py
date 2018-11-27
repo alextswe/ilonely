@@ -5,11 +5,10 @@ from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import CustomUserCreationForm
-from pages.models import Profile, Follow, Block, Thread, Message, Post
-from pages.geo import getNearby
+from pages.models import Profile, Follow, Block, Thread, Message, Post, Event
+from pages.geo import getNearby, getNearbyEvents
 from geopy.geocoders import Nominatim
 import random,string
-
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
@@ -25,14 +24,10 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
-
-from geopy.geocoders import Nominatim
 from instagram.client import InstagramAPI
-from pages.geo import getNearby
-from pages.models import Profile, Follow, Block, Thread, Message, Post
 import json
-import random,string
 import requests
+from datetime import datetime
 # Create your views here.
 
 INSTAGRAM_CLIENT_ID = '9788a776a2e44e7a842fc85132f528dc' # Keep Secret
@@ -465,35 +460,6 @@ def my_profile(request):
                         }
                       )
 
-@login_required(login_url="home")
-def feed(request):
-    me = User.objects.get(pk=request.user.id)
-    myProfile = Profile.objects.get(user = me)
-    if request.method == 'POST':
-        if request.POST.get('viewUser'):
-            return redirect(public_profile, userid = request.POST['viewUser'])
-        elif request.POST.get('deletePost'):
-            postid = request.POST['deletePost']
-            p = Post.objects.get(pk = postid)
-            p.delete()
-        else:
-            myPost = request.POST['postContent']
-            p = Post(profile=myProfile, postContent=myPost)
-            p.save()
-    #posts of people I follow
-    followSet = User.objects.filter(pk__in = Follow.objects.filter(userFollowing = me).values_list('user'))
-    profilesIFollow = Profile.objects.filter(user__in = followSet)
-    followingPosts = list(Post.objects.filter(profile__in = profilesIFollow).order_by('-datePosted'))
-    #posts of people nearby
-    profilesNearMe = getNearby(me, 10)
-    nearbyPosts = list(Post.objects.filter(profile__in = profilesNearMe).order_by('-datePosted'))
-    #profilesIBlock = list(Profile.objects.filter(user__in = blockSet))
-    #myPosts
-    personalPosts = list(Post.objects.filter(profile = myProfile).order_by('-datePosted'))
-    return render(request, 'pages/feed.html', {'title' : 'feed', 
-                                               'followingPosts' : followingPosts, 
-                                               'nearbyPosts' : nearbyPosts,
-                                               'personalPosts' : personalPosts})
 
 def blockUsers(peopleNear, me):
     profilesIBlock = User.objects.filter(pk__in = Block.objects.filter(userBlocking = me).values_list('user'))
@@ -562,45 +528,62 @@ def uploadInstapics(request):
 
 
 @login_required(login_url="home")
-def events(request):
+def events(request, activeEventId):
     me = Profile.objects.get(user = User.objects.get(pk=request.user.id))
     radius = 20
     activeEvent = 0
+    rsvpList = []
+    going = False
+
+    try:
+        activeEvent = Event.objects.get(pk = activeEventId)
+        going = activeEvent.rsvp_list.filter(pk = me.id).exists()
+        rsvpList = list(activeEvent.rsvp_list.all())  
+    except Event.DoesNotExist:
+        activeEvent = 0
+        rsvpList = []
+        going = False
+
     if request.method == 'POST':
         if request.POST.get('viewEvent'): #select specific event to be shown on right side of screen
-            activeEvent = Event.objects.filter(pk = request.POST['viewEvent'])
-        else: #add event form submission
+            activeEvent = Event.objects.get(pk = request.POST['viewEvent'])
+            going = activeEvent.rsvp_list.filter(pk = me.id).exists()
+            rsvpList = list(activeEvent.rsvp_list.all())         
+        elif request.POST.get('viewUser'):
+            return redirect(public_profile, userid = request.POST['viewUser'])
+        elif request.POST.get('rsvp'):
+            going = activeEvent.rsvp_list.filter(pk = me.id).exists()
+            if going:                
+                Event.objects.get(pk = activeEventId).rsvp_list.remove(me)
+                going = False
+            else:
+                Event.objects.get(pk = activeEventId).rsvp_list.add(me)
+                going = True
+            activeEvent = Event.objects.get(pk = activeEventId)
+            rsvpList = list(activeEvent.rsvp_list.all())
+        elif request.POST.get('cancelEventConfirm'):
+            activeEvent.delete()
+            activeEvent = 0
+        elif request.POST.get('eventName'): #add event form submission
             eventName = request.POST['eventName']
-            eventCategory = request.POST['eventCategory']
-            eventDate = request.POST['eventDate']
-            eventTime = request.POST['eventTime']
-            eventLocation = "Riverside, CA"
-            eventLong = 0.0
-            eventLat = 0.0
+            eventCategory = request.POST['eventCategories']
+            eventDate = request.POST['eventDate'] + ' ' + request.POST['eventTime'] #11/26/2018 8:07 PM
+            geolocator = Nominatim()
+            location = geolocator.geocode(request.POST['eventLocation'])
+            eventLocation = location.address
+            eventLong = location.longitude
+            eventLat = location.latitude
             eventDescription = request.POST['eventDescription']
-            e = Event(name=eventName, date=eventDate, location=eventLocation, longitude=eventLong, latitude=eventLat, description=eventDescription, category=eventCategory)
+            e = Event(name=eventName, date=eventDate, location=eventLocation, longitude=eventLong, latitude=eventLat, description=eventDescription, category=eventCategory, poster=me)
             e.save() 
-    #gonna need to be getNearbyEvents that returns events / distances
+            e.rsvp_list.add(me)
+
     distances = []
-    events = Event.objects.all() #getNearbyEvents(me, radius, distances)
+    events = getNearbyEvents(me, radius, distances)
     return render(request, 'pages/events.html', {'title' : 'Events', 
                                                'events' : zip(events, distances), 
-                                               'activeEvent' : activeEvent
-                                               })
-
-def activeEvent(request, activeEventId):
-    me = Profile.objects.get(user = User.objects.get(pk=request.user.id))
-    event = Event.objects.filter(pk = activeEventId)
-    going = [False]
-    if request.method == 'POST':
-        if request.POST.get('rsvp'):
-            going = request.POST['rsvp']
-            if going:
-                e = Events.objects.get(pk = activeEvent.id).rsvp_list.add(me)
-                e.save()
-            else:
-                e = Events.objects.get(pk = activeEvent.id).rsvp_list.remove(me)
-                e.save()
-    return render(request, 'pages/aciveEvent.html', {'title' : 'Events', 
-                                               'activeEvent' : zip(event, going)
+                                               'activeEvent' : activeEvent,
+                                               'rsvpList' : rsvpList,
+                                               'going' : going,
+                                               'me' : me
                                                })

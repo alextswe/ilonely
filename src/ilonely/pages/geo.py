@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from pages.models import Profile, Event
 from urllib.parse import urljoin
+from datetime import datetime
 import requests
 
 # get user's location via IP and returns info in a dictionary 
@@ -38,7 +39,7 @@ def getNearby(user, radius, distList=None, age=None):
 
 # returns a list of events nearby in a something mi radius
 def getNearbyEvents(me, radius, distList=None):
-    events = Event.objects.all()
+    events = Event.objects.filter(date__gte = datetime.now().strftime('%m/%d/%Y %I:%M %p')).order_by('category').order_by('date').all()
     nearbyEvents = []
     myLoc = (me.latitude, me.longitude)
 
