@@ -4,7 +4,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>ilonely</Name>
     <RootNamespace>ilonely</RootNamespace>
-    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
     <WebBrowserPort>8000</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup>
@@ -32,6 +32,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ilonely\lookups.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="manage.py" />
     <Compile Include="ilonely\__init__.py" />
     <Compile Include="ilonely\settings.py" />
@@ -144,6 +147,8 @@
     <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\media\profile_photos\ryan.jpg" />
     <Content Include="pages\static\css\img\google_sign_in.png" />
+    <Content Include="pages\static\css\jquery-ui.min.css" />
+    <Content Include="pages\static\js\jquery-ui.min.js" />
     <Content Include="pages\static\js\popper.min.js" />
     <Content Include="pages\templates\pages\notification_badge.html" />
     <Content Include="pages\templates\pages\base.html" />

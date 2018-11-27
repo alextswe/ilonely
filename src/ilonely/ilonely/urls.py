@@ -10,14 +10,14 @@ from django.contrib.auth import views
 import django.contrib.auth.views
 import django.contrib.auth.urls
 import pages.views
+import postman.views
 # import marketplace.urls
 
 # enables admin site
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from pages.views import UserAutocomplete
-from pages.forms import WriteForm
+from ajax_select import urls as ajax_select_urls
 admin.autodiscover()
 
 urlpatterns = [
@@ -48,5 +48,5 @@ urlpatterns = [
     url(r'auth/', include('social_django.urls', namespace='social')),
     url(r'^Instalink/$', pages.views.linkInstagram, name='Instalink'),
     path(r'marketplace/', include('marketplace.urls')),
-    url(r'^messages/write/recipients/$', UserAutocomplete.as_view(), name='write-autocomplete'),
+    url(r'^ajax_select/', include(ajax_select_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

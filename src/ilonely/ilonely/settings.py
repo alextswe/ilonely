@@ -38,8 +38,7 @@ INSTALLED_APPS = [
     'leaflet',
     'postman',
     'social_django',
-    'dal',
-    'dal_select2',
+    'ajax_select',
     # Add your apps here to enable them
     'django.contrib.admin',
     'django.contrib.auth',
@@ -88,11 +87,19 @@ TEMPLATE_LOADERS = (
 
 WSGI_APPLICATION = 'ilonely.wsgi.application'
 
+#Ajax Select
+AJAX_LOOKUP_CHANNELS = {
+    'user': {'model':'auth.user', 'search_field':'username'},
+}
+
 #Postman Settings
 POSTMAN_AUTO_MODERATE_AS = True
 POSTMAN_DISABLE_USER_EMAILING = True
 POSTMAN_AUTOCOMPLETER_APP = {
-    'arg_default': 'postman_users',
+    'name': 'ajax_select',
+    'field': 'AutoCompleteField',
+    'arg_name': 'channel',
+    'arg_default': 'user',
 }
 
 # Leaflet Settings

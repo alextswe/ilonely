@@ -23,8 +23,6 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.utils.text import capfirst
 from django.utils.translation import gettext, gettext_lazy as _
-from dal import autocomplete
-from postman.forms import BaseWriteForm
 
 class CustomUserCreationForm(UserCreationForm):
     # User fields
@@ -124,9 +122,3 @@ class DocumentForm(forms.ModelForm):
 
 class CustomForgotUsernameForm(forms.Form):
     email = forms.EmailField(label='Email', max_length=100, required=True)
-
-class WriteForm(BaseWriteForm):
-    recipients = forms.ChoiceField(choices='UserAutocomplete', label='recipients')
-
-    class Meta(BaseWriteForm.Meta):
-        fields = ('recipients', 'subject', 'body')
