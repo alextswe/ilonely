@@ -5,16 +5,88 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     </head>
-
-    <!-- Instagram Link page display -->
+    <style>
+        form img {
+            height: 330px;
+            width: 330px;
+        }
+        #pc_label{
+            background-color: #2D5BA3;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px ridge black;
+            font-size: 0.8rem;
+            height: auto;
+        }
+        #pc_label:hover{
+            background-color: #2d78a3;
+            color: white;
+        }
+        #pc_label:active{
+            background-color: #0D3F8F;
+            color: white;
+        }
+    </style>
+    <!-- Upload Picture Display -->
     <div class="mx-auto flex-shrink-0 p-2" style="width:600px">
         <div style="text-align:center;">
             <h2>Choose a Picture to Upload</h2>
         </div>
     </div>
-    {% for url in media_urls %}
-        <iframe id ="media" src="{{url}}" style="height:330px;width:330px;background-color:purple;"></iframe>
-    {% endfor %}
+    {% if ig_media_urls %}
+        <!--- Instagram Upload Display -->
+        {% for url in ig_media_urls %}
+            <iframe id ="ig_media" src="{{url}}" style="height:330px;width:330px;background-color:purple;"></iframe>
+        {% endfor %}
+    {% else %}
+        {% if pc_media_urls %}
+            <!--- File Upload Display -->
+            <img id ="pc_media" src="{{pc_media_urls}}" style="height:330px;width:330px;">
+        {% else %}
+            <!--- File Upload -->
+            <form method="post" enctype="multipart/form-data" >
+                {% csrf_token %} 
+                <div class="form-group">
+                    <label for="pc_image" id="pc_label">Choose images to upload</label>
+                    <input type="file" id="pc_image" name="pc_image" accept="image/*">
+                </div>
+                <div class="preview">
+                    <p>No files currently selected for upload</p>
+                </div>
+                <button type="submit" class="btn btn-warning">Upload Image</button>
+            </form>
+            <script>
+                var pc_image = document.getElementById("pc_image");
+                var preview = document.querySelector('.preview');
+                pc_image.style.opacity = 0;
+
+                pc_image.addEventListener('change', updateImageDisplay);
+                function updateImageDisplay() {
+                    while(preview.firstChild) {
+                        preview.removeChild(preview.firstChild);
+                    }
+                    var curFiles = pc_image.files;
+                    if (curFiles.length == 0) {
+                        var para = document.createElement('p');
+                        para.textContent = 'No files currently selected for upload';
+                        preview.appendChild(para);
+                    }
+                    else {
+                        var list = document.createElement('ol');
+                        preview.appendChild(list);
+                        var listItem = document.createElement('li');
+                        var para = document.createElement('p');
+                        para.textContent = 'File name ' + curFiles[0].name + ', file size ';
+                        var image = document.createElement('img');
+                        image.src = window.URL.createObjectURL(curFiles[0]);
+                        listItem.appendChild(image);
+                        listItem.appendChild(para);
+                        list.appendChild(listItem);
+                    }
+                }
+         </script>
+        {% endif %}
+    {% endif %}
 {% endblock %}
 
 <!-- Bootstrap JS -->

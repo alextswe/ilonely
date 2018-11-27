@@ -34,9 +34,11 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'pages',
+    'marketplace',
     'leaflet',
     'postman',
     'social_django',
+    'ajax_select',
     # Add your apps here to enable them
     'django.contrib.admin',
     'django.contrib.auth',
@@ -85,11 +87,19 @@ TEMPLATE_LOADERS = (
 
 WSGI_APPLICATION = 'ilonely.wsgi.application'
 
+#Ajax Select
+AJAX_LOOKUP_CHANNELS = {
+    'user': {'model':'auth.user', 'search_field':'username'},
+}
+
 #Postman Settings
 POSTMAN_AUTO_MODERATE_AS = True
 POSTMAN_DISABLE_USER_EMAILING = True
 POSTMAN_AUTOCOMPLETER_APP = {
-    'arg_default': 'postman_users',
+    'name': 'ajax_select',
+    'field': 'AutoCompleteField',
+    'arg_name': 'channel',
+    'arg_default': 'user',
 }
 
 # Leaflet Settings
@@ -151,9 +161,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-MEDIA_URL='pages/media/'
+MEDIA_URL='/media/'
 
-MEDIA_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['pages/media/']))
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
 

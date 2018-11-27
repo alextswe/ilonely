@@ -1,4 +1,5 @@
 from .forms import CustomUserCreationForm, CustomForgotUsernameForm
+from django.conf import settings
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
@@ -12,6 +13,7 @@ import random,string
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, QueryDict
 from django.shortcuts import render, redirect, resolve_url
 from django.template import RequestContext
@@ -24,10 +26,17 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
+from django.db.models import Q
+
+from geopy.geocoders import Nominatim
 from instagram.client import InstagramAPI
+import os
+from pages.geo import getNearby
+from pages.models import Profile, Follow, Block, Thread, Message, Post
 import json
 import requests
 from datetime import datetime
+from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
 INSTAGRAM_CLIENT_ID = '9788a776a2e44e7a842fc85132f528dc' # Keep Secret
@@ -55,7 +64,6 @@ def register(request):
         if form.is_valid():
             user = form.save()
             user.profile.age = form.cleaned_data.get('age')
-            print(form.cleaned_data.get('age'))
             user.profile.save()
             user.save()
             login(request, user, 'django.contrib.auth.backends.ModelBackend')
@@ -152,10 +160,16 @@ def user_home_view(request):
         elif request.POST.get('deletePost'):
             postid = request.POST['deletePost']
             p = Post.objects.get(pk = postid)
+            if os.path.isfile(p.picture.path):
+                os.remove(p.picture.path)
             p.delete()
-        else:
-            myPost = request.POST['postContent']
-            p = Post(profile=myProfile, postContent=myPost)
+        else:          
+            myPost = request.POST.get('postContent', '')  
+            myPic = request.FILES.get('pc_image', None)
+            if myPic != None:
+                fs = FileSystemStorage(location='../media/post_photos/')
+                filename = fs.save(myPic.name, myPic)
+            p = Post(profile=myProfile, postContent=myPost, picture=myPic)
             p.save()
     #posts of people I follow
     followSet = User.objects.filter(pk__in = Follow.objects.filter(userFollowing = me).values_list('user'))
@@ -494,6 +508,7 @@ def linkInstagram(request):
         else:
             return None
     def get_media(code):
+        # Returns the urls of the user's most recent posts (MAX 20: SANDBOX MODE)
         access_token = get_access_code(code)
         media_urls = []
         if access_token != None:
@@ -512,7 +527,7 @@ def linkInstagram(request):
         # Fixme: Update html file to feed.html
         return render(request, 'instagram/upload_pictures.html',
                   {
-                      'media_urls' : media_urls,
+                      'ig_media_urls' : media_urls,
                   }
                  )
     else:
@@ -520,7 +535,16 @@ def linkInstagram(request):
         return redirect('home')
    
 @login_required(login_url="home")
-def uploadInstapics(request):
+def upload_pictures(request):
+    media_urls = None
+    #if request.method == 'POST':
+        #if request.POST.get('pc_image'):
+            #file = request.POST['pc_image']
+            #fs = FileSystemStorage()
+            #fs.save(file.name, file)
+            #media_urls = '../../' + fs.url(file.name)
+            
+          
     return render(request, 'instagram/upload_pictures.html',
                   {
                   }

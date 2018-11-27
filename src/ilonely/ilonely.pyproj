@@ -129,8 +129,6 @@
     <Content Include="pages\templates\pages\view_following.html" />
     <Content Include="pages\templates\pages\view_nearby.html" />
     <Content Include="pages\templates\postman\base.html" />
-    <Content Include="pages\templates\postman\base_folder.html" />
-    <Content Include="pages\templates\postman\base_write.html" />
     <Content Include="pages\templates\registration\forgot_username.html" />
     <Content Include="pages\templates\registration\login.html" />
     <Content Include="pages\templates\registration\password_reset_complete.html" />
