@@ -45,17 +45,34 @@
                 </a>
             </div>
             <hr />
-            <div>
-                <h4 style="display:inline">{{ product.name }}</h4>
-                <div style="float:right; font-size:15pt">
-                    {% if product.price is not 0 %}
-                        <b style="color:green">${{product.price}}</b>
-                    {% else %}
-                        <b>FREE</b>
-                    {% endif%}
-                </div>
+
+            <div class="my-2">
+                <small class="text-muted my-3">Posted: {{product.date_created}}</small>
             </div>
-            <p>{{ product.description }}</p>
+
+            <div>
+                <div>
+                    <h4 style="display:inline">{{ product.name }}</h4>
+                    <div style="float:right; font-size:15pt">
+                        {% if product.price is not 0 %}
+                            <b style="color:green">${{product.price}}</b>
+                        {% else %}
+                            <b>FREE</b>
+                        {% endif%}
+                    </div>
+                </div>
+                <p class="my-2">{{ product.description }}</p>
+            </div>
+
+            <div class="w-100">
+                <hr />
+                <a class="btn btn-block btn-primary" href="{% url 'postman:write' product.seller.user.username %}?subject={{product.name}} Offer request&body=I'm interested...">
+                    Message Seller
+                </a>
+                <button class="btn btn-block btn-outline-primary">
+                    Make Offer
+                </button>
+            </div>
         </div>
     </div>
 </div>

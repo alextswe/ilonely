@@ -40,71 +40,152 @@
     color:white;
     border-radius:5px;
 }
+
+.nobullet {
+    list-style-type: none;
+}
 </style>
 <div class="mx-auto">
-    <h2 style="text-align:center;">Marketplace in {{request.user.profile.location}}</h2>
+    <h2 style="text-align:center;">iLonely Marketplace</h2>
 </div>
 
 <div class="container">
-    <div class="row">
-        <div class=" col-3 p-3" style="text-align:center;">
-            <button type="button" class="btn btn-block btn-primary m-1" data-toggle="modal" data-target="#uploadProduct">
-                Sell Something
-            </button>
-            <h5>TODO: Implement Filters</h5>
-            <div style="text-align:left;">
-                Sort by:
-                <ul>
-                    <li>Date</li>
-                    <li>Price: Low to High</li>
-                    <li>Price: High to Low</li>
-                </ul>
-                Price:
-                <ul>
-                    <li>Price Min</li>
-                    <li>Price Max</li>
-                </ul>
-                Posted Within:
-                <ul>
-                    <li>Last 24 hours</li>
-                    <li>Last 7 days</li>
-                    <li>Last 30 days</li>
-                </ul>
-            </div>
-        </div>
-        <div style="text-align:center" class="col border-left p-3">
-            <div style="text-align:left;">
-                {% for product in products %}
-                    <a style="text-decoration: none;" href="{% url 'listing' product.id %}" class="productButton m-1">
-                        <div class="productUpper">
-                            <div class="p-1 m-1 priceTag">
-                                {% if product.price is not 0 %}
-                                    <b>${{ product.price }}</b>
-                                {% else %}
-                                    <b>FREE</b>
+
+    <ul class="nav nav-tabs" role="tablist" id="myTab">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" role="tab" id="marketplace-tab" href="#marketplace">Marketplace</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" role="tab" id="my-products-tab" href="#myProducts">What I'm Selling</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" role="tab" id="my-bids-tab" href="#myBids">My Bids</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" style="text-align:left;">
+        <div class="tab-pane fade show active" id="marketplace" role="tabpanel">
+            <div class="row">
+                <div class="col-3 p-3" style="text-align:center;">
+                    <div class="mx-auto">
+                        <div style="text-align:left">
+                            <form method="GET" action="{% url 'marketplace' %}">
+                                <!-- Sort by new, price  -->
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text">Sort By</label>
+                                    </div>
+                                    <select class="custom-select" name="sortBy">
+                                        <option selected>None</option>
+                                        <option value="new">Newest</option>
+                                        <option value="lowHigh">$ - $$$</option>
+                                        <option value="highLow">$$$ - $</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Price</span>
+                                    </div>
+                                    <input type="number" placeholder="Min" class="form-control" style="width:52px" name="minPrice"/>
+                                    <input type="number" placeholder="Max" class="form-control" style="width:52px" name="maxPrice"/>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text">Posted Within...</label>
+                                    </div>
+                                    <select class="custom-select" name="postedWithin">
+                                        <option selected>None</option>
+                                        <option value="24">24 Hours</option>
+                                        <option value="7">7 Days</option>
+                                        <option value="30">30 Days</option>
+                                    </select>
+                                </div>
+
+                                <input type="submit" class="btn btn-block btn-light" value="Apply Filters"/>
+                            </form>
+                        </div>
+                    </div>
+                </div> 
+        
+                <div class="col border-left p-3">
+                    {% for product in products %}
+                        <a style="text-decoration: none;" href="{% url 'listing' product.id %}" class="productButton m-1">
+                            <div class="productUpper">
+                                <div class="p-1 m-1 priceTag">
+                                    {% if product.price is not 0 %}
+                                        <b>${{ product.price }}</b>
+                                    {% else %}
+                                        <b>FREE</b>
+                                    {% endif %}
+                                </div>
+                                {% if product.photo %}
+                                    <img style="width:100%" src="{{ product.photo.url }}" />
                                 {% endif %}
                             </div>
-                            {% if product.photo %}
-                                <img style="width:100%" src="{{ product.photo.url }}" />
-                            {% endif %}
-                        </div>
-                        <div class="p-2 productLower">
-                            <p style="text-overflow: ellipsis; overflow:hidden; white-space: nowrap; margin-bottom:5px;">
-                                <b>{{ product.name }}</b>
-                            </p>
-                            <p class="text-muted" style="font-size:10pt;">
-                                {{ product.location }}
-                            </p>
-                        </div>
-                    </a>
-                {% endfor %}
+                            <div class="p-2 productLower">
+                                <p style="text-overflow: ellipsis; overflow:hidden; white-space: nowrap; margin-bottom:5px;">
+                                    <b>{{ product.name }}</b>
+                                </p>
+                                <p class="text-muted" style="font-size:10pt;">
+                                    {{ product.location }}
+                                </p>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="myProducts" role="tabpanel">
+            <div class="row">
+                <div class="col-3 p-3">
+                    <button type="button" class="btn btn-block btn-primary m-1" data-toggle="modal" data-target="#uploadProduct">
+                        Sell Something
+                    </button>
+                </div>
+
+                <div class="col border-left p-3">
+                    {% for product in myProducts %}
+                        <a style="text-decoration: none;" href="{% url 'seller_view' product.id %}" class="productButton m-1">
+                            <div class="productUpper">
+                                <div class="p-1 m-1 priceTag">
+                                    {% if product.price is not 0 %}
+                                        <b>${{ product.price }}</b>
+                                    {% else %}
+                                        <b>FREE</b>
+                                    {% endif %}
+                                </div>
+                                {% if product.photo %}
+                                    <img style="width:100%" src="{{ product.photo.url }}" />
+                                {% endif %}
+                            </div>
+                            <div class="p-2 productLower">
+                                <p style="text-overflow: ellipsis; overflow:hidden; white-space: nowrap; margin-bottom:5px;">
+                                    <b>{{ product.name }}</b>
+                                </p>
+                                <p class="text-muted" style="font-size:10pt;">
+                                    {{ product.location }}
+                                </p>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="myBids" role="tabpanel">
+            <div class="row">
+                <h5>TODO: Implement My Bids</h5>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="uploadProduct" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="uploadProduct" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" id="uploadProduct" action="{% url 'marketplace' %}"  enctype="multipart/form-data">
             {% csrf_token %}
                 <div class="modal-content">
                     <div class="modal-header">
@@ -152,8 +233,32 @@
             </form>
         </div>
     </div>
-</div>
 
+    
+    <script>
+        $(function(){
+            $('uploadProduct').on('submit', function(e){
+                e.preventDefault();
+                $.ajax({
+                    url: "/marketplace/",
+                    type: "POST",
+                    data: $("uploadProduct").serialize(),
+                    success: function(data){ }
+                });
+            }); 
+        });
 
+        // Taken from https://jsfiddle.net/0416uq3u/ to maintain tab on page refresh
+        $(function() {
+            $('a[data-toggle="tab"]').on('click', function(e) {
+                window.localStorage.setItem('activeTab', $(e.target).attr('href'));
+            });
+            var activeTab = window.localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('#myTab a[href="' + activeTab + '"]').tab('show');
+                window.localStorage.removeItem("activeTab");
+            }
+        });
+    </script>
 
 {% endblock %}

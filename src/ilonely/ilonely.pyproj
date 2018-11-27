@@ -85,6 +85,7 @@
     <Folder Include="marketplace\__pycache__\" />
     <Folder Include="media\" />
     <Folder Include="media\product_pictures\" />
+    <Folder Include="media\profile_photos\" />
     <Folder Include="pages\" />
     <Folder Include="pages\media\profile_photos\" />
     <Folder Include="pages\migrations\" />
@@ -129,6 +130,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="marketplace\templates\marketplace\marketplace.html" />
+    <Content Include="marketplace\templates\marketplace\seller_view.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="marketplace\__pycache__\admin.cpython-36.pyc" />
     <Content Include="marketplace\__pycache__\models.cpython-36.pyc" />
     <Content Include="marketplace\__pycache__\__init__.cpython-36.pyc" />
@@ -140,6 +144,8 @@
     <Content Include="media\product_pictures\no-image-available.png" />
     <Content Include="media\product_pictures\ram.jpg" />
     <Content Include="media\product_pictures\toaster.jpg" />
+    <Content Include="media\profile_photos\default.jpg" />
+    <Content Include="media\profile_photos\ryan.jpg" />
     <Content Include="pages\fixtures\original.json" />
     <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\media\profile_photos\ryan.jpg" />

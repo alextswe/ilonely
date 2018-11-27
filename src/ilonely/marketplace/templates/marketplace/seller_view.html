@@ -1,0 +1,53 @@
+
+{% extends "pages/base.html" %}
+
+{% block content %}
+<style>
+.profileButton {
+    cursor:pointer;
+    color: black;
+    padding:10px;
+}
+
+.profileButton:hover {
+    color: black;
+}
+
+.profileImage {
+    border-radius: 50%; 
+    width:50px; 
+    float:left;
+}
+
+</style>
+
+<div class="container mx-auto card">
+    <form method="POST" style="margin-bottom:0" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row" >
+            <div class="col-lg-6 p-3">
+                <div>
+                {% if product.photo %}
+                    <img style="width:100%" src="{{ product.photo.url }}" />
+                {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 p-3 border-left">
+                <small class="text-muted mb-2" style="float:right">Last Modified: {{product.date_created}}</small>
+                Name: {{form.name}}
+                Price: {{form.price}}
+                Description: {{form.description}}
+                <label class="btn btn-block btn-secondary mt-3" for="productPhoto">Change Photo</label>
+                <span style="display:none">{{form.photo}}</span>
+                <button type="submit" class="btn btn-block btn-success">
+                    Save Changes
+                </button>
+                <button type="submit" class="btn btn-block btn-danger" name="cancel" value="cancel">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

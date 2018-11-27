@@ -10,10 +10,10 @@ class Product(models.Model):
     location = models.CharField(max_length=150, blank=True, default='')
     sold = models.BooleanField(default=False)
     description = models.TextField(blank=True, null=True, default='')
+    date_created = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
-
 
 class Offer(models.Model):
     buyer = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
