@@ -58,9 +58,10 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" role="tab" id="my-products-tab" href="#myProducts">What I'm Selling</a>
         </li>
+        <!--
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" role="tab" id="my-bids-tab" href="#myBids">My Bids</a>
-        </li>
+        </li>-->
     </ul>
 
     <div class="tab-content" style="text-align:left;">
@@ -151,10 +152,14 @@
                         <a style="text-decoration: none;" href="{% url 'seller_view' product.id %}" class="productButton m-1">
                             <div class="productUpper">
                                 <div class="p-1 m-1 priceTag">
-                                    {% if product.price is not 0 %}
-                                        <b>${{ product.price }}</b>
+                                    {% if not product.sold %}
+                                        {% if product.price is not 0 %}
+                                            <b>${{ product.price }}</b>
+                                        {% else %}
+                                            <b>FREE</b>
+                                        {% endif %}
                                     {% else %}
-                                        <b>FREE</b>
+                                        <b>SOLD</b>
                                     {% endif %}
                                 </div>
                                 {% if product.photo %}

@@ -77,6 +77,9 @@
     <Folder Include="marketplace\templates\" />
     <Folder Include="marketplace\templates\marketplace\" />
     <Folder Include="marketplace\__pycache__\" />
+    <Folder Include="media\" />
+    <Folder Include="media\product_pictures\" />
+    <Folder Include="media\profile_photos\" />
     <Folder Include="pages\" />
     <Folder Include="pages\media\profile_photos\" />
     <Folder Include="pages\migrations\" />
@@ -126,6 +129,12 @@
     <Content Include="marketplace\__pycache__\urls.cpython-36.pyc" />
     <Content Include="marketplace\__pycache__\views.cpython-36.pyc" />
     <Content Include="marketplace\__pycache__\__init__.cpython-36.pyc" />
+    <Content Include="media\product_pictures\2tb_harddrive.jpg" />
+    <Content Include="media\product_pictures\3DS_9Y8yolc.jpg" />
+    <Content Include="media\product_pictures\burnt_laptop_YI6qvMC.jpg" />
+    <Content Include="media\product_pictures\no-image-available.png" />
+    <Content Include="media\profile_photos\default.jpg" />
+    <Content Include="media\profile_photos\ryan.jpg" />
     <Content Include="pages\fixtures\original.json" />
     <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\media\profile_photos\ryan.jpg" />

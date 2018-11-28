@@ -58,6 +58,7 @@ def marketplace(request):
             elif postedWithinValue == '30':
                 nearbyProducts = nearbyProducts.filter(date_created__gte=datetime.now()-timedelta(days=30))
 
+    nearbyProducts = nearbyProducts.filter(sold=False)
     form = ProductForm()
 
     return render(

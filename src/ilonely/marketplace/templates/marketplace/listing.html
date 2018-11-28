@@ -66,10 +66,10 @@
 
             <div class="w-100">
                 <hr />
-                <a class="btn btn-block btn-primary" href="{% url 'postman:write' product.seller.user.username %}?subject={{product.name}} Offer request&body=I'm interested...">
+                <a class="btn btn-block btn-primary" href="{% url 'postman:write' product.seller.user.username %}?subject={{product.name}} Offer&body=I'm interested...">
                     Message Seller
                 </a>
-                <button class="btn btn-block btn-outline-primary">
+                <button style="display:none" class="btn btn-block btn-outline-primary">
                     Make Offer
                 </button>
             </div>
