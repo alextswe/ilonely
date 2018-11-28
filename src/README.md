@@ -2,19 +2,29 @@
 A webapp based off the Nearby mobile app.
 
 ## Current Sprint Goals
- + Social Authentication
+ + Social Integration
    + Register using an existing Google account
+   + Post your Instagram pictures
  + Events
- + Connect with Instagram
+   + View nearby events
+   + RVSP and see who's attending
+   + Create your own events
+ + Marketplace
+   + Find items nearby users are selling
+   + Create your own listings and sell your own items
 
 ## Sprint 2 Goals:
  + Feed
+   + Look at posts of nearby people
+   + Follow people and view their posts
+   + Create your own posts that other users can see
  + Messaging
+   + Message other users
  + Discover Nearby
    + Finds nearby users up to a 10 miles radius
    + Change search raduius to 5, 3, or 1 mile(s)
    + Filter nearby users by age
-   + Displays a map showing nearby user's last location 
+   + Displays a map showing nearby user's last location
 
 ## Sprint 1 Goals:
  + Registration
@@ -24,6 +34,8 @@ A webapp based off the Nearby mobile app.
    + Emails users upon successful registration
  + Secure Login
  + Change/Update Profile
+
+ Built using [Django](https://www.djangoproject.com/) and [Bootstrap](https://getbootstrap.com/)
 
 <!--
 ## Visual Studio Virtual Environment Setup
