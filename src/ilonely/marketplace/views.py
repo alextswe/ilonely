@@ -96,6 +96,8 @@ def seller_view(request, product_id):
             form=EditProduct(request.POST, request.FILES, instance=product)
             if form.is_valid():
                 product = form.save()
+                product.location = request.user.profile.location
+                product.save()
 
     return render(
         request,
