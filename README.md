@@ -11,6 +11,7 @@ A webapp based off the Nearby mobile app.
    + Create your own events
  + Marketplace
    + Find items nearby users are selling
+   + Filter listings by their price, post date, etc.
    + Create your own listings and sell your own items
 
 ## Sprint 2 Goals:
