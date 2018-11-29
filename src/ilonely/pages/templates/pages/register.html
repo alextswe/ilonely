@@ -7,7 +7,7 @@
             <h2>Register</h2>
             <p>Be less lonely, with ilonely.</p>
         </div>
-        <div class="card p-4">
+        <div class="card p-4 shadow-sm">
         <form method="POST">
             <div>
                 {% csrf_token %}
@@ -67,13 +67,14 @@
             <span class="text-muted" style="background:#fff; padding:0 10px;">or</span>
         </p>
         </div>
-        <a href="{% url 'social:begin' 'google-oauth2' %}">
-            <img class="w-50" src="{% static "css/img/google_sign_in.png" %}">
-        </a>
+        <div class="text-center">
+            <a class="w-75" href="{% url 'social:begin' 'google-oauth2' %}">
+                <img style="width:60%;" src="{% static "css/img/google_sign_in.png" %}">
+            </a>
+        </div>
         </div>
 
-        <div class="card p-2 my-3">
-            
+        <div class="card p-2 my-3 shadow-sm">
             <small style="text-align:center" class="form-text text-muted">
                 Already have an account? <a href={% url 'login' %} role="button">Log in.</a><br>
             </small>
