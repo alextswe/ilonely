@@ -29,6 +29,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.db.models import Q
 
 from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderTimedOut
 from instagram.client import InstagramAPI
 import os
 import json
@@ -201,13 +202,17 @@ def set_location(request):
         profile.latitude = request.POST.get('latitude')
         profile.longitude = request.POST.get('longitude')
         geolocator = Nominatim(user_agent="ilonely")
-        location = geolocator.reverse("%s, %s" % (profile.latitude, profile.longitude))
-        state = location.raw['address']['state']
         try:
-            city = (location.raw['address']['city'])
-        except:
-            city = (location.raw['address']['hamlet'])
-        profile.location = ("%s, %s") % (city, state)
+            location = geolocator.reverse("%s, %s" % (profile.latitude, profile.longitude))
+            state = location.raw['address']['state']
+            try:
+                city = (location.raw['address']['city'])
+            except:
+                city = (location.raw['address']['hamlet'])
+            profile.location = ("%s, %s") % (city, state)
+        except GeocoderTimedOut:
+            pass
+        
         profile.save()
         return HttpResponse(status=204)
     else:

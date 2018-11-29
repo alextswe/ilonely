@@ -5,6 +5,7 @@ from pages.models import Profile, Post
 from pages.geo import getLocation
 from random import randrange
 from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderTimedOut
 import requests
 import sys
 
@@ -18,7 +19,7 @@ users = []
 profiles = []
 geolocator = Nominatim(user_agent="ilonely")
 
-for i in range(5):
+for i in range(10):
     # generate users
     randNum = randrange(1,3)
     randNum2 = randrange(0,2)
@@ -35,7 +36,13 @@ for i in range(5):
     profile = user.profile    
     profile.latitude = fake.geo_coordinate(execLat, radius=(0.001*10**randNum + 0.001*10**randNum2))
     profile.longitude = fake.geo_coordinate(execLong, radius=(0.001*10**randNum2 + 0.001*10**randNum))
-    location = geolocator.reverse("%s, %s" % (profile.latitude, profile.longitude))
+    gotLoc = False
+    while not gotLoc:
+        try:
+            location = geolocator.reverse("%s, %s" % (profile.latitude, profile.longitude))
+            gotLoc = True
+        except GeocoderTimedOut:
+            gotLoc = False
     geodata = location.raw
     state = geodata['address']['state']
     try:
