@@ -29,6 +29,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.db.models import Q
 
 from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderTimedOut
 from instagram.client import InstagramAPI
 import os
 import json
