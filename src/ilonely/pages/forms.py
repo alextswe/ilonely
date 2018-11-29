@@ -91,22 +91,6 @@ class CustomUserCreationForm(UserCreationForm):
             user.save()
         return user
 
-# Retired
-'''
-class ProfileForm(forms.ModelForm):
-    class Meta:
-        model = Profile
-        fields = ('age',)
-
-    def clean_age(self):
-        age = self.cleaned_data.get('age')
-
-        if age < 18:
-            raise ValidationError(_("You must be over 18."), code='ageError')
-
-        return age
-'''
-
 class DocumentForm(forms.ModelForm):
     class Meta:
         model = Document

@@ -29,12 +29,12 @@
 
 <body>
     {% if request.user.is_authenticated %}
-        <nav class="navbar navbar-expand-lg fixed-top bg-light navbar-light">
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href={% url 'home' %}>iLonely</a>
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item"><a class="nav-link" href={% url 'user_home' %}>Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href={% url 'my_profile' %}>My profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href={% url 'my_profile' %}>My Profile</a></li>
                     <li class="nav-item dropdown">{% postman_unread as unread_count %}
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans "Messages" %}{% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
