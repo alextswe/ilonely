@@ -6,9 +6,7 @@
         <div class="row">
             <div class="col">
                 {% if profile.photo %}
-                    <img style="border-radius: 50%; box-shadow: 3px 3px 3px #cecece; width:150px; margin-left:auto;margin-right:auto;display:block;" src="../../{{profile.photo.url}}" />
-                {% else %}
-                    <img style="border-radius: 50%; box-shadow: 3px 3px 3px #cecece; width:150px; margin-left:auto;margin-right:auto;display:block;" src="../../pages/media/profile_photos/default.jpg" />
+                    <img style="border-radius: 50%; box-shadow: 3px 3px 3px #cecece; width:150px; margin-left:auto;margin-right:auto;display:block;" src="{{profile.photo.url}}" />
                 {% endif %}
                 
             </div>

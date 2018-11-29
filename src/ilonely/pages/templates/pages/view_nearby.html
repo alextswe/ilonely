@@ -88,9 +88,7 @@
                         <li style="border: none;" class="list-group-item">             
                             <button type="submit" name="viewUser" id="profileButton" value="{{person.user.id}}">
                                 {% if person.photo %}
-                                    <img style="border-radius: 50%; width:50px; float:left;" src="../../{{person.photo.url}}" />
-                                {% else %}
-                                    <img style="border-radius: 50%; width:50px; float:left;" src="../../pages/media/profile_photos/default.jpg" />
+                                    <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
                                 {% endif %}
                                 <p style="padding-left:15px;margin-bottom:0;float:left;" class="personName">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p><br>
                                 <small class="text-muted" style="padding-left:15px;float:left">{{person.age}} years old</small>

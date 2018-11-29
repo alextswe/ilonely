@@ -1,5 +1,10 @@
 {% extends "pages/base.html" %}
 
+{% block extrahead %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+
 {% block content %}
 
 <style>
@@ -8,10 +13,13 @@
     height: 240px;
     width: 190px;
     background-color: lightgray;
-    border-style: solid;
-    border-color: lightgray;
+    border-radius: 3px;
     text-decoration: none;
-    border-radius: 5px;
+    box-shadow: 3px 3px 3px #cecece;
+    border: 1px solid lightgray;
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+    margin:0.3em;
+    margin-bottom:1.3em;
 }
 .productButton:hover {
     color: pink;
@@ -23,6 +31,8 @@
      overflow:hidden; 
      border-radius:3px 3px 0 0;
      background-color:black;
+     display:flex; 
+     align-items:center;
 }
 
 .productLower {
@@ -53,10 +63,10 @@
 
     <ul class="nav nav-tabs" role="tablist" id="myTab">
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" role="tab" id="marketplace-tab" href="#marketplace">Marketplace</a>
+            <a class="nav-link active" data-toggle="tab" role="tab" id="marketplace-tab" href="#marketplace"><i class="material-icons">shopping_cart</i>Marketplace</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" role="tab" id="my-products-tab" href="#myProducts">What I'm Selling</a>
+            <a class="nav-link" data-toggle="tab" role="tab" id="my-products-tab" href="#myProducts"><i class="material-icons">monetization_on</i>What I'm Selling</a>
         </li>
         <!--
         <li class="nav-item">
@@ -76,7 +86,7 @@
                                     <div class="input-group-prepend">
                                         <label class="input-group-text">Sort By</label>
                                     </div>
-                                    <select class="custom-select" name="sortBy">
+                                    <select class="custom-select shadow-sm" name="sortBy">
                                         <option selected>None</option>
                                         <option value="new">Newest</option>
                                         <option value="lowHigh">$ - $$$</option>
@@ -84,7 +94,7 @@
                                     </select>
                                 </div>
 
-                                <div class="input-group mb-3">
+                                <div class="input-group mb-3 shadow-sm">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Price</span>
                                     </div>
@@ -92,7 +102,7 @@
                                     <input type="number" placeholder="Max" class="form-control" style="width:52px" name="maxPrice"/>
                                 </div>
 
-                                <div class="input-group mb-3">
+                                <div class="input-group mb-3 shadow-sm">
                                     <div class="input-group-prepend">
                                         <label class="input-group-text">Posted Within...</label>
                                     </div>
@@ -104,7 +114,7 @@
                                     </select>
                                 </div>
 
-                                <input type="submit" class="btn btn-block btn-light" value="Apply Filters"/>
+                                <input type="submit" class="btn btn-block btn-light" style="box-shadow: 3px 3px 3px #cecece;" value="Apply Filters"/>
                             </form>
                         </div>
                     </div>
@@ -112,17 +122,17 @@
         
                 <div class="col border-left p-3">
                     {% for product in products %}
-                        <a style="text-decoration: none;" href="{% url 'listing' product.id %}" class="productButton m-1">
+                        <a style="text-decoration: none;" href="{% url 'listing' product.id %}" class="productButton">
+                            <div class="p-1 m-1 priceTag">
+                                {% if product.price is not 0 %}
+                                    <b>${{ product.price }}</b>
+                                {% else %}
+                                    <b>FREE</b>
+                                {% endif %}
+                            </div>
                             <div class="productUpper">
-                                <div class="p-1 m-1 priceTag">
-                                    {% if product.price is not 0 %}
-                                        <b>${{ product.price }}</b>
-                                    {% else %}
-                                        <b>FREE</b>
-                                    {% endif %}
-                                </div>
                                 {% if product.photo %}
-                                    <img style="width:100%" src="{{ product.photo.url }}" />
+                                    <img style="width:100%;" src="{{ product.photo.url }}" />
                                 {% endif %}
                             </div>
                             <div class="p-2 productLower">
@@ -142,26 +152,26 @@
         <div class="tab-pane fade" id="myProducts" role="tabpanel">
             <div class="row">
                 <div class="col-3 p-3">
-                    <button type="button" class="btn btn-block btn-primary m-1" data-toggle="modal" data-target="#uploadProduct">
+                    <button type="button" style="box-shadow: 3px 3px 3px #cecece;" class="btn btn-block btn-primary m-1" data-toggle="modal" data-target="#uploadProduct">
                         Sell Something
                     </button>
                 </div>
 
                 <div class="col border-left p-3">
                     {% for product in myProducts %}
-                        <a style="text-decoration: none;" href="{% url 'seller_view' product.id %}" class="productButton m-1">
-                            <div class="productUpper">
-                                <div class="p-1 m-1 priceTag">
-                                    {% if not product.sold %}
-                                        {% if product.price is not 0 %}
-                                            <b>${{ product.price }}</b>
-                                        {% else %}
-                                            <b>FREE</b>
-                                        {% endif %}
+                        <a style="text-decoration: none;" href="{% url 'seller_view' product.id %}" class="productButton">
+                            <div class="p-1 m-1 priceTag">
+                                {% if not product.sold %}
+                                    {% if product.price is not 0 %}
+                                        <b>${{ product.price }}</b>
                                     {% else %}
-                                        <b>SOLD</b>
+                                        <b>FREE</b>
                                     {% endif %}
-                                </div>
+                                {% else %}
+                                    <b>SOLD</b>
+                                {% endif %}
+                            </div>
+                            <div class="productUpper">
                                 {% if product.photo %}
                                     <img style="width:100%" src="{{ product.photo.url }}" />
                                 {% endif %}

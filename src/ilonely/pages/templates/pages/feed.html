@@ -89,7 +89,7 @@
                     {% for post in personalPosts %}
                         <li style="border: none; " class="list-group-item"> 
                             <button style="cursor:pointer;float:left; width:95%;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{post.profile.user.id}}">
-                                {% if person.photo %}
+                                {% if post.profile.photo %}
                                     <img style="border-radius: 50%; width:50px; float:left;" src="{{post.profile.photo.url}}" />
                                 {% else %}
                                     <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />

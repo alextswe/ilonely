@@ -1,19 +1,42 @@
 {% extends "pages/base.html" %}
   
+{% block extrahead %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
+<style>
+.profilePicture {
+    border-radius: 50%; 
+    box-shadow: 3px 3px 3px #cecece; 
+    width:150px; 
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
+}
+
+.addProfilePicIcon {
+    position:absolute;
+    left:59%;
+    bottom:10%;
+}
+
+.material-icons.md-40 { font-size: 40px; }
+</style>
+
+
 <div class="mx-auto m-2" style="width:550px">
-    <div class="row m-2">
-        <div class="col">
-            {% if profile.photo %}
-                <img style="border-radius: 50%; box-shadow: 3px 3px 3px #cecece; width:150px; margin-left:auto;margin-right:auto;display:block;" src="../../{{profile.photo.url}}" />
-            {% else %}
-                <img style="border-radius: 50%; box-shadow: 3px 3px 3px #cecece; width:150px; margin-left:auto;margin-right:auto;display:block;" src="../../pages/media/profile_photos/default.jpg" />
-            {% endif %}
-                
-        </div>
-    </div>
-        
-    <form method="post"> 
+    <form method="post" enctype="multipart/form-data"> 
+        <div class="row m-2">
+            <div class="col">
+                {% if profile.photo %}
+                    <img id="profilePreview" class="profilePicture" src="{{profile.photo.url}}" />
+                {% endif %}
+                <label class="addProfilePicIcon my-auto bg-light rounded-circle" style="box-shadow: 3px 3px 3px #cecece;" for="profilePhoto" id="pc_label"><i class="material-icons md-40">add_photo_alternate</i></label>
+                <input type="file" name="profilePhoto" id="profilePhoto" accept="image/*" style="display:none">
+            </div>
+        </div>        
+    
         {% csrf_token %}
         <div class="card p-4">
             <h3 class="text-muted">Edit Profile</h3>
@@ -53,10 +76,31 @@
                 <div class="col"><hr class="mb-4"/></div>
             </div>
 
-            <input class="btn btn-success" type="submit" name ="editFields" value="Save">
+            <div class="input-group row">
+                <div class="col">
+
+                </div>
+                <input class="btn btn-success mr-2 w-25" style="box-shadow: 3px 3px 3px #cecece;" type="submit" name ="editFields" value="Save">
+                <input class="btn btn-danger w-25" style="box-shadow: 3px 3px 3px #cecece;" type="submit" name ="Cancel" value="Cancel">
+            </div>
         </div>
     </form>
 </div>
+
+<!-- Partial code from https://github.com/mdn/learning-area/blob/master/html/forms/file-examples/file-example.html -->
+<script>
+    var pc_image = document.getElementById("profilePhoto");
+    pc_image.addEventListener('change', updateImageDisplay);
+
+    function updateImageDisplay() {
+        var curFiles = pc_image.files;
+        if (curFiles.length > 0) {
+            var image = document.getElementById("profilePreview");
+            image.src = window.URL.createObjectURL(curFiles[0]);
+        }
+    }
+</script>
+
 {% endblock %}
 
 

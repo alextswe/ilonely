@@ -165,7 +165,7 @@ def user_home_view(request):
             myPost = request.POST.get('postContent', '')  
             myPic = request.FILES.get('pc_image', None)
             if myPic != None:
-                fs = FileSystemStorage(location='../media/post_photos/')
+                fs = FileSystemStorage(location='../media/post_photos/..')
                 filename = fs.save(myPic.name, myPic)
             p = Post(profile=myProfile, postContent=myPost, picture=myPic)
             p.save()
@@ -456,8 +456,8 @@ def my_profile(request):
             profile.bio = newbio
             userid.first_name = newfname
             userid.last_name = newlname
-        elif request.POST.get('uploadButton'):
-            profile.photo = request.FILES['myfile'] 
+            if request.FILES.get('profilePhoto'):
+                profile.photo = request.FILES['profilePhoto'] 
         userid.save()
         profile.save()
         return render(request, 'pages/my_profile.html', 

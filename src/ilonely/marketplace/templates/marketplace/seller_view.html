@@ -1,8 +1,16 @@
 
 {% extends "pages/base.html" %}
 
+{% block extrahead %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <style>
+.material-icons {
+    vertical-align: middle;
+}
+
 .profileButton {
     cursor:pointer;
     color: black;
@@ -26,9 +34,9 @@
         {% csrf_token %}
         <div class="row" >
             <div class="col-lg-6 p-3">
-                <div>
+                <div class="preview">
                 {% if product.photo %}
-                    <img style="width:100%" src="{{ product.photo.url }}" />
+                    <img id="productPhotoPreview" style="width:100%" src="{{ product.photo.url }}" />
                 {% endif %}
                 </div>
             </div>
@@ -38,17 +46,33 @@
                 Price: {{form.price}}
                 Description: {{form.description}}
                 Mark As Sold: {{form.sold}}
-                <label class="btn btn-block btn-secondary mt-3" for="productPhoto">Change Photo</label>
+                <label style="box-shadow: 3px 3px 3px #cecece;" class="btn btn-block btn-secondary mt-3" for="productPhoto"><i class="material-icons">add_to_photos</i> Change Photo</label>
                 <span style="display:none">{{form.photo}}</span>
-                <button type="submit" class="btn btn-block btn-success">
-                    Save Changes
+                <button style="box-shadow: 3px 3px 3px #cecece;" type="submit" class="btn btn-block btn-success my-3">
+                    <i class="material-icons">save_alt</i> Save Changes
                 </button>
-                <button type="submit" class="btn btn-block btn-danger" name="cancel" value="cancel">
-                    Cancel
+                <button style="box-shadow: 3px 3px 3px #cecece;" type="submit" class="btn btn-block btn-danger" name="cancel" value="cancel">
+                    <i class="material-icons">cancel</i> Cancel
                 </button>
             </div>
         </div>
     </form>
 </div>
+
+<!-- Partial code from https://github.com/mdn/learning-area/blob/master/html/forms/file-examples/file-example.html -->
+<script>
+    var pc_image = document.getElementById("productPhoto");
+    var preview = document.querySelector('.preview');
+
+    pc_image.addEventListener('change', updateImageDisplay);
+
+    function updateImageDisplay() {
+        var curFiles = pc_image.files;
+        if (curFiles.length > 0) {
+            var image = document.getElementById("productPhotoPreview");
+            image.src = window.URL.createObjectURL(curFiles[0]);
+        }
+    }
+</script>
 
 {% endblock %}

@@ -181,3 +181,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('GOOGLE_OAUTH2_SECRET', default='')
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'user_home'
+
+TIME_ZONE = "America/Los_Angeles"
+USE_TZ = True
+

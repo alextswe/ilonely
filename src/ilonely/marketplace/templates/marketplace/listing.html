@@ -1,7 +1,15 @@
 {% extends "pages/base.html" %}
 
+{% block extrahead %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <style>
+.material-icons {
+    vertical-align: middle;
+}
+
 .profileButton {
     cursor:pointer;
     color: black;
@@ -30,18 +38,15 @@
             </div>
         </div>
         <div class="col-lg">
-            <div class="w-100" style="height:50px;">
+            <div style="height:65px;">
                 <a href="{% url 'public_profile' product.seller.user.id %}" class="profileButton" style="text-decoration:none;">
-                    <div>
-                        {% if product.seller.profile.photo %}
-                            <img class="profileImage p-1" src="{{product.seller.user.photo.url}}" />
-                        {% else %}
-                            <img class="profileImage p-1" src="pages/media/profile_photos/default.jpg" />
+                    <div style="display:flex; align-items:center">
+                        {% if product.seller.photo %}
+                            <img class="profileImage" style="vertical-align:middle" src="{{product.seller.photo.url}}" />
                         {% endif %}
-                    </div>
-                    <div>
-                        <h5>{{product.seller.user.first_name}}&nbsp;{{product.seller.user.last_name}}</h5>
-                    </div>
+                        &nbsp;
+                        <h5 class="align-middle"> {{product.seller.user.first_name}}&nbsp;{{product.seller.user.last_name}}</h5>
+                    </div>    
                 </a>
             </div>
             <hr />
@@ -66,8 +71,8 @@
 
             <div class="w-100 p-3">
                 <hr />
-                <a class="btn btn-block btn-primary" href="{% url 'postman:write' product.seller.user.username %}?subject={{product.name}} Offer&body=I'm interested...">
-                    Message Seller
+                <a style="box-shadow: 3px 3px 3px #cecece;" class="btn btn-block btn-primary" href="{% url 'postman:write' product.seller.user.username %}?subject={{product.name}} Offer&body=I'm interested...">
+                    <i class="material-icons">mail_outline</i> Message Seller
                 </a>
                 <button style="display:none" class="btn btn-block btn-outline-primary">
                     Make Offer
