@@ -140,6 +140,9 @@
     <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\media\profile_photos\ryan.jpg" />
     <Content Include="pages\fixtures\original.json" />
+    <Content Include="pages\static\css\animate.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="pages\static\css\img\google_sign_in.png" />
     <Content Include="pages\static\css\jquery-ui.min.css" />
     <Content Include="pages\static\js\jquery-ui.min.js" />

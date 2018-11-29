@@ -1,7 +1,9 @@
 {% extends "pages/base.html" %}
 
 {% block extrahead %}
+{% load static %}
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}"/>
 {% endblock %}
 
 
@@ -10,6 +12,13 @@
 <style>
 .material-icons {
     vertical-align: middle;
+}
+
+.hvr-float {
+  
+}
+.hvr-float:hover, .hvr-float:focus, .hvr-float:active {
+
 }
 
 .productButton {
@@ -21,17 +30,28 @@
     text-decoration: none;
     box-shadow: 3px 3px 3px #cecece;
     border: 1px solid lightgray;
-    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
     margin:0.3em;
     margin-bottom:1.3em;
+    
+/* Modified and taken from https://github.com/IanLunn/Hover */
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
 }
+
 .productButton:hover {
-    box-shadow: 5px 5px 5px #cecece;
+    -webkit-transform: translateY(-8px);
+    transform: translateY(-8px);
 }
 
 .productButton:active {
-    border: 1px solid #a0c5ff;
-    box-shadow: 5px 5px 5px #a0c5ff;
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
 }
 
 .productUpper {
@@ -62,6 +82,10 @@
 
 .nobullet {
     list-style-type: none;
+}
+
+#uploadProduct {
+    animation-duration: 0.5s;
 }
 </style>
 
@@ -204,7 +228,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="uploadProduct" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal animated slideInLeft" id="uploadProduct" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <form method="POST" id="uploadProduct" action="{% url 'marketplace' %}"  enctype="multipart/form-data">
             {% csrf_token %}
