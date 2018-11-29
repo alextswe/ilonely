@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'ilonely.wsgi.application'
 
 #Ajax Select
 AJAX_LOOKUP_CHANNELS = {
-    'user': {'model':'auth.user', 'search_field':'username'},
+    'user': ('ilonely.lookups', 'UserLookup')
 }
 
 #Postman Settings

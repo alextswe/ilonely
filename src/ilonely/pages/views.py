@@ -609,3 +609,12 @@ def events(request, activeEventId):
                                                'going' : going,
                                                'me' : me
                                                })
+
+def my_exchange_filter(sender, recipient, recipients_list):
+    mqs = Message.objects.all().filter(isRequest = False)
+    mqs = mqs.filter(Q(thread__userOne__username = sender.get_username()) | Q(thread__userTwo__username = sender.get_username()))
+    mqs = mqs.filter(Q(thread__userOne__username = recipient.get_username()) | Q(thread_userTwo__username = recipient.get_username()))
+    if mqs:
+        return "Yikes"
+    else:
+        return "You do not have approval to message the recipient."
