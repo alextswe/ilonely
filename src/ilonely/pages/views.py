@@ -186,8 +186,7 @@ def user_home_view(request):
         elif request.POST.get('deletePost'):
             postid = request.POST['deletePost']
             p = Post.objects.get(pk = postid)
-            if os.path.isfile(p.picture.path):
-                os.remove(p.picture.path)
+            p.picture.delete(save=True)
             p.delete()
         else:   
             igPicURL = request.POST.get('ig_media', None)
