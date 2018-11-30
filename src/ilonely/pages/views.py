@@ -306,6 +306,7 @@ def view_nearby(request):
             return redirect(public_profile, userid = viewUser)
     elif request.method == 'GET':
         distList=[]
+        hobbiesList = []
         peopleNearMe=[]
         miles = 10
         age = None
@@ -319,7 +320,15 @@ def view_nearby(request):
             miles = int(request.GET['milesFilter'])
 
         peopleNear = getNearby(me, miles, distList, age)       
-        peopleNearMe=blockUsers(peopleNear, me)
+        peopleNearMe = blockUsers(peopleNear, me)
+
+        if request.GET.get('hobbies'):
+            hobbiesList = request.GET['hobbies']
+            hobbiesquery = Q()
+            for hobby in hobbiesList:
+                hobbiesquery |= Q(hobbies__icontains = hobby)
+            hobbiesmatch = Profile.objects.filter(hobbiesquery)
+            peopleNearMe = list(set(hobbiesmatch).intersection(peopleNearMe))
         return render(request, 
                         'pages/view_nearby.html', 
                         {'title':'Nearby', 
@@ -455,10 +464,12 @@ def my_profile(request):
             newlname = request.POST.get("lnamespace")
             newage = request.POST.get("agespace")
             newbio = request.POST.get("biospace")
+            newhobbies = request.POST.get("hobbies")
             #Handle age and bio errors here
             if newage.isdigit() :
                 profile.age = newage
             profile.bio = newbio
+            profile.hobbies = newhobbies
             userid.first_name = newfname
             userid.last_name = newlname
             if request.FILES.get('profilePhoto'):
@@ -621,12 +632,3 @@ def events(request, activeEventId):
                                                'going' : going,
                                                'me' : me
                                                })
-
-def my_exchange_filter(sender, recipient, recipients_list):
-    mqs = Message.objects.all().filter(isRequest = False)
-    mqs = mqs.filter(Q(thread__userOne__username = sender.get_username()) | Q(thread__userTwo__username = sender.get_username()))
-    mqs = mqs.filter(Q(thread__userOne__username = recipient.get_username()) | Q(thread_userTwo__username = recipient.get_username()))
-    if mqs:
-        return "Yikes"
-    else:
-        return "You do not have approval to message the recipient."
