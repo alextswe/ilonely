@@ -597,9 +597,16 @@ def events(request, activeEventId):
             eventDate = request.POST['eventDate'] + ' ' + request.POST['eventTime'] #11/26/2018 8:07 PM
             geolocator = Nominatim()
             location = geolocator.geocode(request.POST['eventLocation'])
-            eventLocation = location.address
-            eventLong = location.longitude
-            eventLat = location.latitude
+
+            # coords will default to user's location if location is not found by geolocator
+            eventLocation  = request.POST['eventLocation']
+            eventLong = me.longitude
+            eventLat = me.latitude
+            if location is not None:
+                eventLocation = location.address
+                eventLong = location.longitude
+                eventLat = location.latitude
+                
             eventDescription = request.POST['eventDescription']
             e = Event(name=eventName, date=eventDate, location=eventLocation, longitude=eventLong, latitude=eventLat, description=eventDescription, category=eventCategory, poster=me)
             e.save() 
