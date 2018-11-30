@@ -56,6 +56,9 @@
     <Compile Include="pages\migrations\__init__.py" />
     <Compile Include="pages\models.py" />
     <Compile Include="pages\signals.py" />
+    <Compile Include="pages\socialauth.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="pages\templatetags\notif_badge_tags.py">
       <SubType>Code</SubType>
     </Compile>
@@ -87,6 +90,7 @@
     <Folder Include="pages\migrations\" />
     <Folder Include="pages\media\" />
     <Folder Include="pages\fixtures\" />
+    <Folder Include="pages\static\fonts\" />
     <Folder Include="pages\templates\instagram\" />
     <Folder Include="pages\templatetags\" />
     <Folder Include="pages\templates\" />
@@ -145,6 +149,11 @@
     </Content>
     <Content Include="pages\static\css\img\google_sign_in.png" />
     <Content Include="pages\static\css\jquery-ui.min.css" />
+    <Content Include="pages\static\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="pages\static\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="pages\static\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="pages\static\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="pages\static\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="pages\static\js\jquery-ui.min.js" />
     <Content Include="pages\static\js\popper.min.js" />
     <Content Include="pages\static\js\datepair.js" />
