@@ -1,19 +1,17 @@
-from .forms import CustomUserCreationForm, CustomForgotUsernameForm
+from .forms import CustomUserCreationForm
+from datetime import datetime
 from django.conf import settings
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
-from .forms import CustomUserCreationForm
-from pages.models import Profile, Follow, Block, Thread, Message, Post, Event
-from pages.geo import getNearby, getNearbyEvents
-from geopy.geocoders import Nominatim
-import random,string
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files import File
 from django.core.files.storage import FileSystemStorage
+from django.core.files.temp import NamedTemporaryFile
+from django.db.models import Q
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, QueryDict
 from django.shortcuts import render, redirect, resolve_url
 from django.template import RequestContext
@@ -26,22 +24,21 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
-from django.db.models import Q
-
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
 from instagram.client import InstagramAPI
-import os
+from io import BytesIO
+from pages.geo import getNearby, getNearbyEvents
+from pages.models import Profile, Follow, Block, Thread, Message, Post, Event
+from urllib.request import urlopen
 import json
+import os
+import random,string
 import requests
-from datetime import datetime
-from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
-INSTAGRAM_CLIENT_ID = '9788a776a2e44e7a842fc85132f528dc' # Keep Secret
-INSTAGRAM_CLIENT_SECRET = '1a18bbccc88b4d0ca151edc06d39ed37' # Really Keep Secret
-INSTAGRAM_REDIRECT_URI = 'http://localhost:8000/Instalink/'
-instagram_auth_url = 'https://api.instagram.com/oauth/authorize/?client_id=' + INSTAGRAM_CLIENT_ID + '&redirect_uri=' + INSTAGRAM_REDIRECT_URI + '&response_type=code'
+INSTAGRAM_REDIRECT_URI = 'http://localhost:8000/user_home/'
+instagram_auth_url = 'https://api.instagram.com/oauth/authorize/?client_id=' + settings.INSTAGRAM_CLIENT_ID + '&redirect_uri=' + INSTAGRAM_REDIRECT_URI + '&response_type=code'
 
 
 def home(request):
@@ -151,6 +148,36 @@ def success(request):
 # Prevents anyone from accessing this page unless they are logged in to their account
 @login_required(login_url="home")
 def user_home_view(request):
+    # Fixme: Hide code from url and silently fail when someone enters a code in url
+    def get_access_code(code):
+        if code != None:
+            url = 'https://api.instagram.com/oauth/access_token'
+            data = {
+                'client_id': settings.INSTAGRAM_CLIENT_ID,
+                'client_secret': settings.INSTAGRAM_CLIENT_SECRET,
+                'grant_type': 'authorization_code',
+                'redirect_uri': INSTAGRAM_REDIRECT_URI,
+                'code': code
+            }
+            r = requests.post(url, data=data)
+            parsed_json = json.loads(r.text)
+            access_token = parsed_json['access_token']
+            return access_token
+        else:
+            return None
+    def get_media(code):
+        # Returns the urls of the user's most recent posts (MAX 20: SANDBOX MODE)
+        access_token = get_access_code(code)
+        media_urls = []
+        if access_token != None:
+            url = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=' + access_token
+            r = requests.get(url)
+            parsed_json = json.loads(r.text)
+            for row in parsed_json['data']:
+                media_urls.append(row.get('images').get('low_resolution').get('url'))
+            return media_urls
+        else:
+            return None
     me = User.objects.get(pk=request.user.id)
     myProfile = Profile.objects.get(user = me)
     if request.method == 'POST':
@@ -159,16 +186,22 @@ def user_home_view(request):
         elif request.POST.get('deletePost'):
             postid = request.POST['deletePost']
             p = Post.objects.get(pk = postid)
-            if os.path.isfile(p.picture.path):
-                os.remove(p.picture.path)
+            p.picture.delete(save=True)
             p.delete()
-        else:          
+        else:   
+            igPicURL = request.POST.get('ig_media', None)
             myPost = request.POST.get('postContent', '')  
             myPic = request.FILES.get('pc_image', None)
-            if myPic != None:
-                fs = FileSystemStorage(location='../media/post_photos/..')
-                filename = fs.save(myPic.name, myPic)
-            p = Post(profile=myProfile, postContent=myPost, picture=myPic)
+            if igPicURL != None:
+                p = Post(profile=myProfile, postContent=myPost)
+                ig_image = urlopen(igPicURL)
+                io = BytesIO(ig_image.read())
+                p.picture.save('{}_instagram_pic.jpg'.format(request.user.pk), File(io))                
+            else:
+                if myPic != None:
+                    fs = FileSystemStorage(location='../media/post_photos/')
+                    filename = fs.save(myPic.name, myPic)
+                p = Post(profile=myProfile, postContent=myPost, picture=myPic)
             p.save()
     #posts of people I follow
     followSet = User.objects.filter(pk__in = Follow.objects.filter(userFollowing = me).values_list('user'))
@@ -188,11 +221,20 @@ def user_home_view(request):
         
     #myPosts
     personalPosts = list(Post.objects.filter(profile = myProfile).order_by('-datePosted'))
-    return render(request, 'pages/user_home.html', {'title' : 'User Home', 
-                                               'followingPosts' : followingPosts, 
-                                               'nearbyPosts' : nearbyPosts,
-                                               'personalPosts' : personalPosts,
-                                               'instagram_auth':instagram_auth_url,})
+    # Instagram
+    code = request.GET.get('code',None)
+    media_urls = get_media(code)
+
+    return render(request, 'pages/user_home.html',
+                    {
+                        'title' : 'User Home', 
+                        'followingPosts' : followingPosts, 
+                        'nearbyPosts' : nearbyPosts,
+                        'personalPosts' : personalPosts,
+                        'instagram_auth':instagram_auth_url,
+                        'ig_media_urls' : media_urls,
+                    }
+                  )
 
 @login_required(login_url="home")
 def set_location(request): 
@@ -501,70 +543,7 @@ def blockUsers(peopleNear, me):
             peopleNearMe.append(i)  
 
     return peopleNearMe
-
-@login_required(login_url="home")
-def linkInstagram(request):
-    # Fixme: Hide code from url and silently fail when someone enters a code in url
-    def get_access_code(code):
-        if code != None:
-            url = 'https://api.instagram.com/oauth/access_token'
-            data = {
-                'client_id': INSTAGRAM_CLIENT_ID,
-                'client_secret': INSTAGRAM_CLIENT_SECRET,
-                'grant_type': 'authorization_code',
-                'redirect_uri': INSTAGRAM_REDIRECT_URI,
-                'code': code
-            }
-            r = requests.post(url, data=data)
-            parsed_json = json.loads(r.text)
-            access_token = parsed_json['access_token']
-            return access_token
-        else:
-            return None
-    def get_media(code):
-        # Returns the urls of the user's most recent posts (MAX 20: SANDBOX MODE)
-        access_token = get_access_code(code)
-        media_urls = []
-        if access_token != None:
-            url = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=' + access_token
-            r = requests.get(url)
-            parsed_json = json.loads(r.text)
-            for row in parsed_json['data']:
-                media_urls.append(row.get('images').get('low_resolution').get('url'))
-            return media_urls
-        else:
-            return None
-
-    code = request.GET.get('code',None)
-    media_urls = get_media(code)
-    if media_urls != None:
-        # Fixme: Update html file to feed.html
-        return render(request, 'instagram/upload_pictures.html',
-                  {
-                      'ig_media_urls' : media_urls,
-                  }
-                 )
-    else:
-        # Fail silently
-        return redirect('home')
-   
-@login_required(login_url="home")
-def upload_pictures(request):
-    media_urls = None
-    #if request.method == 'POST':
-        #if request.POST.get('pc_image'):
-            #file = request.POST['pc_image']
-            #fs = FileSystemStorage()
-            #fs.save(file.name, file)
-            #media_urls = '../../' + fs.url(file.name)
-            
-          
-    return render(request, 'instagram/upload_pictures.html',
-                  {
-                  }
-                 )
-
-
+  
 @login_required(login_url="home")
 def events(request, activeEventId):
     me = Profile.objects.get(user = User.objects.get(pk=request.user.id))
