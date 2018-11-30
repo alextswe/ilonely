@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from ajax_select import urls as ajax_select_urls
+from postman.views import WriteView
+
 admin.autodiscover()
 
 urlpatterns = [
@@ -49,4 +51,5 @@ urlpatterns = [
     url(r'^events/(?P<activeEventId>\d+)/$', pages.views.events, name='events'),
     path(r'marketplace/', include('marketplace.urls')),
     url(r'^ajax_select/', include(ajax_select_urls)),
+    url(r'^write/(?:(?P<recipients>[^/#]+)/)?$', WriteView.as_view(exchange_filter=pages.views.my_exchange_filter), name='write'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

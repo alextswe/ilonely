@@ -7,11 +7,6 @@
 {% block content %}
     <!-- Login page display -->
     {% if user.is_authenticated %}
-        <div class="mx-auto flex-shrink-0" style="width:300px">
-            <div style="text-align:center;">
-                <h2>{{ request.user.username }}'s Feed</h2>
-            </div>
-        </div>
         {% include "pages/feed.html" %}
     {% else %}
         <!-- Unauthorized users should not have access to here -->

@@ -1,20 +1,50 @@
 {% extends "pages/base.html" %}
 
+{% block extrahead %}
+{% load static %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}"/>
+{% endblock %}
+
+
 {% block content %}
 
 <style>
+.material-icons {
+    vertical-align: middle;
+}
+
 .productButton {
     display: inline-block;
     height: 240px;
     width: 190px;
     background-color: lightgray;
-    border-style: solid;
-    border-color: lightgray;
+    border-radius: 3px;
     text-decoration: none;
-    border-radius: 5px;
+    box-shadow: 3px 3px 3px #cecece;
+    border: 1px solid lightgray;
+    margin:0.3em;
+    margin-bottom:1.3em;
+    
+/* Modified and taken from https://github.com/IanLunn/Hover */
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
 }
+
 .productButton:hover {
-    color: pink;
+    -webkit-transform: translateY(-8px);
+    transform: translateY(-8px);
+}
+
+.productButton:active {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
 }
 
 .productUpper {
@@ -23,6 +53,8 @@
      overflow:hidden; 
      border-radius:3px 3px 0 0;
      background-color:black;
+     display:flex; 
+     align-items:center;
 }
 
 .productLower {
@@ -44,19 +76,20 @@
 .nobullet {
     list-style-type: none;
 }
-</style>
-<div class="mx-auto">
-    <h2 style="text-align:center;">iLonely Marketplace</h2>
-</div>
 
-<div class="container">
+#uploadProduct {
+    animation-duration: 0.5s;
+}
+</style>
+
+<div class="container mt-4">
 
     <ul class="nav nav-tabs" role="tablist" id="myTab">
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" role="tab" id="marketplace-tab" href="#marketplace">Marketplace</a>
+            <a class="nav-link active" data-toggle="tab" role="tab" id="marketplace-tab" href="#marketplace"><i class="material-icons">shopping_cart</i>Marketplace</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" role="tab" id="my-products-tab" href="#myProducts">What I'm Selling</a>
+            <a class="nav-link" data-toggle="tab" role="tab" id="my-products-tab" href="#myProducts"><i class="material-icons">monetization_on</i>What I'm Selling</a>
         </li>
         <!--
         <li class="nav-item">
@@ -76,7 +109,7 @@
                                     <div class="input-group-prepend">
                                         <label class="input-group-text">Sort By</label>
                                     </div>
-                                    <select class="custom-select" name="sortBy">
+                                    <select class="custom-select shadow-sm" name="sortBy">
                                         <option selected>None</option>
                                         <option value="new">Newest</option>
                                         <option value="lowHigh">$ - $$$</option>
@@ -84,7 +117,7 @@
                                     </select>
                                 </div>
 
-                                <div class="input-group mb-3">
+                                <div class="input-group mb-3 shadow-sm">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Price</span>
                                     </div>
@@ -92,7 +125,7 @@
                                     <input type="number" placeholder="Max" class="form-control" style="width:52px" name="maxPrice"/>
                                 </div>
 
-                                <div class="input-group mb-3">
+                                <div class="input-group mb-3 shadow-sm">
                                     <div class="input-group-prepend">
                                         <label class="input-group-text">Posted Within...</label>
                                     </div>
@@ -104,7 +137,7 @@
                                     </select>
                                 </div>
 
-                                <input type="submit" class="btn btn-block btn-light" value="Apply Filters"/>
+                                <input type="submit" class="btn btn-block btn-light" style="box-shadow: 3px 3px 3px #cecece;" value="Apply Filters"/>
                             </form>
                         </div>
                     </div>
@@ -112,17 +145,17 @@
         
                 <div class="col border-left p-3">
                     {% for product in products %}
-                        <a style="text-decoration: none;" href="{% url 'listing' product.id %}" class="productButton m-1">
+                        <a style="text-decoration: none;" href="{% url 'listing' product.id %}" class="productButton">
+                            <div class="p-1 m-1 priceTag">
+                                {% if product.price is not 0 %}
+                                    <b>${{ product.price }}</b>
+                                {% else %}
+                                    <b>FREE</b>
+                                {% endif %}
+                            </div>
                             <div class="productUpper">
-                                <div class="p-1 m-1 priceTag">
-                                    {% if product.price is not 0 %}
-                                        <b>${{ product.price }}</b>
-                                    {% else %}
-                                        <b>FREE</b>
-                                    {% endif %}
-                                </div>
                                 {% if product.photo %}
-                                    <img style="width:100%" src="{{ product.photo.url }}" />
+                                    <img style="width:100%;" src="{{ product.photo.url }}" />
                                 {% endif %}
                             </div>
                             <div class="p-2 productLower">
@@ -142,26 +175,26 @@
         <div class="tab-pane fade" id="myProducts" role="tabpanel">
             <div class="row">
                 <div class="col-3 p-3">
-                    <button type="button" class="btn btn-block btn-primary m-1" data-toggle="modal" data-target="#uploadProduct">
+                    <button type="button" style="box-shadow: 3px 3px 3px #cecece;" class="btn btn-block btn-primary m-1" data-toggle="modal" data-target="#uploadProduct">
                         Sell Something
                     </button>
                 </div>
 
                 <div class="col border-left p-3">
                     {% for product in myProducts %}
-                        <a style="text-decoration: none;" href="{% url 'seller_view' product.id %}" class="productButton m-1">
-                            <div class="productUpper">
-                                <div class="p-1 m-1 priceTag">
-                                    {% if not product.sold %}
-                                        {% if product.price is not 0 %}
-                                            <b>${{ product.price }}</b>
-                                        {% else %}
-                                            <b>FREE</b>
-                                        {% endif %}
+                        <a style="text-decoration: none;" href="{% url 'seller_view' product.id %}" class="productButton">
+                            <div class="p-1 m-1 priceTag">
+                                {% if not product.sold %}
+                                    {% if product.price is not 0 %}
+                                        <b>${{ product.price }}</b>
                                     {% else %}
-                                        <b>SOLD</b>
+                                        <b>FREE</b>
                                     {% endif %}
-                                </div>
+                                {% else %}
+                                    <b>SOLD</b>
+                                {% endif %}
+                            </div>
+                            <div class="productUpper">
                                 {% if product.photo %}
                                     <img style="width:100%" src="{{ product.photo.url }}" />
                                 {% endif %}
@@ -188,7 +221,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="uploadProduct" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal animated slideInLeft" id="uploadProduct" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <form method="POST" id="uploadProduct" action="{% url 'marketplace' %}"  enctype="multipart/form-data">
             {% csrf_token %}

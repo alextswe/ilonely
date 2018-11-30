@@ -5,7 +5,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField()
     age = models.PositiveIntegerField()
-    photo = models.ImageField(upload_to="profile_photos/", null=True)
+    photo = models.ImageField(upload_to="profile_photos/", null=True, default="profile_photos/default.jpg")
     location = models.CharField(max_length=150, blank=True, default='') #of the form: Riverside, CA
     latitude = models.FloatField(max_length=150, default=0.0)
     longitude = models.FloatField(max_length=150, default=0.0)

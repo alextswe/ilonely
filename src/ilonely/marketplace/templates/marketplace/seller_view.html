@@ -1,8 +1,16 @@
 
 {% extends "pages/base.html" %}
 
+{% block extrahead %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <style>
+.material-icons {
+    vertical-align: middle;
+}
+
 .profileButton {
     cursor:pointer;
     color: black;
@@ -19,16 +27,64 @@
     float:left;
 }
 
+/* Modified and taken from https://github.com/IanLunn/Hover */
+.hvr-icon-sink {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+.hvr-icon-sink .hvr-icon {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+}
+.hvr-icon-sink:hover .hvr-icon, .hvr-icon-sink:focus .hvr-icon, .hvr-icon-sink:active .hvr-icon {
+    -webkit-transform: translateY(4px);
+    transform: translateY(4px);
+}
+
+.hvr-icon-grow {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+.hvr-icon-grow .hvr-icon {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+}
+.hvr-icon-grow:hover .hvr-icon, .hvr-icon-grow:focus .hvr-icon, .hvr-icon-grow:active .hvr-icon {
+    -webkit-transform: scale(1.2) translateZ(0);
+    transform: scale(1.2) translateZ(0);
+}
 </style>
 
-<div class="container mx-auto card">
+<div class="container mx-auto card shadow-sm">
     <form method="POST" style="margin-bottom:0" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row" >
             <div class="col-lg-6 p-3">
-                <div>
+                <div class="preview">
                 {% if product.photo %}
-                    <img style="width:100%" src="{{ product.photo.url }}" />
+                    <img id="productPhotoPreview" style="width:100%" src="{{ product.photo.url }}" />
                 {% endif %}
                 </div>
             </div>
@@ -38,17 +94,35 @@
                 Price: {{form.price}}
                 Description: {{form.description}}
                 Mark As Sold: {{form.sold}}
-                <label class="btn btn-block btn-secondary mt-3" for="productPhoto">Change Photo</label>
+                <label style="box-shadow: 3px 3px 3px #cecece;" class="btn btn-block btn-secondary mt-3 hvr-icon-grow" for="productPhoto">
+                    <i class="material-icons hvr-icon">add_to_photos</i> Change Photo
+                </label>
                 <span style="display:none">{{form.photo}}</span>
-                <button type="submit" class="btn btn-block btn-success">
-                    Save Changes
+                <button style="box-shadow: 3px 3px 3px #cecece;" type="submit" class="btn btn-block btn-success my-3 hvr-icon-sink">
+                    <i class="material-icons hvr-icon">save_alt</i> Save Changes
                 </button>
-                <button type="submit" class="btn btn-block btn-danger" name="cancel" value="cancel">
-                    Cancel
+                <button style="box-shadow: 3px 3px 3px #cecece;" type="submit" class="btn btn-block btn-danger hvr-icon-grow" name="cancel" value="cancel">
+                    <i class="material-icons hvr-icon">cancel</i> Cancel
                 </button>
             </div>
         </div>
     </form>
 </div>
+
+<!-- Partial code from https://github.com/mdn/learning-area/blob/master/html/forms/file-examples/file-example.html -->
+<script>
+    var pc_image = document.getElementById("productPhoto");
+    var preview = document.querySelector('.preview');
+
+    pc_image.addEventListener('change', updateImageDisplay);
+
+    function updateImageDisplay() {
+        var curFiles = pc_image.files;
+        if (curFiles.length > 0) {
+            var image = document.getElementById("productPhotoPreview");
+            image.src = window.URL.createObjectURL(curFiles[0]);
+        }
+    }
+</script>
 
 {% endblock %}

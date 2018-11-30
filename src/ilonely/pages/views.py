@@ -25,6 +25,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderTimedOut
 from instagram.client import InstagramAPI
 from io import BytesIO
 from pages.geo import getNearby, getNearbyEvents
@@ -244,13 +245,17 @@ def set_location(request):
         profile.latitude = request.POST.get('latitude')
         profile.longitude = request.POST.get('longitude')
         geolocator = Nominatim(user_agent="ilonely")
-        location = geolocator.reverse("%s, %s" % (profile.latitude, profile.longitude))
-        state = location.raw['address']['state']
         try:
-            city = (location.raw['address']['city'])
-        except:
-            city = (location.raw['address']['hamlet'])
-        profile.location = ("%s, %s") % (city, state)
+            location = geolocator.reverse("%s, %s" % (profile.latitude, profile.longitude))
+            state = location.raw['address']['state']
+            try:
+                city = (location.raw['address']['city'])
+            except:
+                city = (location.raw['address']['hamlet'])
+            profile.location = ("%s, %s") % (city, state)
+        except GeocoderTimedOut:
+            pass
+        
         profile.save()
         return HttpResponse(status=204)
     else:
@@ -429,7 +434,7 @@ def public_profile(request, userid):
                     m.delete()
                 except Message.DoesNotExist:
                     # If the message has been confirmed, go to message page so I can chat
-                    return redirect('messaging')
+                    return redirect('write', messageUser.username)
             except Thread.DoesNotExist:
                 # If userTwo = me, I receieved a message request
                 try:
@@ -440,7 +445,7 @@ def public_profile(request, userid):
                         return redirect('notifications')
                     except Message.DoesNotExist:
                         # If the message has been confirmed, go to message page so I can chat
-                        return redirect('messaging')
+                        return redirect('write', messageUser.username)
                 except Thread.DoesNotExist:
                     # A thread does not exist between the users, so create a new thread
                     m = Thread(userOne=me, userTwo=messageUser)
@@ -499,8 +504,8 @@ def my_profile(request):
             profile.bio = newbio
             userid.first_name = newfname
             userid.last_name = newlname
-        elif request.POST.get('uploadButton'):
-            profile.photo = request.FILES['myfile'] 
+            if request.FILES.get('profilePhoto'):
+                profile.photo = request.FILES['profilePhoto'] 
         userid.save()
         profile.save()
         return render(request, 'pages/my_profile.html', 
@@ -572,9 +577,16 @@ def events(request, activeEventId):
             eventDate = request.POST['eventDate'] + ' ' + request.POST['eventTime'] #11/26/2018 8:07 PM
             geolocator = Nominatim()
             location = geolocator.geocode(request.POST['eventLocation'])
-            eventLocation = location.address
-            eventLong = location.longitude
-            eventLat = location.latitude
+
+            # coords will default to user's location if location is not found by geolocator
+            eventLocation  = request.POST['eventLocation']
+            eventLong = me.longitude
+            eventLat = me.latitude
+            if location is not None:
+                eventLocation = location.address
+                eventLong = location.longitude
+                eventLat = location.latitude
+                
             eventDescription = request.POST['eventDescription']
             e = Event(name=eventName, date=eventDate, location=eventLocation, longitude=eventLong, latitude=eventLat, description=eventDescription, category=eventCategory, poster=me)
             e.save() 
@@ -589,3 +601,12 @@ def events(request, activeEventId):
                                                'going' : going,
                                                'me' : me
                                                })
+
+def my_exchange_filter(sender, recipient, recipients_list):
+    mqs = Message.objects.all().filter(isRequest = False)
+    mqs = mqs.filter(Q(thread__userOne__username = sender.get_username()) | Q(thread__userTwo__username = sender.get_username()))
+    mqs = mqs.filter(Q(thread__userOne__username = recipient.get_username()) | Q(thread_userTwo__username = recipient.get_username()))
+    if mqs:
+        return "Yikes"
+    else:
+        return "You do not have approval to message the recipient."

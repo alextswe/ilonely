@@ -10,147 +10,158 @@
 {% endblock %}
 
 {% block content %}
-    <style>
-        #profileButton {
-            cursor: pointer;
-            width: 400px;
-            padding-top: 5px;
-            padding-bottom: 5px;
-            padding-left: 20px;
-            border: none;
-            background-color: #f2f2f2;
-            box-shadow: 3px 3px 3px #cecece;
-        }
+<style>
+#profileButton {
+    cursor: pointer;
+    width: 400px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 20px;
+    border: none;
+    background-color: #f2f2f2;
+    box-shadow: 3px 3px 3px #cecece;
+}
 
-        #filters {
-            text-align:center;
-            height: 120px;
-        }
+#filters {
+    text-align:center;
+    height: 120px;
+}
 
-        .leaflet-container {  /* all maps */
-            width:  100%;
-            height: 75%;
-        }
+.leaflet-container {  /* all maps */
+    width:  100%;
+    height: 75%;
+}
 
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-          -webkit-appearance: none; 
-          margin: 0; 
-        }
-    </style>
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+</style>
 
-    <div class="mb-3 p-2" id="filters">
-        <h2>Nearby in {{request.user.profile.location}}</h2>
-        <div class="nav btn-toolbar justify-content-center">
-            <form method="GET">
-                <!-- Filter nearby users by miles -->
-                <span class="input-group">
-                    <span class="btn-group btn-group-toggle mr-2" data-toggle="buttons">
-                        <span class="btn input-group-text">Mile</span>
-                        <label class="btn btn-outline-primary">
-                            <input type="radio" autocomplete="off" name="milesFilter" value="10">10
-                        </label>
-                        <label class="btn btn-outline-primary">
-                            <input type="radio" autocomplete="off" name="milesFilter" value="5">5
-                        </label>
-                        <label class="btn btn-outline-primary">
-                            <input type="radio" autocomplete="off" name="milesFilter" value="3">3
-                        </label>
-                        <label class="btn btn-outline-primary">
-                            <input type="radio" autocomplete="off" name="milesFilter" value="1">1                        
-                        </label>
-                    </span>
-                
-                    <!-- Filter nearby users by age -->
-                    <span class="input-group mr-2">
-                        <span class="input-group-prepend">
-                            <span class="input-group-text">Age</span>
-                        </span>
-                        <label class="form-control" style="width:150px">
-                            <input type="range" min="18" max="100" value="100" class="slider" name="ageFilter" id="ageSlider">
-                        </label>
-                        <input type="number" min="18" max="100" class="form-control" style="width:52px" id="ageOutput"/>
-                    </span>
-
-                    <input type="submit" class="btn btn-primary" value="Submit"/>
+<div class="mb-3 p-2" id="filters">
+    <h2>Nearby in {{request.user.profile.location}}</h2>
+    <div class="nav btn-toolbar justify-content-center">
+        <form method="GET">
+            <!-- Filter nearby users by miles -->
+            <span class="input-group">
+                <span class="btn-group btn-group-toggle mr-2" data-toggle="buttons">
+                    <span class="btn input-group-text">Mile</span>
+                    <label class="btn btn-outline-primary">
+                        <input type="radio" autocomplete="off" name="milesFilter" value="10">10
+                    </label>
+                    <label class="btn btn-outline-primary">
+                        <input type="radio" autocomplete="off" name="milesFilter" value="5">5
+                    </label>
+                    <label class="btn btn-outline-primary">
+                        <input type="radio" autocomplete="off" name="milesFilter" value="3">3
+                    </label>
+                    <label class="btn btn-outline-primary">
+                        <input type="radio" autocomplete="off" name="milesFilter" value="1">1                        
+                    </label>
                 </span>
-            </form>
+                
+                <!-- Filter nearby users by age -->
+                <span class="input-group mr-2">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">Age</span>
+                    </span>
+                    <label class="form-control" style="width:150px">
+                        <input type="range" min="18" max="100" value="100" class="slider" name="ageFilter" id="ageSlider">
+                    </label>
+                    <input type="number" min="18" max="100" class="form-control" style="width:60px" id="ageOutput"/>
+                </span>
+
+                <input type="submit" class="btn btn-primary" value="Submit"/>
+            </span>
+        </form>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3-auto">
+            <div class="h-75" style="overflow-y:scroll;">
+                <form action="{% url 'view_nearby' %}" method="post"> {% csrf_token %}
+                <ul class="list-group list-group-flush" id="profiles">
+                {% for person, distance in people %}
+                    <li style="border: none;" class="list-group-item">             
+                        <button type="submit" name="viewUser" id="profileButton" value="{{person.user.id}}">
+                            {% if person.photo %}
+                                <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
+                            {% endif %}
+                            <p style="padding-left:15px;margin-bottom:0;float:left;" class="personName">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p><br>
+                            <small class="text-muted" style="padding-left:15px;float:left">{{person.age}} years old</small>
+                            <small style="text-align:right;align-self:center;float:right" class="distances text-muted ">{{ distance }}mi</small>
+                        </button>
+                        <p class="lat" hidden>{{person.latitude}}</p>
+                        <p class="long" hidden>{{person.longitude}}</p>
+                        <p class="userIDs" hidden>{% url 'public_profile' person.user.id %}</p>
+                    </li>
+                {% endfor %}
+                </ul>
+                </form>
+            </div>
+        </div>
+        <div class="col">
+            {% leaflet_map "yourmap" callback="map_init_basic"%}
         </div>
     </div>
+</div>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-3-auto">
-                <div class="h-75" style="overflow-y:scroll;">
-                    <form action="{% url 'view_nearby' %}" method="post"> {% csrf_token %}
-                    <ul class="list-group list-group-flush" id="profiles">
-                    {% for person, distance in people %}
-                        <li style="border: none;" class="list-group-item">             
-                            <button type="submit" name="viewUser" id="profileButton" value="{{person.user.id}}">
-                                {% if person.photo %}
-                                    <img style="border-radius: 50%; width:50px; float:left;" src="../../{{person.photo.url}}" />
-                                {% else %}
-                                    <img style="border-radius: 50%; width:50px; float:left;" src="../../pages/media/profile_photos/default.jpg" />
-                                {% endif %}
-                                <p style="padding-left:15px;margin-bottom:0;float:left;" class="personName">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p><br>
-                                <small class="text-muted" style="padding-left:15px;float:left">{{person.age}} years old</small>
-                                <small style="text-align:right;align-self:center;float:right" class="distances text-muted ">{{ distance }}mi</small>
-                            </button>
-                            <p class="lat" hidden>{{person.latitude}}</p>
-                            <p class="long" hidden>{{person.longitude}}</p>
-                        </li>
-                    {% endfor %}
-                    </ul>
-                    </form>
-                </div>
-            </div>
-            <div class="col">
-                {% leaflet_map "yourmap" callback="map_init_basic"%}
-            </div>
-        </div>
-    </div>
+<!-- Leaflet map script-->
+<script type="text/javascript">
+    var greenIcon = L.icon({
+        iconUrl: 'media/custom_icons/person_pin.png',
+        iconSize:     [48, 48], // size of the icon
+        iconAnchor:   [24, 24], // point of the icon which will correspond to marker's location
+        popupAnchor:  [0, -12] // point from which the popup should open relative to the iconAnchor
+    });
 
-    <!-- Leaflet map script-->
-    <script type="text/javascript">
-        function map_init_basic(map, options) {
-            var youMarker = L.marker([{{ user.profile.latitude }},{{ user.profile.longitude }}], {
-                            riseOnHover: 'True', 
-                            title: 'That\'s you!',
-                            autoPan: 'True'
-            }).addTo(map).bindPopup("<b>You are here.</b>").openPopup();
-            map.setView([{{ user.profile.latitude }}, {{ user.profile.longitude }}], 11);
-            circle = L.circle([{{ user.profile.latitude }}, {{ user.profile.longitude }}], {
-                    color: 'blue',
-                    fillColor: 'blue',
-                    fillOpacity: 0.1,
-                    radius: {{ radius }}*1609.344
-            }).addTo(map);
+    function map_init_basic(map, options) {
+        var youMarker = L.marker([{{ user.profile.latitude }},{{ user.profile.longitude }}], {
+                        icon: greenIcon,
+                        riseOnHover: 'True', 
+                        title: 'it\'s u dawg',
+                        autoPan: 'True',
+                        zIndexOffset:'100',
+        }).addTo(map).bindPopup("<b>That's you!</b>");
 
-            map.fitBounds(circle.getBounds())
+        map.setView([{{ user.profile.latitude }}, {{ user.profile.longitude }}], 11);
 
-            lats = document.getElementsByClassName("lat");
-            longs = document.getElementsByClassName("long");
-            names = document.getElementsByClassName("personName");
-            for (i = 0; i < lats.length; i++) {
-                lat = lats[i].innerHTML;
-                long = longs[i].innerHTML;
-                name = names[i].innerHTML;
-                L.marker([parseFloat(lat), parseFloat(long)], {riseOnHover:'True'}).addTo(map).bindPopup("<b>"+name.toString()+"</b>"); 
-            }
+        circle = L.circle([{{ user.profile.latitude }}, {{ user.profile.longitude }}], {
+                fillColor: 'blue',
+                fillOpacity: 0.1,
+                radius: {{ radius }}*1609.344
+        }).addTo(map);
+
+        map.fitBounds(circle.getBounds())
+
+        lats = document.getElementsByClassName("lat");
+        longs = document.getElementsByClassName("long");
+        names = document.getElementsByClassName("personName");
+        ids = document.getElementsByClassName("userIDs")
+        for (i = 0; i < lats.length; i++) {
+            lat = lats[i].innerHTML;
+            long = longs[i].innerHTML;
+            name = names[i].innerHTML;
+            id = ids[i].innerHTML
+            L.marker([parseFloat(lat), parseFloat(long)], {riseOnHover:'True'}).addTo(map).bindPopup("<a href=\"" + id + "\"><b>"+name.toString()+"</b></a>"); 
         }
-    </script>
-        
-    <script>
-        var slider = document.getElementById("ageSlider");
-        var output = document.getElementById("ageOutput");
-        output.value = slider.value;
+    }
+</script>
 
-        slider.oninput = function() {
-            output.value = this.value;
-        }
+<script>
+    var slider = document.getElementById("ageSlider");
+    var output = document.getElementById("ageOutput");
+    output.value = slider.value;
 
-        output.oninput = function () {
-            slider.value = this.value;
-        }
-    </script>
+    slider.oninput = function() {
+        output.value = this.value;
+    }
+
+    output.oninput = function () {
+        slider.value = this.value;
+    }
+</script>
 {% endblock %}
