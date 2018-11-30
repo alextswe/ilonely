@@ -68,22 +68,24 @@
 
 <div class="mx-auto m-2" style="width:550px">
     <form method="post" enctype="multipart/form-data"> 
-        <div class="row m-2">
-            <div class="col">
-                {% if profile.photo %}
-                    <img id="profilePreview" class="profilePicture" src="{{profile.photo.url}}" />
-                {% endif %}
-                <label class="addProfilePicIcon my-auto bg-light rounded-circle p-1" style="box-shadow: 3px 3px 3px #cecece;" for="profilePhoto" id="pc_label"><i class="material-icons md-40">add_photo_alternate</i></label>
-                <input type="file" name="profilePhoto" id="profilePhoto" accept="image/*" style="display:none">
-            </div>
-        </div>        
+             
     
         {% csrf_token %}
         <div class="card p-4 shadow-sm">
             <h3 class="text-muted">Edit Profile</h3>
             <div class="row">
-                <div class="col"><hr class="mb-4"/></div>
+                <div class="col"><hr /></div>
             </div>
+
+            <div class="row mb-3">
+                <div class="col">
+                    {% if profile.photo %}
+                        <img id="profilePreview" class="profilePicture" src="{{profile.photo.url}}" />
+                    {% endif %}
+                    <label class="addProfilePicIcon my-auto bg-light rounded-circle p-1" style="box-shadow: 3px 3px 3px #cecece;" for="profilePhoto" id="pc_label"><i class="material-icons md-40">add_photo_alternate</i></label>
+                    <input type="file" name="profilePhoto" id="profilePhoto" accept="image/*" style="display:none">
+                </div>
+            </div>   
 
             <div class="form-group row">
                 <label class="col-sm-3">First Name</label>

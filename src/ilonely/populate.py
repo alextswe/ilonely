@@ -10,9 +10,11 @@ import requests
 import sys
 
 user = User.objects.get(username='msant')
-profile = Profile.objects.get(user=user)
+profile = user.profile
+myLoc = profile.location
 execLat = profile.latitude
 execLong = profile.longitude
+
 
 fake = Faker()
 users = []
@@ -45,11 +47,15 @@ for i in range(10):
             gotLoc = False
     geodata = location.raw
     state = geodata['address']['state']
+    profile.location = myLoc
     try:
-        city = (geodata['address']['city'])
+        if geodata['address']['city'] is not None:
+            city = (geodata['address']['city'])
+            profile.location = ("%s, %s") % (city, state)
     except:
-        city = (geodata['address']['hamlet'])
-    profile.location = ("%s, %s") % (city, state)
+        if geodata['address']['hamlet']:
+            city = (geodata['address']['hamlet'])
+            profile.location = ("%s, %s") % (city, state)
     profile.bio = ' '.join(fake.sentences(nb=randNum+randNum2+1, ext_word_list=None))
     profile.age = randrange(18,40)
     profile.save()

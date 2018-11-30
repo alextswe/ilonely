@@ -82,6 +82,7 @@
     <Folder Include="marketplace\templates\marketplace\" />
     <Folder Include="marketplace\__pycache__\" />
     <Folder Include="media\" />
+    <Folder Include="media\custom_icons\" />
     <Folder Include="media\post_photos\" />
     <Folder Include="media\product_pictures\" />
     <Folder Include="media\profile_photos\" />
