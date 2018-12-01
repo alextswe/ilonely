@@ -370,9 +370,8 @@ def view_nearby(request):
 
         if request.GET.get('hobbies'):
             hobbiesList = request.GET['hobbies']
-            print(hobbiesList)
             hobbiesquery = Profile.objects.all()
-            for hobby in hobbiesList:
+            for hobby in hobbiesList.split():
                 hobbiesmatch = hobbiesquery.filter(hobbies__icontains = hobby)
             peopleNearMe = list(set(hobbiesmatch).intersection(peopleNearMe))
         return render(request, 
