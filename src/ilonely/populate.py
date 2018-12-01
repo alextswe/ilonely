@@ -21,7 +21,7 @@ users = []
 profiles = []
 geolocator = Nominatim(user_agent="ilonely")
 
-for i in range(10):
+for i in range(4):
     # generate users
     randNum = randrange(1,3)
     randNum2 = randrange(0,2)
