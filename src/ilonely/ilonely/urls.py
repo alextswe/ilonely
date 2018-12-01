@@ -48,9 +48,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls), # admin site url
     url(r'^messages/', include('postman.urls', namespace='postman')),
     url(r'auth/', include('social_django.urls', namespace='social')),
-    url(r'^Instalink/$', pages.views.linkInstagram, name='Instalink'),
     url(r'^events/(?P<activeEventId>\d+)/$', pages.views.events, name='events'),
     path(r'marketplace/', include('marketplace.urls')),
     url(r'^ajax_select/', include(ajax_select_urls)),   
-    url(r'^upload_pictures/$', pages.views.upload_pictures, name='upload_pictures'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
