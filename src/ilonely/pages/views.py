@@ -1,4 +1,4 @@
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomForgotUsernameForm
 from datetime import datetime
 from django.conf import settings
 from django.contrib.auth import login, logout, authenticate
