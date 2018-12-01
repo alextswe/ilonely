@@ -82,6 +82,10 @@ def register(request):
 
 def login_view(request):
     assert isinstance(request, HttpRequest)
+
+    if request.user.is_authenticated:
+        return redirect('user_home')
+
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
