@@ -203,7 +203,7 @@ def user_home_view(request):
                 p.picture.save('{}_instagram_pic.jpg'.format(request.user.pk), File(io))                
             else:
                 if myPic != None:
-                    fs = FileSystemStorage(location='../media/post_photos/')
+                    fs = FileSystemStorage(location='../media/post_photos/..')
                     filename = fs.save(myPic.name, myPic)
                 p = Post(profile=myProfile, postContent=myPost, picture=myPic)
             p.save()
@@ -370,10 +370,10 @@ def view_nearby(request):
 
         if request.GET.get('hobbies'):
             hobbiesList = request.GET['hobbies']
-            hobbiesquery = Q()
+            print(hobbiesList)
+            hobbiesquery = Profile.objects.all()
             for hobby in hobbiesList:
-                hobbiesquery |= Q(hobbies__icontains = hobby)
-            hobbiesmatch = Profile.objects.filter(hobbiesquery)
+                hobbiesmatch = hobbiesquery.filter(hobbies__icontains = hobby)
             peopleNearMe = list(set(hobbiesmatch).intersection(peopleNearMe))
         return render(request, 
                         'pages/view_nearby.html', 

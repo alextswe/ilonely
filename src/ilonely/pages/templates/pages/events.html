@@ -1,7 +1,18 @@
 ﻿{% extends "pages/base.html" %}
+{% load leaflet_tags %}
+
+{% block extrahead %}
+<!-- JS and CSS for leaflet maps-->
+{% leaflet_js %}
+{% leaflet_css %}
+<style>
+.leaflet-container {
+    height:250px;
+}
+</style>
+{% endblock %}
 
 {% block content %}
-    
     <div class="container-fluid" style="margin-top:20px;">
         <div class="row" style="height:500px">
             <div class="col-3" style="overflow:auto; background:linear-gradient(150deg, #e7e7e7 55%, #ffffff 25%); height:500px;">
@@ -67,12 +78,16 @@
                                 </div>
                             </div>
                             <hr style="border-top:2px solid rgba(0, 0, 0, 0.1);" />
-                            <div class="row" style="background:linear-gradient(150deg, #e7e7e7 55%, #ffffff 25%);margin-left:0px;">
-                                <div class="col">
+                            <div class="row">
+                                <div class="col-3">
+                                    {% leaflet_map "yourmap" callback="map_init_basic"%}
+                                </div>
+                                <div class="col" style="background:linear-gradient(150deg, #e7e7e7 55%, #ffffff 25%);margin-left:0px;">
                                     <h5>Information</h5>
                                     <p style="padding-left:15px;padding-top:10px;padding-right:50%;">{{activeEvent.description}}</p>
                                 </div>
                             </div>
+                            
                         </div>
                         
                                               
@@ -213,5 +228,14 @@
                 format: 'LT'
             });
         });
+
+        function map_init_basic(map, options) {
+            var eventMarker = L.marker([{{activeEvent.latitude}}, {{activeEvent.longitude}}],
+                {
+                    title: '{{activeEvent.date}}',
+                }).addTo(map).bindPopup("<b>{{activeEvent.name}}<b>");
+
+            map.setView([{{ activeEvent.latitude }}, {{ activeEvent.longitude }}], 15);
+        }
     </script>
 {% endblock %}

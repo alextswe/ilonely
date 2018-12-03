@@ -75,7 +75,7 @@
 	    background: white;
     }
 </style>
-<div class="container-fluid" style="height:500px">
+<div class="container-fluid" style="height:700px">
     <div class="row" style="height:100%;">
         <div class="col">
         </div>
@@ -92,7 +92,7 @@
                 </li>
             </ul>
             <div class="tab-content card" id="myTabContent">
-                <div class="card-body tab-pane fade show active" style="height:400px;overflow-y:auto;" id="nearby" role="tabpanel" aria-labelledby="nearby-tab">
+                <div class="card-body tab-pane fade show active" style="height:600px;overflow-y:auto;" id="nearby" role="tabpanel" aria-labelledby="nearby-tab">
                     <form action="{% url 'feed' %}" method="post"> {% csrf_token %}
                         <ul class="list-group list-group-flush">
                         {% for post in nearbyPosts %}
@@ -118,7 +118,7 @@
                         </ul> 
                     </form>
                 </div>
-                <div class="card-body tab-pane fade" style="height:400px;overflow-y:auto;" id="following" role="tabpanel" aria-labelledby="following-tab">
+                <div class="card-body tab-pane fade" style="height:600px;overflow-y:auto;" id="following" role="tabpanel" aria-labelledby="following-tab">
                     <form action="{% url 'feed' %}" method="post"> {% csrf_token %}
                         <ul class="list-group list-group-flush">
                         {% for post in followingPosts %}
@@ -144,7 +144,7 @@
                         </ul>
                     </form>
                 </div>
-                <div class="card-body tab-pane fade" style="height:400px;overflow-y:auto;" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                <div class="card-body tab-pane fade" style="height:600px;overflow-y:auto;" id="personal" role="tabpanel" aria-labelledby="personal-tab">
                     <ul class="list-group list-group-flush">
                     {% for post in personalPosts %}
                         <li style="border: none; " class="list-group-item"> 
