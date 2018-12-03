@@ -1,6 +1,10 @@
 ﻿{% extends "pages/base.html" %}
 
 {% block content %}
+    
+    <div class="row">
+    <div class="col"></div>
+    <div class="col">
     <h2 style="padding-left:10px;">See who you are following!</h2>
     <form action="{% url 'view_following' %}" method="post"> {% csrf_token %}
     <ul class="list-group list-group-flush">
@@ -18,4 +22,7 @@
     {% endfor %}
     </ul>
     </form>
+    </div>
+    <div class="col"></div>
+    </div>
 {% endblock %}

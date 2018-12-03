@@ -144,6 +144,7 @@
     <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\media\profile_photos\ryan.jpg" />
     <Content Include="pages\static\css\img\google_sign_in.png" />
+    <Content Include="pages\static\css\img\people-connecting.jpg" />
     <Content Include="pages\static\js\popper.min.js" />
     <Content Include="pages\static\js\datepair.js" />
     <Content Include="pages\static\js\jquery.datepair.js" />

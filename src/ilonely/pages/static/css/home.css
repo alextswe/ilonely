@@ -6,12 +6,13 @@ body, html {
 
 .bg {
     width: 100%;
-    height: 50%;
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("img/iLonely.jpg");
+    height: 60%;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("img/people-connecting.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
+    margin-top: 70px;
 }
 
 .bgtxt {
