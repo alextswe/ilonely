@@ -536,8 +536,8 @@ def my_profile(request):
 
 
 def blockUsers(peopleNear, me):
-    profilesIBlock = User.objects.filter(pk__in = Block.objects.filter(userBlocking = me).values_list('user'))
-    blockedUsers = list(Profile.objects.filter(user__in = profilesIBlock))
+    peopleBlockingMe = User.objects.filter(pk__in = Block.objects.filter(user = me).values_list('userBlocking'))
+    blockedUsers = list(Profile.objects.filter(user__in = peopleBlockingMe))
     peopleNearMe = []
 
     for i in peopleNear:
