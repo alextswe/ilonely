@@ -56,16 +56,19 @@
 
     <!-- Login page display -->
     <div class="mx-auto flex-shrink-0 p-2" style="width:500px">
-        <div style="text-align:center;">
-            <h2>Notifications</h2>
-        </div>
+        
     </div>
  
+    <div class="row">
+    <div class="col"></div>
+    <div class="col">
     <form action="{% url 'notifications' %}" method="post">
+        
         <div class="form-group">
+            <h2 style="">Notifications</h2>
             {% csrf_token %}
                 <!-- Message Request -->
-                <h2 style="padding-left:10px;">Message Requests</h2>
+                <h3 style="padding-left:10px;">Message Requests</h3>
                     <div class=" container; m-3">
                         <!-- Displays message requests awaiting your confirmation: YELLOW -->
                         {% for person in user_message_requests %}
@@ -96,7 +99,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    
+                    <h3>Pending Message Requests</h3>
                     <div class=" container; m-3">
                         <!-- Displays your pending message requests: GRAY -->
                         {% for person in my_message_requests %}
@@ -117,13 +120,12 @@
                         {% endfor %}
                             
                     </div>
-                
-                <!-- Links -->
-                <div class="container; m-1">
-                    <a href={% url 'user_home' %} class="btn btn-primary my-3 active" role="button">Go Back</a>
-                </div>
+                             
             </div>
         </form>
+        </div>
+        <div class="col"></div>
+        </div>
 
 {% endblock %}
 

@@ -203,7 +203,7 @@ def user_home_view(request):
                 p.picture.save('{}_instagram_pic.jpg'.format(request.user.pk), File(io))                
             else:
                 if myPic != None:
-                    fs = FileSystemStorage(location='../media/post_photos/')
+                    fs = FileSystemStorage(location='../media/post_photos/..')
                     filename = fs.save(myPic.name, myPic)
                 p = Post(profile=myProfile, postContent=myPost, picture=myPic)
             p.save()
@@ -535,8 +535,8 @@ def my_profile(request):
 
 
 def blockUsers(peopleNear, me):
-    profilesIBlock = User.objects.filter(pk__in = Block.objects.filter(userBlocking = me).values_list('user'))
-    blockedUsers = list(Profile.objects.filter(user__in = profilesIBlock))
+    peopleBlockingMe = User.objects.filter(pk__in = Block.objects.filter(user = me).values_list('userBlocking'))
+    blockedUsers = list(Profile.objects.filter(user__in = peopleBlockingMe))
     peopleNearMe = []
 
     for i in peopleNear:

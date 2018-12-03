@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 def marketplace(request):
     sellersNearby = getNearby(request.user, 30)
     nearbyProducts = Product.objects.none()
-    myProducts = Product.objects.filter(seller=request.user.profile)
+    myProducts = Product.objects.filter(seller=request.user.profile).order_by('-date_created')
 
     for person in sellersNearby:
         products = Product.objects.filter(seller=person)
