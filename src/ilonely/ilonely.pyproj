@@ -4,7 +4,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>ilonely</Name>
     <RootNamespace>ilonely</RootNamespace>
-    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
+    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <WebBrowserPort>8000</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup>
@@ -78,6 +78,8 @@
     <Folder Include="marketplace\templates\marketplace\" />
     <Folder Include="marketplace\__pycache__\" />
     <Folder Include="media\" />
+    <Folder Include="media\custom_icons\" />
+    <Folder Include="media\post_photos\" />
     <Folder Include="media\product_pictures\" />
     <Folder Include="media\profile_photos\" />
     <Folder Include="pages\" />
@@ -129,6 +131,9 @@
     <Content Include="marketplace\__pycache__\urls.cpython-36.pyc" />
     <Content Include="marketplace\__pycache__\views.cpython-36.pyc" />
     <Content Include="marketplace\__pycache__\__init__.cpython-36.pyc" />
+    <Content Include="media\custom_icons\person_pin.png" />
+    <Content Include="media\post_photos\Monument_Valley.jpg" />
+    <Content Include="media\post_photos\the_witness_2017_08_31_02_26_37_UTC.png" />
     <Content Include="media\product_pictures\2tb_harddrive.jpg" />
     <Content Include="media\product_pictures\3DS_9Y8yolc.jpg" />
     <Content Include="media\product_pictures\burnt_laptop_YI6qvMC.jpg" />
@@ -365,6 +370,17 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="env\">
+      <Id>env</Id>
+      <Version>3.6</Version>
+      <Description>env (Python 3.6 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 
