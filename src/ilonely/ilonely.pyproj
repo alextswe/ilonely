@@ -308,7 +308,6 @@
     <Content Include="pages\static\css\bootstrap.min.css" />
     <Content Include="pages\static\css\bootstrap.min.css.map" />
     <Content Include="pages\static\css\home.css" />
-    <Content Include="pages\static\css\img\iLonely.jpg" />
     <Content Include="pages\static\css\messaging.css" />
     <Content Include="pages\static\css\sidebar.css" />
     <Content Include="pages\static\js\bootstrap.bundle.js" />

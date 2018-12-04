@@ -28,7 +28,9 @@
         left:320px;
         z-index:1;
     }
-
+    #acceptButton:hover {
+        background-color: #40c847;
+    }
     #declineButton {
         cursor:pointer;
         border:none;
@@ -45,6 +47,9 @@
         left:370px;
         z-index:1;
     }
+    #declineButton:hover {
+        background-color: #cf160a;
+    }
     </style>
  
 <div class="row">
@@ -52,11 +57,12 @@
 <div class="col" style="text-align:center">
 <form action="{% url 'notifications' %}" method="post">
     <div style="text-align:center">
-    <div class="form-group card" style="text-align:center">
-        <div class="card-header"><h2>Notifications</h2></div>
-        {% csrf_token %}
-            <!-- Message Request -->
-            <h3>Message Requests</h3>
+        <div class="form-group card" style="text-align:center">
+            <div class="card-header"><h2>Notifications</h2></div>
+                {% csrf_token %}
+                <!-- Message Request -->
+                {% if user_message_requests %}
+                <h3>Message Requests</h3>
                 <div class="row">
                     <!-- Displays message requests awaiting your confirmation: YELLOW -->
                     {% for person in user_message_requests %}
@@ -86,6 +92,8 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% endif %} 
+                {% if my_message_requests %}
                 <h3>Pending Message Requests</h3>
                 <div>
                     <!-- Displays your pending message requests: GRAY -->
@@ -104,11 +112,14 @@
                             </div>
                             <br>
                         </div>
-                    {% endfor %}
-                            
-                </div>          
-            </div>
+                    {% endfor %}                
+                </div> 
+                {% endif %}
+                {% if not user_message_requests and not my_message_requests %}
+                    <h4><i>You're Caught Up!</i></h4>
+                {% endif %}
         </div>
+    </div>
     </form>
     </div>
     <div class="col"></div>
