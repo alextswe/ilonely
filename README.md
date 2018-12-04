@@ -1,7 +1,7 @@
-# iLonely
+# proximity
 A webapp based off the Nearby mobile app.
 
-## Current Sprint Goals
+## Sprint 3 Goals
  + Social Integration
    + Register using an existing Google account
    + Post your Instagram pictures
