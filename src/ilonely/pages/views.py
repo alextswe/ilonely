@@ -445,7 +445,7 @@ def public_profile(request, userid):
                     m.delete()
                 except Message.DoesNotExist:
                     # If the message has been confirmed, go to message page so I can chat
-                    return redirect('write', messageUser.username)
+                    return redirect('postman:write', messageUser.username)
             except Thread.DoesNotExist:
                 # If userTwo = me, I receieved a message request
                 try:
@@ -456,7 +456,7 @@ def public_profile(request, userid):
                         return redirect('notifications')
                     except Message.DoesNotExist:
                         # If the message has been confirmed, go to message page so I can chat
-                        return redirect('write', messageUser.username)
+                        return redirect('postman:write', messageUser.username)
                 except Thread.DoesNotExist:
                     # A thread does not exist between the users, so create a new thread
                     m = Thread(userOne=me, userTwo=messageUser)

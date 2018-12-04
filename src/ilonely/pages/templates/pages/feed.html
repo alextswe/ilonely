@@ -14,14 +14,16 @@
         cursor:pointer;
         border-radius: 4px;
         padding: 20px 20px;
-        margin-left: -125px;
+        margin-left:inherit;
         margin-top: 40px;
+        position:relative;
     }
     #pc_label:hover{
         background-color: #cecece;
     }
     #ig_link {
-        margin-left: -215px;
+        margin-left:-80px;
+        position:relative;
     }
     .customRadio {
         display: block;
@@ -253,9 +255,9 @@
                     {% if not ig_media_urls %}
                     <div class="col-sm-3">
                         <label for="pc_image" id="pc_label"></label>
-                        <input type="file" id="pc_image" name="pc_image" accept="image/*">
+                        <input type="file" id="pc_image" class="mr-auto" name="pc_image" accept="image/*">
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 mr-auto">
                         <a id ="ig_link" class="btn btn-danger" href={{instagram_auth}} role="button">Upload from Instagram</a>
                     </div>
                     {% endif %}
