@@ -4,9 +4,10 @@
     
     <div class="row">
     <div class="col"></div>
-    <div class="col">
-    <h2 style="padding-left:10px;">See who you are following!</h2>
-    <form action="{% url 'view_following' %}" method="post"> {% csrf_token %}
+    <div class="col" style="text-align:center;">
+    <div class="card" style="height:700px;">
+    <div class="card-header"><h3>See who you are following!</h3></div>
+    <form class="card-body" action="{% url 'view_following' %}" method="post"> {% csrf_token %}
     <ul class="list-group list-group-flush">
     {% for person in following %}
         <li style="border: none; " class="list-group-item"> 
@@ -22,6 +23,7 @@
     {% endfor %}
     </ul>
     </form>
+    </div>
     </div>
     <div class="col"></div>
     </div>

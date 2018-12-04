@@ -71,12 +71,10 @@
              
     
         {% csrf_token %}
-        <div class="card p-4 shadow-sm">
-            <h3 class="text-muted">Edit Profile</h3>
-            <div class="row">
-                <div class="col"><hr /></div>
-            </div>
+        <div class="card shadow-sm">
+            <h3 class="card-header text-muted">Edit Profile</h3>
 
+            <div class="card-body">
             <div class="row mb-3">
                 <div class="col">
                     {% if profile.photo %}
@@ -121,17 +119,16 @@
                     <textarea class="form-control" name="hobbies" maxlength="75" rows="2" cols="50">{{profile.hobbies}}</textarea>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col"><hr class="mb-4"/></div>
             </div>
 
-            <div class="input-group row">
-                <div class="col">
+            <div class="card-footer bg-transparent">
+                <div class="input-group row">
+                    <div class="col">
 
+                    </div>
+                    <input class="btn btn-success mr-2 w-25" style="box-shadow: 3px 3px 3px #cecece;" type="submit" name ="editFields" value="Save">
+                    <input class="btn btn-danger w-25" style="box-shadow: 3px 3px 3px #cecece;" type="submit" name ="Cancel" value="Cancel">
                 </div>
-                <input class="btn btn-success mr-2 w-25" style="box-shadow: 3px 3px 3px #cecece;" type="submit" name ="editFields" value="Save">
-                <input class="btn btn-danger w-25" style="box-shadow: 3px 3px 3px #cecece;" type="submit" name ="Cancel" value="Cancel">
             </div>
         </div>
     </form>
