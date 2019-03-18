@@ -1,4 +1,4 @@
-# proximity
+# Proximity
 A webapp based off the Nearby mobile app.
 
 ## Sprint 3 Goals
